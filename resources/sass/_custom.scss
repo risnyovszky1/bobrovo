@@ -1,0 +1,79 @@
+$bobrovo-green: rgb(184, 219, 124);
+$bobrovo-orange: rgb(246, 196, 112);
+$bobrovo-orange-light: rgb(251, 248, 241);
+$bobrovo-orange-dark: rgb(79, 49, 41);
+$bobrovo-green-light: rgb(217, 235, 178);
+
+body{
+  font-family: 'Titillium Web', sans-serif;
+  overflow-x: hidden;
+}
+
+.bg-bobrovo-green{
+  background: $bobrovo-green !important;
+  .dropdown-item.active, .dropdown-item:active{
+    background: $bobrovo-green !important;
+  }
+}
+
+.bg-bobrovo-orange{background: $bobrovo-orange !important;}
+.bg-bobrovo-orange-light{ background: $bobrovo-orange-light !important;}
+.bg-bobrovo-green-light{ background: $bobrovo-green-light !important;}
+.border-bobrovo-green{border-color: $bobrovo-green;}
+.text-bobrovo-orange-dark{color: $bobrovo-orange-dark}
+
+.home-section{
+  padding: 2em 0 0;
+}
+
+main#root{
+  min-height: calc(100vh - 264px)
+}
+
+.white-links a{
+  color: white;
+  &:hover{
+    color:white;
+    text-decoration: underline;
+  }
+}
+
+
+#admin-menu{
+  .card-header{
+    padding: 0;
+    button{
+      text-align: left;
+    }
+  }
+  .card-body{
+    padding: 0;
+  }
+  .list-group-item{
+    padding: 0.5rem 1rem
+  }
+}
+
+#count-up-section,
+#home-news-feed{
+  padding-bottom: 2em;
+}
+
+.count-up{
+  .logo{
+    font-size: 5em;
+    line-height: 1
+  }
+  .counter{
+    font-size: 3.5em;
+  }
+}
+
+table.table td,
+table.table th{
+  vertical-align: middle;
+}
+
+.select2-container--bootstrap4{
+  background-color: white;
+}
