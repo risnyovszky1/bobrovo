@@ -20,4 +20,6 @@
 - run: php artisan serve
 - edit files then commit 
 
+-test push
+
 ### enjoy :)
