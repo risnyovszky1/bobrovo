@@ -47829,6 +47829,11 @@ $(document).ready(function () {
     var selector = $(this).data('select');
     $('input[name="' + selector + '"]').prop('checked', true);
   });
+  $('#unselect-all').click(function (event) {
+    event.preventDefault();
+    var selector = $(this).data('select');
+    $('input[name="' + selector + '"]').prop('checked', false);
+  });
   $('#generate-random-code').change(function () {
     if ($(this).prop('checked')) {
       $('#code-input').prop('disabled', true);

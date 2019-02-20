@@ -16,13 +16,10 @@ class MsgSeeder extends Seeder
         $faker = Faker::create();
         
         for ($i = 0; $i < 30; $i++) { 
-            $to = $faker->numberBetween(1,23);
-            if ($to >= 15)
-                $to = 1;
 
             $msg = new Message([
                 'from' => $faker->numberBetween(1,15),
-                'to' => $to,
+                'to' => $faker->numberBetween(1,15),
                 'subject' => $faker->sentence,
                 'content' => $faker->paragraph,
             ]); 
