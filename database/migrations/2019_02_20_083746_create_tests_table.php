@@ -26,6 +26,7 @@ class CreateTestsTable extends Migration
             $table->boolean('available_description');
             $table->boolean('mix_questions');
             $table->boolean('available_answers');
+            $table->boolean('public');
 
             $table->timestamps();
         });

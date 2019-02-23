@@ -31,6 +31,7 @@ class TestsSeeder extends Seeder
                     'available_description' => $faker->boolean,
                     'available_answers' => $faker->boolean,
                     'mix_questions' => $faker->boolean,
+                    'public' => true
                 ]);
                 $test->save();
             }

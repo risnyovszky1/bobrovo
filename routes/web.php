@@ -100,7 +100,8 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     'uses' => 'BobrovoController@getBadLinkPage',
     'as' => 'badlink'
   ]);
-
+  
+  // NEWS
   Route::group(['prefix' => 'novinky'], function(){
     Route::get('/', [
       'uses' => 'BobrovoController@getAllNewsPage',
@@ -131,7 +132,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     ])->where('nesw_id', '[0-9]+');
   });
 
-
+  // FAQ
   Route::group(['prefix' => 'faq'], function(){
     Route::get('/', [
       'uses' => 'BobrovoController@getAllFAQPage',
@@ -162,7 +163,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     ])->where('id', '[0-9]+');
   });
 
-
+  // MESSAGES
   Route::group(['prefix' => 'spravy'], function(){
     Route::get('/', [
       'uses' => 'BobrovoController@getMessagesPage',
@@ -197,7 +198,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     ])->where('id', '[0-9]+');
   });
 
-  
+  // GROUPS
   Route::group(['prefix' => 'skupiny'], function(){
     Route::get('/', [
       'uses' => 'BobrovoController@getGroupsPage',
@@ -235,7 +236,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
   });
 
 
-  
+  // STUDENTS 
   Route::group(['prefix' => 'ziaci'], function(){
     Route::get('/', [
       'uses' => 'BobrovoController@getStudentsPage',
@@ -283,5 +284,40 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
       'uses' => 'BobrovoController@postAddStudentFromFilePage',
       'as' => 'students.file'
     ]);
+  });
+
+  // TESTS 
+  Route::group(['prefix' => 'testy'], function () {
+      Route::get('/', [
+        'uses' => 'BobrovoController@getAllTestsPage',
+        'as' => 'tests.all'
+      ]);
+      Route::get('/{id}', [
+        'uses' => 'BobrovoController@getTestPage',
+        'as' => 'tests.one'
+      ])->where('id', '[0-9]+');
+
+      Route::get('/upravit/{id}', [
+        'uses' => 'BobrovoController@getTestEditPage',
+        'as' => 'tests.edit'
+      ])->where('id', '[0-9]+');
+      Route::post('/upravit/{id}', [
+        'uses' => 'BobrovoController@postTestEditPage',
+        'as' => 'tests.edit'
+      ])->where('id', '[0-9]+');
+
+      Route::get('/pridat', [
+        'uses' => 'BobrovoController@getAddTestPage',
+        'as' => 'tests.add'
+      ]);
+      Route::post('/pridat', [
+        'uses' => 'BobrovoController@postAddTestPage',
+        'as' => 'tests.add'
+      ]);
+
+      Route::get('/vymzat/{id}', [
+        'uses' => 'BobrovoController@getDeleteTest',
+        'as' => 'tests.delete'
+      ])->where('id', '[0-9]+');
   });
 });

@@ -49,8 +49,8 @@
       </div>
       <div class="col-lg-4 pt-3 pb-3">
         <div class="form-group text-right">
-          <button class="btn btn-sm btn-danger" id="unselect-all" data-select="students[]">Zrusit oznacenie</button>
-          <button class="btn btn-sm btn-success" id="select-all" data-select="students[]">Oznacit všetko</button>
+          <button class="btn btn-sm btn-danger" id="unselect-all" data-select="students[]">Zrušiť označenie</button>
+          <button class="btn btn-sm btn-success" id="select-all" data-select="students[]">Označit všetko</button>
         </div>
         <div class="form-group">
           <label for="group">Skupina</label>

@@ -107,8 +107,8 @@
     <div id="tests" class="collapse" aria-labelledby="tests" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="#">Všetky testy</a></li>
-          <li class="list-group-item"><a href="#">Pridaj nový</a></li>
+          <li class="list-group-item"><a href="{{ route('tests.all')}}">Všetky testy</a></li>
+          <li class="list-group-item"><a href="{{ route('tests.add') }}">Pridaj nový</a></li>
         </ul>
       </div>
     </div>

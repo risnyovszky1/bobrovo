@@ -44,7 +44,7 @@
         <form action="" method="post">
           <div class="form-group">
             <label for="title">Názov</label>
-            <input type="text" name="title" id="title" class="form-control" value="{{ $group->name }}">
+            <input type="text" name="title" id="title" class="form-control form-control-lg" value="{{ $group->name }}">
           </div>
 
           <div class="form-group">
