@@ -125,7 +125,7 @@
     <div id="questions" class="collapse" aria-labelledby="questions" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="#">Všetky otázky</a></li>
+          <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
           <li class="list-group-item"><a href="#">Moje otázky</a></li>
           <li class="list-group-item"><a href="#">Pridaj nový</a></li>
         </ul>

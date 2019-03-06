@@ -620,6 +620,7 @@ class BobrovoController extends Controller
               'available_answers' => $request->input('available-ans') != null,
               'mix_questions' => $request->input('mix-questions') != null,
               'public' => $request->input('public') != null,
+              'updated_at' => date('Y-m-d H:i:s'),
             ]);
           
       return redirect()->route('tests.one', ['id' => $id]);
@@ -658,7 +659,22 @@ class BobrovoController extends Controller
 
     public function getDeleteTest($id){
       DB::table('tests')->where('id', $id)->delete();
-
       return redirect()->route('tests.all');
+    }
+
+    // ---- QUESTIONS ---- 
+    public function getAllQuestionsPage(){
+      $questions = DB::table('questions')
+          ->select('id', 'title', 'difficulty', 'type')
+          ->where('public', true)
+          ->orderBy('title', 'ASC')
+          ->get();
+      return view('admin.questions_all', ['questions' => $questions]);
+    }
+
+    public function getQuestionPage($id){
+      $question = DB::table('questions')->where('id', $id)->first();
+      
+      return view('admin.questions_one', ['question' => $question]);
     }
 }

@@ -18,8 +18,8 @@ class CreateTestsTable extends Migration
             $table->string('name', 255);
             $table->text('description');
             
-            $table->integer('group_id');
-            $table->integer('teacher_id');
+            $table->integer('group_id')->unsigned();
+            $table->integer('teacher_id')->unsigned();
             
             $table->timestamp('available_from')->default(DB::raw('CURRENT_TIMESTAMP'));;
             $table->timestamp('available_to')->default(DB::raw('CURRENT_TIMESTAMP'));;
@@ -29,6 +29,9 @@ class CreateTestsTable extends Migration
             $table->boolean('public');
 
             $table->timestamps();
+
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
     }
 

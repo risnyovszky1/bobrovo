@@ -320,4 +320,16 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'as' => 'tests.delete'
       ])->where('id', '[0-9]+');
   });
+
+  Route::group(['prefix' => 'otazky'], function () {
+      Route::get('/', [
+        'uses' => 'BobrovoController@getAllQuestionsPage',
+        'as' => 'questions.all'
+      ]);
+      
+      Route::get('/{id}', [
+        'uses' => 'BobrovoController@getQuestionPage',
+        'as' => 'questions.one'
+      ])->where('id', '[0-9]+');
+  });
 });

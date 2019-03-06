@@ -30,7 +30,10 @@
   <body>
     <header id="header-admin">
       <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-green">
-        <a class="navbar-brand" href="{{ route('admin') }}"> Bobrovo</a>
+        <a class="navbar-brand" href="{{ route('admin') }}"> 
+            <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo"> 
+            Bobrovo
+        </a>
         <button class="navbar-toggler bg-bobrovo-orange text-white border-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

@@ -10743,3 +10743,7 @@ table.table th {
   background-color: white;
 }
 
+.card p:last-child {
+  margin-bottom: 0px !important;
+}
+
