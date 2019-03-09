@@ -42,7 +42,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="alert alert-warning">
-          Súbor vo formáte .csv, kde prvý stľpec je meno, druhý priezvisko a tretí je kód žiaka.
+          Súbor vo formáte <strong>.csv</strong>, kde prvý stľpec je meno, druhý priezvisko a tretí je kód žiaka.
         </div>
         <form action="" method="post" enctype="multipart/form-data">
           <div class="form-group">

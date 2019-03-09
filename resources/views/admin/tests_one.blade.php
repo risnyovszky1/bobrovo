@@ -103,6 +103,25 @@
         </ul>
       </div>
 
+      @if (!empty($questions) && count($questions) > 0)
+        <div class="card mt-3 border-dark">
+            <div class="card-header text-white bg-dark">
+                Otázky na teste
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach ($questions as $item)
+                    <li class="list-group-item">
+                      <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
+                      <a href="{{ route('tests.delete.question', ['test_id'=> $test->id, 'question_id'=> $item->id]) }}" class="float-right text-danger" title="Vymazať z testu">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+      @endif
+      
+
       <div class="form-group mt-3">
         <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i>Upraviť</a>
       </div>

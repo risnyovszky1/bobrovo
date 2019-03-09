@@ -47841,6 +47841,32 @@ $(document).ready(function () {
       $('#code-input').prop('disabled', false);
     }
   });
+  $('.rating-star').mouseenter(function () {
+    var index = $(this).index();
+    $('.rating-star').each(function (i) {
+      console.log(index, i);
+
+      if (i < index) {
+        $(this).removeClass('text-secondary');
+        $(this).addClass('text-warning');
+      } else {
+        $(this).addClass('text-warning');
+        $(this).removeClass('text-secondary');
+      }
+    });
+  }).mouseleave(function () {
+    $('.rating-star').each(function (i) {
+      console.log($(this).data('original'));
+
+      if ($(this).data('original') == true) {
+        $(this).removeClass('text-secondary');
+        $(this).addClass('text-warning');
+      } else {
+        $(this).addClass('text-warning');
+        $(this).removeClass('text-secondary');
+      }
+    });
+  });
 });
 
 /***/ }),

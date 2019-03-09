@@ -22,6 +22,10 @@ class DatabaseSeeder extends Seeder
             TestsSeeder::class,
             QuestionSeeder::class,
             CategorySeeder::class,
+            QuestionCategorySeeder::class,
+            QuestionTestSeeder::class,
+            QuestionRatingSeed::class,
+            CommentSeeder::class,
         ]);
     }
 }

@@ -6,11 +6,11 @@
       <div class="card-header text-left">
         <h3 class="mb-0">
           <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#news" aria-expanded="true" aria-controls="collapseOne">
-            Novinky
+            <i class="far fa-newspaper"></i> Novinky
           </button>
         </h3>
       </div>
-      <div id="news" class="collapse" aria-labelledby="news" data-parent="#admin-menu">
+      <div id="news" class="collapse {{ Request::is('ucitel/novinky/*') || Request::is('ucitel/novinky') ? 'show': '' }}" aria-labelledby="news" data-parent="#admin-menu">
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="{{ route('news.all') }}">Všetky novinky</a></li>
@@ -24,11 +24,11 @@
       <div class="card-header text-left">
         <h3 class="mb-0">
           <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#faq" aria-expanded="true" aria-controls="collapseTwo">
-            FAQ
+            <i class="fas fa-book-open"></i> FAQ
           </button>
         </h3>
       </div>
-      <div id="faq" class="collapse" aria-labelledby="faq" data-parent="#admin-menu">
+      <div id="faq" class="collapse {{ Request::is('ucitel/faq/*') || Request::is('ucitel/faq') ? 'show': '' }}" aria-labelledby="faq" data-parent="#admin-menu">
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="{{ route('faq.all') }}">Všetky faq</a></li>
@@ -44,11 +44,11 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#messeges" aria-expanded="true" aria-controls="collapseSeven">
-          Správy
+          <i class="far fa-comment"></i> Správy
         </button>
       </h3>
     </div>
-    <div id="messeges" class="collapse" aria-labelledby="messeges" data-parent="#admin-menu">
+    <div id="messeges" class="collapse {{ Request::is('ucitel/spravy/*') || Request::is('ucitel/spravy') ? 'show': '' }}" aria-labelledby="messeges" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('msg.all') }}">Všetky správy</a></li>
@@ -63,11 +63,11 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#students" aria-expanded="true" aria-controls="collapseThree">
-          Moje študenti
+          <i class="fas fa-user-graduate"></i> Moje študenti
         </button>
       </h3>
     </div>
-    <div id="students" class="collapse" aria-labelledby="students" data-parent="#admin-menu">
+    <div id="students" class="collapse {{ Request::is('ucitel/ziaci/*') || Request::is('ucitel/ziaci') ? 'show': '' }}" aria-labelledby="students" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('students.all' ) }}">Všetky študenti</a></li>
@@ -82,11 +82,11 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#classes" aria-expanded="true" aria-controls="collapseFour">
-          Moje skupiny
+          <i class="fas fa-users"></i> Moje skupiny
         </button>
       </h3>
     </div>
-    <div id="classes" class="collapse" aria-labelledby="classes" data-parent="#admin-menu">
+    <div id="classes" class="collapse {{ Request::is('ucitel/skupiny/*') || Request::is('ucitel/skupiny') ? 'show': '' }}" aria-labelledby="classes" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('groups.all') }}">Všetky skupiny</a></li>
@@ -100,11 +100,11 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#tests" aria-expanded="true" aria-controls="collapseFive">
-          Moje testy
+          <i class="far fa-file-alt"></i> Moje testy
         </button>
       </h3>
     </div>
-    <div id="tests" class="collapse" aria-labelledby="tests" data-parent="#admin-menu">
+    <div id="tests" class="collapse {{ Request::is('ucitel/testy/*') || Request::is('ucitel/testy') ? 'show': '' }}" aria-labelledby="tests" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('tests.all')}}">Všetky testy</a></li>
@@ -118,16 +118,17 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#questions" aria-expanded="true" aria-controls="collapseSix">
-          Otázky
+          <i class="far fa-question-circle"></i> Otázky
         </button>
       </h3>
     </div>
-    <div id="questions" class="collapse" aria-labelledby="questions" data-parent="#admin-menu">
+    <div id="questions" class="collapse {{ Request::is('ucitel/otazky/*') || Request::is('ucitel/otazky') ? 'show': '' }}" aria-labelledby="questions" data-parent="#admin-menu">
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
           <li class="list-group-item"><a href="#">Moje otázky</a></li>
           <li class="list-group-item"><a href="#">Pridaj nový</a></li>
+          <li class="list-group-item"><a href="#">Filter otázkov</a></li>
         </ul>
       </div>
     </div>

@@ -12,6 +12,7 @@ use App\Group;
 use App\Message;
 use App\Student;
 use App\Test;
+use App\Question;
 use Auth;
 use Faker\Factory as Faker;
 
@@ -179,6 +180,11 @@ class BobrovoController extends Controller
       return redirect()->route('faq.all');
     }
 
+    // ====================================
+    // |                                  |
+    // |          TEACHER PAGES           |
+    // |                                  |
+    // ====================================
 
     // ---- MESSAGES ---- 
 
@@ -589,8 +595,15 @@ class BobrovoController extends Controller
                     'tests.available_to', 'tests.available_description', 'tests.available_answers', 
                     'tests.mix_questions', 'tests.public', 'groups.name as group_name')
           ->where('tests.id', $id)->first();
+
+      $questions = DB::table('question_test')
+          ->where('question_test.test_id', $id)
+          ->join('questions', 'questions.id', 'question_test.question_id')
+          ->select('questions.id', 'questions.title')
+          ->orderBy('questions.title', 'ASC')
+          ->get();
       
-      return view('admin.tests_one', ['test' => $test]);
+      return view('admin.tests_one', ['test' => $test, 'questions' => $questions]);
     }
 
     public function getTestEditPage($id){
@@ -662,6 +675,14 @@ class BobrovoController extends Controller
       return redirect()->route('tests.all');
     }
 
+    public function getDeleteQuestionFromTest($tid, $qid){
+      DB::table('question_test')->where([
+        ['test_id', $tid],
+        ['question_id', $qid]
+        ])->delete();
+      return redirect()->route('tests.one', ['id' => $tid]);
+    }
+
     // ---- QUESTIONS ---- 
     public function getAllQuestionsPage(){
       $questions = DB::table('questions')
@@ -669,12 +690,191 @@ class BobrovoController extends Controller
           ->where('public', true)
           ->orderBy('title', 'ASC')
           ->get();
-      return view('admin.questions_all', ['questions' => $questions]);
+      $tests = DB::table('tests')
+          ->select('id', 'name')
+          ->where('teacher_id', Auth::user()->id)
+          ->orderBy('name', 'ASC')
+          ->get();
+      $ratingQuery = DB::table('ratings')
+          ->select('question_id', DB::raw('avg(rating) as avg'))
+          ->groupBy('question_id')
+          ->get();
+
+      $ratings = array();
+
+      foreach($ratingQuery as $rating){
+        $ratings[$rating->question_id] = round($rating->avg, 1);
+      }
+
+      return view('admin.questions_all', [
+        'questions' => $questions, 
+        'tests' => $tests,
+        'ratings' => $ratings
+      ]);
+    }
+
+    public function postAllQuestionsPage(Request $request){
+      $this->validate($request, [
+        'questions' => 'required',
+        'test-select' => 'required'
+      ]);
+
+      foreach ($request->input('questions') as $q) {
+        $count = DB::table('question_test')
+            ->where([
+              ['question_id', $q],
+              ['test_id', $request->input('test-select')]])
+            ->count();
+
+        if ($count == 0){
+          DB::table('question_test')->insert([
+            'question_id' => $q,
+            'test_id' => $request->input('test-select')
+          ]);
+        }
+      }
+
+      return redirect()->route('questions.all');
     }
 
     public function getQuestionPage($id){
       $question = DB::table('questions')->where('id', $id)->first();
+      $comments = DB::table('comments')
+          ->join('users', 'comments.user_id', 'users.id')
+          ->select('comment', 'comments.created_at', 'first_name', 'last_name')
+          ->where('question_id', $id)
+          ->orderBy('created_at', 'DESC')
+          ->get();
+      $rating = DB::table('ratings')
+          ->select('rating')
+          ->where('question_id', $id)
+          ->avg('rating');
+
+      $tests = DB::table('tests')
+          ->select('id', 'name')
+          ->where('teacher_id', Auth::user()->id)
+          ->orderBy('name', 'ASC')
+          ->get();
       
-      return view('admin.questions_one', ['question' => $question]);
+      $myRating = DB::table('ratings')
+          ->select('rating')
+          ->where([
+            ['question_id', $id],
+            ['user_id', Auth::user()->id]
+            ])
+          ->first();
+        
+      $categories = DB::table('question_category')
+          ->join('categories', 'question_category.category_id', 'categories.id')
+          ->select('name')
+          ->where('question_id', $id)
+          ->get();
+      
+      return view('admin.questions_one', [
+        'question' => $question,
+        'comments' => $comments,
+        'rating' => round($rating, 1),
+        'tests' => $tests,
+        'myRating' => $myRating,
+        'categories' => $categories
+      ]);
+    }
+
+    public function postQuestionPage(Request $request, $id){
+      $this->validate($request, [
+        'test' => 'required'
+      ]);
+
+      $count = DB::table('question_test')
+          ->where([
+            ['question_id', $id],
+            ['test_id', $request->input('test')],
+          ])
+          ->count();
+
+      if ($count == 0){
+        DB::table('question_test')
+            ->insert([
+              'question_id' => $id, 
+              'test_id' => $request->input('test')
+            ]);
+      }
+
+      return redirect()->route('questions.one', ['id' => $id]);
+    }
+
+    public function getDeleteQuestion($id){
+      $question = Question::find($id); 
+      $question->delete();
+      return redirect()->route('questions.all');
+    }
+
+    public function getEditQuestionPage($id){
+      $question = Question::find($id);
+      return view('admin.questions_edit', ['question' => $question]);
+    }
+
+    public function postEditQuestionPage(Request $request, $id){
+      $question = Question::find($id);
+
+      $this->validate($request, [
+        'title' => 'required',
+        'question' => 'required',
+        'answer-a' => 'required',
+        'answer-b' => 'required',
+        'answer-c' => 'required',
+        'answer-d' => 'required',
+        'answer' => 'required',
+        'type' => 'required',
+        'difficulty' => 'required',
+        'description' => 'required',
+        'description_teacher' => 'required',
+      ]);
+
+      $question->title = $request->input('title');
+      $question->question = $request->input('question');
+      $question->a = $request->input('answer-a');
+      $question->b = $request->input('answer-b');
+      $question->c = $request->input('answer-c');
+      $question->d = $request->input('answer-d');
+      $question->answer = $request->input('answer');
+      $question->type = $request->input('type');
+      $question->difficulty = $request->input('difficulty');
+      $question->description = $request->input('description');
+      $question->description_teacher = $request->input('description_teacher');
+      $question->public = $request->input('public') != null ? true : false;
+      
+      $question->save();
+
+      return redirect()->route('questions.one', ['id' => $id]);
+    }
+
+    public function getQuestionRating($id, $rating){
+      $count = DB::table('ratings')
+          ->where([
+            ['question_id', $id],
+            ['user_id', Auth::user()->id]
+          ])
+          ->count();
+
+      if ($count == 0){
+        DB::table('ratings')->insert([
+          'question_id' => $id,
+          'user_id' => Auth::user()->id,
+          'rating' => $rating
+        ]);
+      }
+      else{
+        DB::table('ratings')
+          ->where([
+            ['question_id', $id],
+            ['user_id', Auth::user()->id]
+          ])
+          ->update([
+          'rating' => $rating,
+        ]);
+      }
+
+      return redirect()->route('questions.one', ['id' => $id]);
     }
 }

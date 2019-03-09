@@ -10691,6 +10691,12 @@ body {
   padding: 2em 0 0;
 }
 
+@media screen and (min-width: 1200px) {
+  .full-height-lg {
+    min-height: 100vh;
+  }
+}
+
 main#root {
   min-height: calc(100vh - 264px);
 }
@@ -10745,5 +10751,18 @@ table.table th {
 
 .card p:last-child {
   margin-bottom: 0px !important;
+}
+
+#admin-menu .card-header .btn {
+  background-color: #f6c470 !important;
+  color: #4f3129;
+}
+
+#admin-menu .card-header .btn:hover {
+  text-decoration: none !important;
+}
+
+#admin-menu .card-body a {
+  color: #4f3129;
 }
 

@@ -319,6 +319,12 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'uses' => 'BobrovoController@getDeleteTest',
         'as' => 'tests.delete'
       ])->where('id', '[0-9]+');
+
+      Route::get('/vymazat-otazku/{test_id}/{question_id}', [
+        'uses' => 'BobrovoController@getDeleteQuestionFromTest',
+        'as' => 'tests.delete.question'
+      ])->where('test_id', '[0-9]+')
+        ->where('question_id', '[0-9]+');;
   });
 
   Route::group(['prefix' => 'otazky'], function () {
@@ -326,10 +332,39 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'uses' => 'BobrovoController@getAllQuestionsPage',
         'as' => 'questions.all'
       ]);
+      Route::post('/', [
+        'uses' => 'BobrovoController@postAllQuestionsPage',
+        'as' => 'questions.all'
+      ]);
       
       Route::get('/{id}', [
         'uses' => 'BobrovoController@getQuestionPage',
         'as' => 'questions.one'
       ])->where('id', '[0-9]+');
+      Route::post('/{id}', [
+        'uses' => 'BobrovoController@postQuestionPage',
+        'as' => 'questions.one'
+      ])->where('id', '[0-9]+');
+
+      Route::get('/vymazat/{id}', [
+        'uses' => 'BobrovoController@getDeleteQuestion',
+        'as' => 'questions.delete'
+      ])->where('id', '[0-9]+');
+
+      Route::get('/upravit/{id}', [
+        'uses' => 'BobrovoController@getEditQuestionPage',
+        'as' => 'questions.edit'
+      ])->where('id', '[0-9]+');
+      
+      Route::post('/upravit/{id}', [
+        'uses' => 'BobrovoController@postEditQuestionPage',
+        'as' => 'questions.edit'
+      ])->where('id', '[0-9]+');
+
+      Route::get('/hodnotit/{id}/{rating}', [
+        'uses' => 'BobrovoController@getQuestionRating',
+        'as' => 'questions.rating'
+      ])->where('id', '[0-9]+')
+        ->where('rating', '[1-5]');
   });
 });
