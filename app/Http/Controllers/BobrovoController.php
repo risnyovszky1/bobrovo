@@ -46,12 +46,10 @@ class BobrovoController extends Controller
       );
 
       if (Auth::attempt($userData)){
-        //return view('admin.admin');
         return redirect()->route('admin');
       }
-      else{
-        return view('general.login_teacher');
-      }
+
+      return view('general.login_teacher');
     }
 
     // ====================================

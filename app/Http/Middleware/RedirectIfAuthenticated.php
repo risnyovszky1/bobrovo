@@ -16,8 +16,12 @@ class RedirectIfAuthenticated
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
-    {
-        if (Auth::guard($guard)->check()) {
+    {   
+        if ($guard == 'bobor' && Auth::guard($guard)->check()){
+            //return redirect()->route('student_home');
+        }
+
+        if ($guard != 'bobor' && Auth::guard($guard)->check()) {
             return redirect()->route('admin');
         }
 

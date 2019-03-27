@@ -60,10 +60,27 @@ Route::get('/faq', [
 // | TestController / Pages for students
 // --------
 
-Route::get('/prihlasenie-student', [
+Route::get('/prihlasenie-ziak', [
   'uses' => 'TestController@getLoginStudentPage',
   'as' => 'login_student',
 ]);
+Route::post('/prihlasenie-ziak', [
+  'uses' => 'TestController@postLoginStudentPage',
+  'as' => 'login_student',
+]);
+
+
+Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
+  Route::get('/', [
+    'uses' => 'TestController@getStudentHomePage',
+    'as' => 'student_home',
+  ]);
+
+  Route::get('/odhlasit', [
+    'uses' => 'TestController@getLogoutStudent',
+    'as' => 'logout_student',
+  ]);
+});
 
 
 

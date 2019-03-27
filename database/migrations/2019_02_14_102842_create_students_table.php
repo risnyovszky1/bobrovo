@@ -19,6 +19,7 @@ class CreateStudentsTable extends Migration
             $table->string('last_name', 35);
             $table->string('code', 15)->unique();
             $table->integer('teacher_id')->unsigned();
+            $table->rememberToken();
             $table->timestamps();
             $table->foreign('teacher_id')->references('id')->on('users');
         });

@@ -15,6 +15,7 @@
       </div>
     </div>
   </div>
+
   <form action="" method="post">
     <div class="container">
       <div class="row">
@@ -30,6 +31,7 @@
 
           <div class="row">
             <div class="col-md-12">
+              {{ csrf_field() }}
               <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt"></i> Prihlásiť</button>
             </div>
           </div>
