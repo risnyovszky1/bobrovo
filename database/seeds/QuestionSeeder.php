@@ -26,7 +26,7 @@ class QuestionSeeder extends Seeder
                 'c' => $faker->word,
                 'd' => $faker->word,
                 'answer' => $arr[array_rand($arr)],
-                'type' => $faker->numberBetween(1, 2),
+                'type' => $faker->numberBetween(1, 3),
                 'difficulty' => $faker->numberBetween(1, 7),
                 'description' => '<p>' . $faker->paragraph . '</p>',
                 'description_teacher' => '<p>' . $faker->paragraph . '</p>',

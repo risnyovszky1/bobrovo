@@ -80,6 +80,44 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
     'uses' => 'TestController@getLogoutStudent',
     'as' => 'logout_student',
   ]);
+
+  Route::get('/testy', [
+    'uses' => 'TestController@getStudentTestsPage',
+    'as' => 'tests_student',
+  ]);
+
+  Route::get('/testy/{id}', [
+    'uses' => 'TestController@getTestPage',
+    'as' => 'testone_student',
+  ])->where('id', '[0-9]+');
+
+  Route::get('/vysledky/{id}', [
+    'uses' => 'TestController@getResultsPage',
+    'as' => 'results_student',
+  ])->where('id', '[0-9]+');
+
+  Route::get('/testuj/{id}', [
+    'uses' => 'TestController@getSolvingPage',
+    'as' => 'solving_student',
+  ])->where('id', '[0-9]+');
+
+  Route::get('/testuj/dokoncit/{id}', [
+    'uses' => 'TestController@getFinishPage',
+    'as' => 'finish_student',
+  ])->where('id', '[0-9]+');
+  Route::post('/testuj/dokoncit/{id}', [
+    'uses' => 'TestController@postFinishPage',
+    'as' => 'finish_student',
+  ])->where('id', '[0-9]+');
+
+  Route::get('/testuj/{id}/{ord}', [
+    'uses' => 'TestController@getQuestionPage',
+    'as' => 'question_student',
+  ])->where('id', '[0-9]+')->where('ord', '[0-9]+');
+  Route::post('/testuj/{id}/{ord}', [
+    'uses' => 'TestController@postQuestionPage',
+    'as' => 'question_student',
+  ])->where('id', '[0-9]+')->where('ord', '[0-9]+');
 });
 
 

@@ -12,6 +12,14 @@
         <p>
           Ak si dostal(a) od pán učiteľa (pani učiteľky) informatiky kód, po jeho zadaní uvidíš, či je pre Teba pripravený test a aj to, kedy ho budeš môcť riešiť.
         </p>
+
+        @if(!empty($errors))
+          @foreach ($errors->all() as $error)
+              <div class="alert alert-danger mb-2">
+                {{$error}}
+              </div>
+          @endforeach
+        @endif
       </div>
     </div>
   </div>

@@ -84,8 +84,9 @@
                 <select name="type" id="" class="form-control">
                     <option value="1" {{1 == $question->type ? 'selected' : ''}}>Pod seba</option>
                     <option value="2" {{2 == $question->type ? 'selected' : ''}}>Vedľa seba</option>
-                    <option value="3" {{3 == $question->type ? 'selected' : ''}}>Obrázok</option>
-                    <option value="4" {{4 == $question->type ? 'selected' : ''}}>Interaktívna</option>
+                    <option value="3" {{3 == $question->type ? 'selected' : ''}}>2x2</option>
+                    <option value="4" {{4 == $question->type ? 'selected' : ''}}>Obrázok</option>
+                    <option value="5" {{5 == $question->type ? 'selected' : ''}}>Interaktívna</option>
                 </select>
             </div>
 
