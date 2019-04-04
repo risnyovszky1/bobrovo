@@ -63,7 +63,11 @@
         </div>
         <div class="form-group">
           {{ csrf_field() }}
-          <button type="submit" class="btn btn-block btn-primary">Pridaj do skupiny</button>
+          <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-user-plus"></i> Pridaj do skupiny</button>
+        </div>
+
+        <div class="form-grou">
+          <a href="{{ route('students.export') }}" class="btn btn-block btn-secondary" target="_blank"><i class="fas fa-print"></i> Vytlačiť</a>
         </div>
       </div>
     </div>
