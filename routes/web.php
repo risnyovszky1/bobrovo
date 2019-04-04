@@ -401,6 +401,15 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'as' => 'questions.one'
       ])->where('id', '[0-9]+');
 
+      Route::get('/pridat', [
+        'uses' => 'BobrovoController@getAddQuestionPage',
+        'as' => 'questions.add'
+      ]);
+      Route::post('/pridat', [
+        'uses' => 'BobrovoController@postAddQuestionPage',
+        'as' => 'questions.add'
+      ]);
+
       Route::get('/vymazat/{id}', [
         'uses' => 'BobrovoController@getDeleteQuestion',
         'as' => 'questions.delete'

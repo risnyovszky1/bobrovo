@@ -1,7 +1,7 @@
 @extends('student.master')
 
 @section('title')
-    {{ $question->title }} | Bobrovo
+    Otázka | Bobrovo
 @endsection
 
 @section('content')
@@ -9,7 +9,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 pt-5">
-          <h3>{{ $question->title }}</h3>
 
           @if (!empty($errors))
               @foreach ($errors->all() as $err)
@@ -27,7 +26,7 @@
                             {!!$question->question!!}                            
                         </div>
                     </div>
-                    @if (Session::get('testSettings')->available_description && $question->description)
+                    @if (Session::get('testSettings')->available_description && !empty($question->description) && strlen($question->description))
                         <div class="card mb-3 border-secondary">
                             <div class="card-header bg-secondary text-white">
                                 Popis
@@ -143,6 +142,52 @@
                                 </div>
                             </div>
                             @break
+                        @case(4)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="answer-wrapper border rounded border-primary bg-white pt-2 pb-2 pl-3 pr-3 mb-2">
+                                        <div class="custom-control custom-radio question-img-type">
+                                            <input type="radio" id="customRadio-{{$question->id}}a" value="a" name="answer-{{$question->id}}" class="custom-control-input" {{ !empty($answer) && $answer->answer == 'a' ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="customRadio-{{$question->id}}a">
+                                                <img src="{{$question->a}}" alt="odpoveď A">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="answer-wrapper border rounded border-primary bg-white pt-2 pb-2 pl-3 pr-3 mb-2">
+                                        <div class="custom-control custom-radio question-img-type">
+                                            <input type="radio" id="customRadio-{{$question->id}}b" value="b" name="answer-{{$question->id}}" class="custom-control-input" {{ !empty($answer) && $answer->answer == 'b' ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="customRadio-{{$question->id}}b">
+                                                <img src="{{$question->b}}" alt="odpoveď B">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="answer-wrapper border rounded border-primary bg-white pt-2 pb-2 pl-3 pr-3 mb-2">
+                                        <div class="custom-control custom-radio question-img-type">
+                                            <input type="radio" id="customRadio-{{$question->id}}c" value="c" name="answer-{{$question->id}}" class="custom-control-input" {{ !empty($answer) && $answer->answer == 'c' ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="customRadio-{{$question->id}}c">
+                                                <img src="{{$question->c}}" alt="odpoveď C">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="answer-wrapper border rounded border-primary bg-white pt-2 pb-2 pl-3 pr-3 mb-2">
+                                        <div class="custom-control custom-radio question-img-type">
+                                            <input type="radio" id="customRadio-{{$question->id}}d" value="d" name="answer-{{$question->id}}" class="custom-control-input" {{ !empty($answer) && $answer->answer == 'd' ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="customRadio-{{$question->id}}d">
+                                                <img src="{{$question->d}}" alt="odpoveď D">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @default
                             
                     @endswitch

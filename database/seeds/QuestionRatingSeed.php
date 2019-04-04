@@ -15,9 +15,9 @@ class QuestionRatingSeed extends Seeder
     {
         $faker = Faker::create();
 
-        for($i = 0; $i < 500; $i++){
-            $uid = $faker->numberBetween(1, 16);
-            $qid = $faker->numberBetween(1, 70);
+        for($i = 0; $i < 80; $i++){
+            $uid = $faker->numberBetween(1, 4);
+            $qid = DB::table('questions')->select('id')->inRandomOrder()->first()->id;
 
             $count = DB::table('ratings')->where([
                 ['user_id', $uid],

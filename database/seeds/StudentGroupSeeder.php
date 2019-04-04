@@ -13,7 +13,7 @@ class StudentGroupSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 230; $i++){
+        for($i = 0; $i < 100; $i++){
             $student = DB::table('students')->select('id', 'teacher_id')->inRandomOrder()->first();
             $group = DB::table('groups')->select('id')->where('created_by', $student->teacher_id)->inRandomOrder()->first();
 

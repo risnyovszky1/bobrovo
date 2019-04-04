@@ -83,10 +83,11 @@
             <a href="{{ route('solving_student', ['id' => $test->id]) }}" class="btn btn-primary">
                 <i class="fas fa-pencil-alt"></i> Začni riešiť
             </a>
-
-            <a href="{{ route('results_student', ['id' => $test->id]) }}" class="btn btn-success">
-                <i class="far fa-check-square"></i> Pozri výsledky
-            </a>
+            @if (!empty($state) && $state->state == 3)
+                <a href="{{ route('results_student', ['id' => $test->id]) }}" class="btn btn-success">
+                    <i class="far fa-check-square"></i> Pozri výsledky
+                </a>
+            @endif
         </div>
     </div>
 </div>   

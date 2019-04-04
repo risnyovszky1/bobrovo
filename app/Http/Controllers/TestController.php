@@ -52,6 +52,8 @@ class TestController extends Controller
         ->get();
 
     $tests = array();
+    // to do 
+    $states = array();
 
     foreach($groups as $group){
       $tests[$group->id] = DB::table('tests')
@@ -60,6 +62,7 @@ class TestController extends Controller
           ['group_id', $group->id],
           ['public', true]
           ])
+        ->orderBy('name', 'ASC')
         ->get();
     }
     
@@ -78,28 +81,26 @@ class TestController extends Controller
       ])
       ->first();
     
+    $settings = DB::table('tests')
+        ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers')
+        ->where('id', $id)
+        ->first();
+    Session::put('testSettings', $settings);
+    
     return view('student.test_one', ['test' => $test, 'state' => $state]);
   }
 
   public function getSolvingPage($id){
     $ss = Session::get('testSettings');
 
-    if (!($ss && $ss->id == $id)){
-      $questions = DB::table('question_test')
-        ->join('questions', 'question_test.question_id', 'questions.id')
-        ->select('questions.id', 'title', 'question', 'answer', 'a', 'b', 'c', 'd', 'description', 'type')
-        ->where('test_id', $id)
-        ->get();  
-
-      $settings = DB::table('tests')
-        ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers')
-        ->where('id', $id)
-        ->first();
-
-      Session::put('testSettings', $settings);
-      Session::put('testQuestions', $settings->mix_questions == 0 ? $questions : $questions->shuffle());
-    }
-
+    $questions = DB::table('question_test')
+      ->join('questions', 'question_test.question_id', 'questions.id')
+      ->select('questions.id', 'title', 'question', 'answer', 'a', 'b', 'c', 'd', 'description', 'type')
+      ->where('test_id', $id)
+      ->get();  
+      
+    Session::put('testQuestions', $ss->mix_questions == 0 ? $questions : $questions->shuffle());
+    
     $state = DB::table('test_student_state')
       ->where([
         ['test_id', $id],

@@ -809,7 +809,14 @@ class BobrovoController extends Controller
 
     public function getEditQuestionPage($id){
       $question = Question::find($id);
-      return view('admin.questions_edit', ['question' => $question]);
+      $cat = DB::table('question_category')->select('category_id')->where('question_id', $id)->get();
+      
+      $categories = array();
+      foreach ($cat as $c) {
+        $categories[] = $c->category_id;
+      }
+
+      return view('admin.questions_edit', ['question' => $question, 'categories' => $categories]);
     }
 
     public function postEditQuestionPage(Request $request, $id){
@@ -844,6 +851,16 @@ class BobrovoController extends Controller
       
       $question->save();
 
+      DB::table('question_category')->where('question_id', $id)->delete();
+      if ($request->input('category')){
+        foreach ($request->input('category') as $cat) {
+          DB::table('question_category')->insert([
+            'question_id' => $id,
+            'category_id' => $cat
+          ]);
+        }
+      }
+
       return redirect()->route('questions.one', ['id' => $id]);
     }
 
@@ -874,5 +891,107 @@ class BobrovoController extends Controller
       }
 
       return redirect()->route('questions.one', ['id' => $id]);
+    }
+
+    public function getAddQuestionPage(){
+
+      return view('admin.questions_add');
+    }
+
+    public function postAddQuestionPage(Request $request){
+      $this->validate($request, [
+        'title' => 'required',
+        'question' => 'required',
+        'answer' => 'required',
+        'type' => 'required',
+        'difficulty' => 'required',
+      ]);
+
+      $type = intval($request->input('type'));
+  
+      if ($type >= 1 && $type <= 3){
+        // if type is text: in rows, in cols, 2x2
+        $this->validate($request, [
+          'answer-a' => 'required',
+          'answer-b' => 'required',
+          'answer-c' => 'required',
+          'answer-d' => 'required',
+        ]);
+
+        $q = new Question([
+          'title' => $request->input('title'),
+          'question' => $request->input('question'),
+          'a' => $request->input('answer-a'),
+          'b' => $request->input('answer-b'),
+          'c' => $request->input('answer-c'),
+          'd' => $request->input('answer-d'),
+          'answer' => $request->input('answer'),
+          'type' => $type,
+          'difficulty' => $request->input('difficulty'),
+          'description' => $request->input('description') ? $request->input('description') : '',
+          'description_teacher' => $request->input('description_teacher') ? $request->input('description_teacher') : '', 
+          'public' => $request->input('public') != null ? true : false,
+          'created_by' => Auth::user()->id
+        ]);
+
+        $q->save();
+      }
+      else if ($type == 4){
+        // if type is img
+        $this->validate($request, [
+          'answer-a-img' => 'required',
+          'answer-b-img' => 'required',
+          'answer-c-img' => 'required',
+          'answer-d-img' => 'required',
+        ]);
+
+        $q = new Question([
+          'title' => $request->input('title'),
+          'question' => $request->input('question'),
+          'answer' => $request->input('answer'),
+          'type' => $type,
+          'difficulty' => $request->input('difficulty'),
+          'description' => $request->input('description') ? $request->input('description') : '',
+          'description_teacher' => $request->input('description_teacher') ? $request->input('description_teacher') : '', 
+          'public' => $request->input('public') != null ? true : false,
+          'created_by' => Auth::user()->id,
+          'a' => 'a',
+          'b' => 'a',
+          'c' => 'a',
+          'd' => 'a',
+        ]);
+
+        $q->save();
+
+        $path1 = $request->file('answer-a-img')->storeAs('img/answers', $q->id . 'a' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+        $path2 = $request->file('answer-b-img')->storeAs('img/answers', $q->id . 'b' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+        $path3 = $request->file('answer-c-img')->storeAs('img/answers', $q->id . 'c' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+        $path4 = $request->file('answer-d-img')->storeAs('img/answers', $q->id . 'd' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+
+        $q->a = '/' . $path1;
+        $q->b = '/' . $path2;
+        $q->c = '/' . $path3;
+        $q->d = '/' . $path4;
+        
+        $q->save();
+      }
+      else{
+        // if type is interactive  
+      }
+
+      
+
+      
+
+      if ($request->input('category')){
+        foreach ($request->input('category') as $cat) {
+          DB::table('question_category')->insert([
+            'question_id' => $q->id,
+            'category_id' => $cat
+          ]);
+        }
+      }
+
+      return redirect()->route('questions.one', ['id' => $q->id]);
     }
 }

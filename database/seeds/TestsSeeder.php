@@ -17,7 +17,7 @@ class TestsSeeder extends Seeder
         //
         $faker = Faker::create();
 
-        for($i = 0; $i < 70; $i++){
+        for($i = 0; $i < 30; $i++){
             $uid = DB::table('users')->select('id')->inRandomOrder()->first()->id;
             $g = DB::table('groups')->select('id')->where('created_by', $uid)->inRandomOrder()->first();
             if ($g){
@@ -26,8 +26,8 @@ class TestsSeeder extends Seeder
                     'description' => '<p>' . $faker->paragraph . '</p>',
                     'teacher_id' => $uid,
                     'group_id' => $g->id,
-                    'available_from' => '2019-02-20 08:00:00',
-                    'available_to' => '2019-02-28 08:00:00',
+                    'available_from' => '2019-04-01 08:00:00',
+                    'available_to' => '2019-04-15 08:00:00',
                     'available_description' => $faker->boolean,
                     'available_answers' => $faker->boolean,
                     'mix_questions' => $faker->boolean,

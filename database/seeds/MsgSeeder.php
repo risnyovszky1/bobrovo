@@ -15,11 +15,11 @@ class MsgSeeder extends Seeder
     {
         $faker = Faker::create();
         
-        for ($i = 0; $i < 30; $i++) { 
+        for ($i = 0; $i < 10; $i++) { 
 
             $msg = new Message([
-                'from' => $faker->numberBetween(1,15),
-                'to' => $faker->numberBetween(1,15),
+                'from' => $faker->numberBetween(1, 4),
+                'to' => $faker->numberBetween(1, 4),
                 'subject' => $faker->sentence,
                 'content' => $faker->paragraph,
             ]); 

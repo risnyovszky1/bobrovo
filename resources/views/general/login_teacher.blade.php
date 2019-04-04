@@ -25,11 +25,6 @@
       <div class="row">
         
         <div class="col-lg-6 col-md-8">
-            <code>
-                <pre>
-                  {{Auth::user()}}
-                </pre>
-              </code>
           <div class="row">
             <div class="col-md-12 mb-3">
               <label for="email">

@@ -101,3 +101,15 @@ table.table th{
   }
 }
 
+.question-img-type .custom-control-label:before,
+.question-img-type .custom-control-label:after{
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.question-possibilities{
+
+  &.hidden{
+    display: none;
+  }
+}

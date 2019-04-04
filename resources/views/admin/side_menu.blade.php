@@ -127,7 +127,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
           <li class="list-group-item"><a href="#">Moje otázky</a></li>
-          <li class="list-group-item"><a href="#">Pridaj nový</a></li>
+          <li class="list-group-item"><a href="{{ route('questions.add') }}">Pridaj nový</a></li>
           <li class="list-group-item"><a href="#">Filter otázkov</a></li>
         </ul>
       </div>

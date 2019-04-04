@@ -2,7 +2,7 @@
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
 
@@ -13,9 +13,9 @@
 
     <script type="text/javascript" src="/js/app.js"></script>
 </head>
-<body>
+<body class="bg-bobrovo-orange-light">
     <header id="header-admin">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-green">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-orange">
           <a class="navbar-brand" href="{{ route('student_home') }}"> 
               <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo"> 
               Bobrovo
@@ -41,7 +41,7 @@
     </header>
 
 
-    <div id="root">
+    <div id="root" class="bg-bobrovo-orange-light">
       @yield('content')
     </div>
     

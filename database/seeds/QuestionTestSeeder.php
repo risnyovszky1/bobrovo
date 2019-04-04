@@ -15,9 +15,9 @@ class QuestionTestSeeder extends Seeder
     {
         $faker = Faker::create();
         
-        for($i = 0; $i < 300; $i++){
-            $qid = $faker->numberBetween(1, 60);
-            $tid = $faker->numberBetween(1, 60);
+        for($i = 0; $i < 350; $i++){
+            $qid = DB::table('questions')->select('id')->inRandomOrder()->first()->id;
+            $tid = DB::table('tests')->select('id')->inRandomOrder()->first()->id;
 
             $count = DB::table('question_test')->where([
                 ['question_id', $qid],

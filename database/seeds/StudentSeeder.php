@@ -16,7 +16,7 @@ class StudentSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for($i = 0; $i < 150; $i++){
+        for($i = 0; $i < 50; $i++){
             $uid = DB::table('users')->select('id')->inRandomOrder()->first();
             $student = new Student([
                 'first_name' => $faker->firstName,

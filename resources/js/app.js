@@ -67,6 +67,11 @@ $(document).ready(function(){
     fontSizeSelection: true,
     paragraphFormatSelection: true
   });
+  $('textarea.wyswyg-editor').froalaEditor({
+    toolbarButtons: ['paragraphFormat', '|', 'fontSize', '|', 'bold', 'italic', 'underline'],
+    fontSizeSelection: true,
+    paragraphFormatSelection: true
+  });
 
   // ---- SELECT2 ----
 
@@ -106,6 +111,15 @@ $(document).ready(function(){
     else{
       $('#code-input').prop('disabled', false); 
     }
+  });
+
+  $('#question-type').on('change', function(){
+    var val = $(this).val();
+    $('.question-possibilities').hide();
+    if (val == 4){$('#picture-ans').fadeIn('slow');}
+    else if (val == 5){$('#interactive-ans').fadeIn('slow');}
+    else{ $('#text-ans').fadeIn('slow');}
+
   });
 
   $('.rating-star')
