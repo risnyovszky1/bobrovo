@@ -231,6 +231,9 @@ class BobrovoController extends Controller
               ->select('messages.id', 'messages.subject', 'messages.content', 'users.email', 'users.first_name', 'users.last_name')
               ->where('messages.id', $id)
               ->get();
+      
+      DB::table('messages')->where('id', $id)->update(['seen' => true]);
+
       return view('admin.msg_one', ['msg' => $msg->first()]);
     }
     public function getAnswerPage($id){

@@ -44,7 +44,7 @@
     <div class="card-header text-left">
       <h3 class="mb-0">
         <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#messeges" aria-expanded="true" aria-controls="collapseSeven">
-          <i class="far fa-comment"></i> Správy
+          <i class="far fa-comment"></i> Správy {!! newMessagesCount() > 0 ? '<span class="badge badge-pill badge-warning">'.newMessagesCount().'</span>': '' !!}
         </button>
       </h3>
     </div>
