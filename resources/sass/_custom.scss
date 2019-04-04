@@ -108,8 +108,15 @@ table.table th{
 }
 
 .question-possibilities{
-
   &.hidden{
     display: none;
   }
+
+  img{
+    max-height: 60px;
+  }
+}
+
+.question-possibilities-show img{
+  max-height: 80px;
 }

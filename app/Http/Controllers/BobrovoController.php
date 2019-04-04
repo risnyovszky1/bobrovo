@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\News;
 use App\FAQ;
@@ -825,29 +826,55 @@ class BobrovoController extends Controller
       $this->validate($request, [
         'title' => 'required',
         'question' => 'required',
-        'answer-a' => 'required',
-        'answer-b' => 'required',
-        'answer-c' => 'required',
-        'answer-d' => 'required',
         'answer' => 'required',
-        'type' => 'required',
         'difficulty' => 'required',
-        'description' => 'required',
-        'description_teacher' => 'required',
+       
       ]);
 
       $question->title = $request->input('title');
       $question->question = $request->input('question');
-      $question->a = $request->input('answer-a');
-      $question->b = $request->input('answer-b');
-      $question->c = $request->input('answer-c');
-      $question->d = $request->input('answer-d');
+      
       $question->answer = $request->input('answer');
-      $question->type = $request->input('type');
       $question->difficulty = $request->input('difficulty');
-      $question->description = $request->input('description');
-      $question->description_teacher = $request->input('description_teacher');
+      $question->description = $request->input('description') ? $request->input('description') : ' ';
+      $question->description_teacher = $request->input('description_teacher') ? $request->input('description_teacher') : ' ';
       $question->public = $request->input('public') != null ? true : false;
+
+      if ($question->type <= 3){
+        $this->validate($request, [
+          'answer-a' => 'required',
+          'answer-b' => 'required',
+          'answer-c' => 'required',
+          'answer-d' => 'required',
+        ]);
+
+        $question->a = $request->input('answer-a');
+        $question->b = $request->input('answer-b');
+        $question->c = $request->input('answer-c');
+        $question->d = $request->input('answer-d');
+      }
+      else if ($question->type == 4){
+        if ($request->file('answer-a-img') != null){
+          Storage::disk('public_uploads')->delete(ltrim($question->a,  '/'));
+          $path = $request->file('answer-a-img')->storeAs('img/answers', $question->id . 'a' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+          $question->a = '/' . $path;
+        }
+        if ($request->file('answer-b-img') != null){
+          Storage::disk('public_uploads')->delete(ltrim($question->b,  '/'));
+          $path = $request->file('answer-b-img')->storeAs('img/answers', $question->id . 'b' . '.' . $request->file('answer-b-img')->getClientOriginalExtension(), 'public_uploads');
+          $question->b = '/' . $path;
+        }
+        if ($request->file('answer-c-img') != null){
+          Storage::disk('public_uploads')->delete(ltrim($question->c,  '/'));
+          $path = $request->file('answer-c-img')->storeAs('img/answers', $question->id . 'c' . '.' . $request->file('answer-c-img')->getClientOriginalExtension(), 'public_uploads');
+          $question->c = '/' . $path;
+        }
+        if ($request->file('answer-d-img') != null){
+          Storage::disk('public_uploads')->delete(ltrim($question->d,  '/'));
+          $path = $request->file('answer-d-img')->storeAs('img/answers', $question->id . 'd' . '.' . $request->file('answer-d-img')->getClientOriginalExtension(), 'public_uploads');
+          $question->d = '/' . $path;
+        }
+      }
       
       $question->save();
 

@@ -33,7 +33,7 @@
       </div>
     @endif
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
@@ -54,7 +54,7 @@
       </div>
       <div class="row">
         <div class="col-lg-8">
-          <div class="form-group">
+          <div class="form-group question-possibilities {{ $question->type <= 3 ? 'show' : 'hidden' }}" id="text-ans">
             <label for="answer-a" class="mb-0">Odpoveď A</label>
             <input type="text" name="answer-a" id="" class="form-control mb-2" value="{{$question->a}}">
 
@@ -67,6 +67,31 @@
             <label for="answer-d" class="mb-0">Odpoveď D</label>
             <input type="text" name="answer-d" id="" class="form-control mb-2" value="{{$question->d}}">
           </div>
+
+          <div class="form-group question-possibilities show {{ $question->type == 4 ? 'show' : 'hidden' }}" id="pic-ans">
+              <div class="row">
+                <div class="col-md-12 mb-2">
+                  <span>A: </span>
+                  <img src="{{ $question->a }}" alt="answer img a" class="img-thumbnail d-inline-block mr-1 ml-1">
+                  <input type="file" name="answer-a-img" id="" class="form-control-file d-inline-block w-auto" value="">
+                </div>
+                <div class="col-md-12 mb-2">
+                  <span>B: </span>
+                  <img src="{{ $question->b }}" alt="answer img b" class="img-thumbnail d-inline-block mr-1 ml-1">
+                  <input type="file" name="answer-b-img" id="" class="form-control-file d-inline-block w-auto" value="">
+                </div>
+                <div class="col-md-12 mb-2">
+                  <span>C: </span>
+                  <img src="{{ $question->c }}" alt="answer img c" class="img-thumbnail d-inline-block mr-1 ml-1">
+                  <input type="file" name="answer-c-img" id="" class="form-control-file d-inline-block w-auto" value="">
+                </div>
+                <div class="col-md-12 mb-2">
+                  <span>D: </span>
+                  <img src="{{ $question->d }}" alt="answer img d" class="img-thumbnail d-inline-block mr-1 ml-1">
+                  <input type="file" name="answer-d-img" id="" class="form-control-file d-inline-block w-auto" value="">
+                </div>
+              </div>
+            </div>
         </div>
         <div class="col-lg-4">
             <div class="form-group">

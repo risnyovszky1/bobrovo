@@ -32,7 +32,8 @@
         <div class="card-header bg-info text-white">
           Možné riešenia
         </div>
-        <ul class="list-group list-group-flush">
+        @if ($question->type <= 3)
+          <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 {!! $question->answer == 'a' ? '<span class="text-success">'.  $question->a .' <i class="fas fa-check"></i></span>': '<span class="text-danger">'. $question->a .' <i class="fas fa-times"></i></span>' !!} 
             </li>
@@ -45,7 +46,32 @@
             <li class="list-group-item">
                 {!! $question->answer == 'd' ? '<span class="text-success">'.  $question->d .' <i class="fas fa-check"></i></span>': '<span class="text-danger">'. $question->d .' <i class="fas fa-times"></i></span>' !!} 
             </li>
-        </ul>
+          </ul>    
+        @endif
+        
+        @if ($question->type == 4)
+          <div class="row">
+            <div class="col-md-6 text-center mb-2 mt-2 question-possibilities-show">
+              <img src="{{$question->a}}" alt="odpoved a" class="img-thumbnail d-block mx-auto">
+              {!! $question->answer == 'a' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
+            </div>
+            
+            <div class="col-md-6 text-center mb-2 mt-2 question-possibilities-show">
+              <img src="{{$question->b}}" alt="odpoved b" class="img-thumbnail d-block mx-auto">
+              {!! $question->answer == 'b' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
+            </div>
+            
+            <div class="col-md-6 text-center mb-2 question-possibilities-show">
+              <img src="{{$question->c}}" alt="odpoved c" class="img-thumbnail d-block mx-auto">
+              {!! $question->answer == 'c' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
+            </div>
+
+            <div class="col-md-6 text-center mb-2 question-possibilities-show">
+              <img src="{{$question->d}}" alt="odpoved d" class="img-thumbnail d-block mx-auto">
+              {!! $question->answer == 'd' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
+            </div>
+          </div>    
+        @endif
       </div>
 
       <div class="row">
