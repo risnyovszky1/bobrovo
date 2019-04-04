@@ -265,6 +265,11 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
       'as' => 'groups.one'
     ])->where('id', '[0-9]+');
 
+    Route::get('/talcit/{id}', [
+      'uses' => 'PdfController@getStudentsInGroupPdfExport',
+      'as' => 'groups.export'
+    ])->where('id', '[0-9]+');
+
     Route::get('/pridat', [
       'uses' => 'BobrovoController@getAddGroupPage',
       'as' => 'groups.add'
@@ -300,6 +305,11 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     Route::post('/', [
       'uses' => 'BobrovoController@postStudentsPage',
       'as' => 'students.all'
+    ]);
+
+    Route::get('/tlacit', [
+      'uses' => 'PdfController@getStudentsPdfExport',
+      'as' => 'students.export'
     ]);
 
     Route::get('/pridat', [

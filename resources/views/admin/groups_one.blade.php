@@ -87,6 +87,7 @@
 
       <div class="form-group mt-3">
         <a href="{{ route('groups.edit', ['id' => $group->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i> Upraviť</a>
+        <a href="{{ route('groups.export', ['id' => $group->id]) }}" class="btn btn-secondary" target="_blank"><i class="fas fa-print"></i> Vytlačiť zoznam žiakov</a>   
       </div>
     </div>
   </div>
