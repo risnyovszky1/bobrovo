@@ -20,13 +20,16 @@ class TestController extends Controller
   public function postLoginStudentPage(Request $request){
     $code = $request->input('code');
     $sid = DB::table('students')->select('id', 'code')->where('code', $code)->first();
-  
+    
+    
     if ($sid){
       if (Auth::guard('bobor')->loginUsingId($sid->id)){
         return redirect()->route('student_home');
       }
-
-      return view('general.login_student', ['success' => 'lgging in failed']); 
+      //return view('general.login_student', ['success' => 'lgging in failed']); 
+    }
+    else{
+      die("student with code not found: " . $code);
     }
 
     return view('general.login_student', ['success' => 'No id found']);    

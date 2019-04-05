@@ -30,12 +30,12 @@ class CreateQuestionsTable extends Migration
             $table->text('description');
             $table->text('description_teacher');
             
-            $table->integer('created_by')->unsigned();
+            $table->integer('created_by')->unsigned()->nullable();
             $table->boolean('public');
             
             $table->timestamps();
 
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 

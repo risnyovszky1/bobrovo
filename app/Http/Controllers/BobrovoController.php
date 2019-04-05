@@ -63,6 +63,38 @@ class BobrovoController extends Controller
       return view('admin.admin');
     }
 
+    // ---- USERS ----
+    public function getAllUsersPage(){
+      $users = DB::table('users')
+          ->join('students', 'users.id', 'students.teacher_id')
+          ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email', DB::raw('count(students.id) as students_total'))
+          ->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC')
+          ->groupBy('teacher_id')
+          ->get();
+      
+      return view('admin.users_all', ['users' => $users]);
+    }
+
+    public function getToggleAdminUser($id){
+      $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
+      
+      DB::table('users')
+          ->where('id', $id)
+          ->update([
+            'is_admin' => $val ? 0 : 1
+          ]);
+
+      return redirect()->route('users.all');
+    }
+
+    public function getDeleteUser($id){
+      if ($id != Auth::user()->id){
+        DB::table('users')->where('id', $id)->delete();
+      }
+
+      return redirect()->route('users.all');
+    }
+
 
     // ---- NEWS ----
 

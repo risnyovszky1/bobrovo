@@ -33,8 +33,19 @@ window.Vue = require('vue');
 
 
 require('./jquery.min');
+require('./bootstrap-datetimepicker');
+require('./bootstrap-datetimepicker.sk');
 
 $(document).ready(function(){
+  // settings
+  $.ajaxSetup({
+    beforeSend: function(xhr, type) {
+        if (!type.crossDomain) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        }
+    },
+  });
+
   // ---- COUNT-UP EFFECT ----
   $('.count-up .counter span').each(function() {
     var $this = $(this),
@@ -57,24 +68,42 @@ $(document).ready(function(){
   });
 
   // ---- WYSWIG EDITOR ----
-  $('textarea#news-text-editor').froalaEditor({
-    toolbarButtons: ['paragraphFormat', '|', 'fontSize', '|', 'bold', 'italic', 'underline'],
+  $('textarea#news-text-editor, textarea#faq-content-input, textarea.wyswyg-editor').froalaEditor({
+    toolbarButtons: ['paragraphFormat', '|', 'fontSize', '|', 'bold', 'italic', 'underline', '|', 'codeView'],
     fontSizeSelection: true,
-    paragraphFormatSelection: true
+    paragraphFormatSelection: true,
+    toolbarSticky: false,
+    imageMove:true,
+    codeMirror:true,
+    imageUploadParam: 'image_param',
+    imageUploadParams: {
+      froala: true,
+      _token: $('meta[name="csrf-token"]').attr('content'),
+    },
+    imageUploadURL: '/upload-img',
+    imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
+    imageMaxSize: 2 * 1024 * 1024,
+  })
+  .on('froalaEditor.image.beforeUpload', function (e, editor, images) {
+    // Return false if you want to stop the image upload.
+    console.log('before uploaded');
+  })
+  .on('froalaEditor.image.uploaded', function (e, editor, response) {
+    // Image was uploaded to the server.
+    console.log('uploaded');
+  })
+  .on('froalaEditor.image.inserted', function (e, editor, $img, response) {
+    // Image was inserted in the editor.
+    console.log('inserted to editor');
+  })
+  .on('froalaEditor.image.replaced', function (e, editor, $img, response) {
+    // Image was replaced in the editor.
+    console.log('replaced');
   });
-  $('textarea#faq-content-input').froalaEditor({
-    toolbarButtons: ['paragraphFormat', '|', 'fontSize', '|', 'bold', 'italic', 'underline'],
-    fontSizeSelection: true,
-    paragraphFormatSelection: true
-  });
-  $('textarea.wyswyg-editor').froalaEditor({
-    toolbarButtons: ['paragraphFormat', '|', 'fontSize', '|', 'bold', 'italic', 'underline'],
-    fontSizeSelection: true,
-    paragraphFormatSelection: true
-  });
+
+
 
   // ---- SELECT2 ----
-
   $('select#addresses').select2({
     placeholder: "Vyber všetky adresáty",
     allowClear: true,
@@ -121,7 +150,7 @@ $(document).ready(function(){
     else{ $('#text-ans').fadeIn('slow');}
 
   });
-
+  // -- question rating --
   $('.rating-star')
     .mouseenter(function(){
       var index = $(this).index()
@@ -151,4 +180,22 @@ $(document).ready(function(){
         }
       });
     });
+
+    // -- datetime picker in test
+
+    $('#available_from').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii',
+      autoclose: true,
+      locale: 'sk',
+      pickerPosition: "top-right"
+    });
+
+    $('#available_to').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii',
+      autoclose: true,
+      locale: 'sk',
+      pickerPosition: "top-right"
+    });
+
+    
 });

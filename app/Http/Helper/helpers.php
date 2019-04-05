@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\DB;
-use Auth;
+//use Auth;
 
 function newMessagesCount(){
   return DB::table('messages')->select('id')->where([

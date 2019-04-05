@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     
 
@@ -18,6 +19,7 @@
     <!-- Include Editor style. -->
     <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/plugins/code_view.min.css' rel='stylesheet' type='text/css' />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     
     <!-- Include JS file. -->
@@ -26,6 +28,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/font_size.min.js'></script>
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/paragraph_format.min.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/image.min.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/code_view.min.js'></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     
   </head>

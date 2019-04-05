@@ -41,8 +41,8 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="alert alert-warning">
-          Súbor vo formáte <strong>.csv</strong>, kde prvý stľpec je meno, druhý priezvisko a tretí je kód žiaka.
+        <div class="alert alert-info">
+          Súbor vo formáte <strong>.csv</strong>, kde prvý stľpec je meno, druhý priezvisko a tretí je kód žiaka (min. 12 znak).
         </div>
         <form action="" method="post" enctype="multipart/form-data">
           <div class="form-group">

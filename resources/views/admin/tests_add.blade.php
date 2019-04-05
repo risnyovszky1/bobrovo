@@ -58,20 +58,30 @@
 
           <div class="form-group">
             <label for="desc">Popis</label>
-            <textarea name="desc" id="" rows="8" class="form-control" id="group-description"></textarea>
+            <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor" id="group-description"></textarea>
           </div>
 
           <div class="row">
               <div class="col-md-6">
                   <div class="form-group">
                     <label for="available_from">Dostupný od</label>
-                    <input type="text" value="" name="available_from" id="available_from" class="form-control">
+                    <div class="input-group form-datetime date">
+                      <input type="text" value="" name="available_from" id="available_from" class="form-control">
+                      <div class="input-group-append ">
+                        <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
+                      </div>
+                    </div>
                   </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                     <label for="available_to">Dostupný do</label>
-                    <input type="text" value="" name="available_to" id="available_to" class="form-control">
+                    <div class="input-group form-datetime date">
+                        <input type="text" value="" name="available_to" id="available_to" class="form-control">
+                        <div class="input-group-append ">
+                          <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                      </div>
                 </div>
               </div>
           </div>

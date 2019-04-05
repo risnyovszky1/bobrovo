@@ -28,7 +28,7 @@ body{
 
 @media screen and (min-width:1200px){
   .full-height-lg{
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
   }
 }
 

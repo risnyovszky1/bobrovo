@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->integer('teacher_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('teacher_id')->references('id')->on('users');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -141,7 +141,7 @@
 
           <div class="form-group">
             {{ csrf_field() }}
-            <button type="submit" class="btn btn-block btn-primary">Pridať</button>
+            <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-user-plus"></i> Pridaj do skupiny</button>
           </div>
         </form>
       </div>

@@ -2,6 +2,23 @@
 
   <!-- ADMIN PART -->
   @if(Auth::user()->is_admin == 1)
+  <div class="card">
+      <div class="card-header text-left">
+        <h3 class="mb-0">
+          <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#users" aria-expanded="true" aria-controls="collapseOne">
+              <i class="fas fa-user"></i> Používateľia
+          </button>
+        </h3>
+      </div>
+      <div id="users" class="collapse {{ Request::is('ucitel/pouzivatelia/*') || Request::is('ucitel/pouzivatelia') ? 'show': '' }}" aria-labelledby="news" data-parent="#admin-menu">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="{{ route('users.all') }}">Všetky používateľia</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-header text-left">
         <h3 class="mb-0">

@@ -140,6 +140,13 @@ Route::post('/prihlasenie-ucitel', [
   'middleware' => 'guest'
 ]);
 
+Route::post('/upload-img', [
+  'uses' => 'UploadRequestController@postUploadQuestionImage',
+  'as' => 'upload.req',
+]);
+
+
+
 
 Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
   Route::get('/', [
@@ -155,6 +162,25 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     'uses' => 'BobrovoController@getBadLinkPage',
     'as' => 'badlink'
   ]);
+
+  // USERS
+  Route::group(['prefix' => 'pouzivatelia'], function(){
+    Route::get('/', [
+      'uses' => 'BobrovoController@getAllUsersPage',
+      'as' => 'users.all'
+    ]);
+
+    Route::get('/toggle-admin/{id}', [
+      'uses' => 'BobrovoController@getToggleAdminUser',
+      'as' => 'users.toggle-admin'
+    ])->where('id', '[0-9]+');
+
+    Route::get('/delete/{id}', [
+      'uses' => 'BobrovoController@getDeleteUser',
+      'as' => 'users.delete'
+    ])->where('id', '[0-9]+');;
+  });
+
   
   // NEWS
   Route::group(['prefix' => 'novinky'], function(){

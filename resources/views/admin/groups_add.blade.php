@@ -49,7 +49,7 @@
 
           <div class="form-group">
             <label for="desc">Popis</label>
-            <textarea name="desc" id="" rows="8" class="form-control" id="group-description"></textarea>
+            <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor" id="group-description"></textarea>
           </div>
           
           <div class="form-group">

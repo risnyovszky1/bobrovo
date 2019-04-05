@@ -10,6 +10,10 @@
     <div class="row">
         <div class="col-md-8 pt-3">
             <h3>Testy</h3>
+            @if (empty($groups))
+                <p>Prepáč, ale ešte nemáš skupinu. <i class="fas fa-frown text-danger"></i></p>
+            @endif
+            
             @foreach ($groups as $group)
                 <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
