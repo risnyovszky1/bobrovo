@@ -1,5 +1,5 @@
 @section('title')
-  Všetky otázky | Bobrovo
+  {{ $title }} | Bobrovo
 @endsection
 
 @extends('admin.master')
@@ -8,7 +8,7 @@
 <form action="" method="post">
   <div class="row">
     <div class="col-lg-8 pt-3 pb-3">
-      <h2>Všetky otázky</h2>
+        <h2>{{ $title }} <span class="badge badge-secondary badge-pill">{{ count($questions) }}</span></h2>
 
       @if(count($errors) > 0)
             @foreach($errors->all() as $err)
@@ -36,17 +36,17 @@
                         <tr>
                             <td><input type="checkbox" name="questions[]" id="" value="{{$item->id}}"></td>
                             <td><a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a></td>
-                            <td>####</td>
+                            <td><span class="extra-small">{!! count($item->categories) > 0 ? implode($item->categories, '<br>') : 'Bez kategórie' !!}</span></td>
                             <td class="text-center">{{ $item->difficulty }}</td>
                             <td class="text-center">{{ $item->type }}</td>
                             <td class="text-center">
                             
-                                @if(!array_key_exists($item->id, $ratings) || $ratings[$item->id] < 1)
+                                @if($item->rating < 1)
                                     <span class="badge badge-pill badge-danger">Nehodnotené</span>
-                                @elseif($ratings[$item->id] >=4 )
-                                    <span class="badge badge-pill badge-success">{{$ratings[$item->id]}}</span>
+                                @elseif($item->rating >= 4 )
+                                    <span class="badge badge-pill badge-success">{{$item->rating}}</span>
                                 @else
-                                    <span class="badge badge-pill badge-warning">{{$ratings[$item->id]}}</span>
+                                    <span class="badge badge-pill badge-warning">{{$item->rating}}</span>
                                 @endif 
                                  
                             </td>
@@ -79,6 +79,10 @@
             <div class="form-group">
                 {{ csrf_field() }}
                 <button type="submit" class="btn btn-primary btn-block">Pridaj do testu</button>
+            </div>
+
+            <div class="form-group">
+                <a href="{{ route('questions.filter.reset') }}" class="btn btn-danger btn-block"><i class="fas fa-redo-alt"></i> Zrušiť filter</a>
             </div>
         @endif
         

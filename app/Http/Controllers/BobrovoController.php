@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Test;
 use App\Question;
@@ -111,22 +112,76 @@ class BobrovoController extends Controller
           ->where('teacher_id', Auth::user()->id)
           ->orderBy('name', 'ASC')
           ->get();
-      $ratingQuery = DB::table('ratings')
-          ->select('question_id', DB::raw('avg(rating) as avg'))
-          ->groupBy('question_id')
-          ->get();
-
-      $ratings = array();
-
-      foreach($ratingQuery as $rating){
-        $ratings[$rating->question_id] = round($rating->avg, 1);
-      }
+      
+    
+      $tmp = $this->filterQuestions($questions);
 
       return view('admin.questions_all', [
-        'questions' => $questions, 
         'tests' => $tests,
-        'ratings' => $ratings
+        'questions' => $tmp,
+        'title' => 'Všetky otázky'
       ]);
+    }
+
+    public function filterQuestions($questions){
+      $list = [];
+      $filter = Session::get('questionFilter');
+      $category = !empty($filter['category']) ? $filter['category'] : null;
+      $type = !empty($filter['type']) ? $filter['type'] : null;
+      $diffFrom = !empty($filter['difficulty_from']) ? $filter['difficulty_from'] : null;
+      $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
+      
+      $c = 0;
+
+      foreach($questions as $q){
+        if ($type){
+          if ($type == 'just-interactive' && $q->type != 5) continue;
+          if ($type == 'no-interactive' && $q->type == 5) continue;
+        }
+        
+        $qCat = DB::table('question_category')->where('question_id', $q->id)->pluck('category_id');
+        if ($category && !$this->haveCategory($qCat, $category)) continue;
+        
+        if ($diffFrom && $diffTo && ($diffFrom >= $q->difficulty && $diffTo <= $q->difficulty)) continue;
+
+        $rating = DB::table('ratings')->select('rating')->where('question_id', $q->id)->avg('rating');
+
+        
+        $list[] = (object) array(
+          'id' => $q->id,
+          'title' => $q->title,
+          'difficulty' => $q->difficulty,
+          'type' => $q->type,
+          'rating' => round($rating, 1),
+          'categories' => $this->categoriesToArray($qCat),
+        );
+      }
+      
+      return $list;
+    }
+
+    public function haveCategory($qCat, $fCat){
+      if ($qCat == null || $fCat == null) return false;
+
+      foreach($qCat as $q){
+        foreach($fCat as $f){
+          if ($f == $q){
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    public function categoriesToArray($categories){
+      if (count($categories) == 0) return [];
+      $query = DB::table('categories');
+      foreach($categories as $cat){
+        $query->orWhere('id', $cat);
+      }
+
+      return $query->pluck('name')->toArray();
     }
 
     public function postAllQuestionsPage(Request $request){
@@ -151,6 +206,51 @@ class BobrovoController extends Controller
       }
 
       return redirect()->route('questions.all');
+    }
+
+    public function getMyQuestionsPage(){
+      $questions = DB::table('questions')
+          ->select('id', 'title', 'difficulty', 'type')
+          ->where('created_by', Auth::user()->id)
+          ->orderBy('title', 'ASC')
+          ->get();
+      $tests = DB::table('tests')
+          ->select('id', 'name')
+          ->where('teacher_id', Auth::user()->id)
+          ->orderBy('name', 'ASC')
+          ->get();
+      
+      $tmp = $this->filterQuestions($questions);
+
+      return view('admin.questions_all', [
+        'tests' => $tests,
+        'questions' => $tmp,
+        'title' => 'Moje otázky'
+      ]);
+    }
+
+    public function postMyQuestionsPage(Request $request){
+      $this->validate($request, [
+        'questions' => 'required',
+        'test-select' => 'required'
+      ]);
+
+      foreach ($request->input('questions') as $q) {
+        $count = DB::table('question_test')
+            ->where([
+              ['question_id', $q],
+              ['test_id', $request->input('test-select')]])
+            ->count();
+
+        if ($count == 0){
+          DB::table('question_test')->insert([
+            'question_id' => $q,
+            'test_id' => $request->input('test-select')
+          ]);
+        }
+      }
+
+      return redirect()->route('questions.my');
     }
 
     public function getQuestionPage($id){
@@ -433,5 +533,27 @@ class BobrovoController extends Controller
       }
 
       return redirect()->route('questions.one', ['id' => $q->id]);
+    }
+
+    public function getFilterPage(){
+      return view('admin.questions_filter');
+    }
+
+    public function postFilterPage(Request $request){
+      $filter = array(
+        'category' => $request->input('category'),
+        'difficulty_from' => $request->input('difficulty_from'),
+        'difficulty_to' => $request->input('difficulty_to'),
+        'type' => $request->input('type')
+      );
+
+      Session::put('questionFilter', $filter);
+
+      return redirect()->route('questions.all');
+    }
+
+    public function getFilterReset(){
+      Session::put('questionFilter', null);
+      return redirect()->route('questions.all');
     }
 }

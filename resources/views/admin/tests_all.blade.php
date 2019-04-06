@@ -62,7 +62,7 @@
         </div>
         
       @else
-        <p>Zaťiaľ žiadne FAQ sa tu nenachádzajú.</p>
+        <p>Zaťiaľ žiadne testy sa tu nenachádzajú.</p>
       @endif
     </div>
   </div>

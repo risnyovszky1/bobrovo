@@ -73,6 +73,7 @@ $(document).ready(function(){
     fontSizeSelection: true,
     paragraphFormatSelection: true,
     toolbarSticky: false,
+    heightMin: 150,
     imageMove:true,
     codeMirror:true,
     imageUploadParam: 'image_param',

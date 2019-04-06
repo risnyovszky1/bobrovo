@@ -236,14 +236,12 @@
     </div>
       <div class="row">
         <div class="col-md-12">
-            @if (Auth::user()->is_admin)
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="public" value="yes" id="public" {{$question->public == true ? 'checked' : ''}}>
-                        <label class="custom-control-label" for="public">Verejný</label>
-                    </div>
-                </div>
-            @endif
+          <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="public" value="yes" id="public" {{$question->public == true ? 'checked' : ''}} {{Auth::user()->is_admin ? '' : 'disabled'}}>
+                  <label class="custom-control-label" for="public">Verejný</label>
+              </div>
+          </div>
           {{ csrf_field() }}
           <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť zmeny</button>
         </div>

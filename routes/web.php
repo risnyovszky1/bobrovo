@@ -442,7 +442,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
   // ------
   // |  Questions
   // ------
-  
+
   Route::group(['prefix' => 'otazky'], function () {
       Route::get('/', [
         'uses' => 'BobrovoController@getAllQuestionsPage',
@@ -451,6 +451,15 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
       Route::post('/', [
         'uses' => 'BobrovoController@postAllQuestionsPage',
         'as' => 'questions.all'
+      ]);
+
+      Route::get('/moje', [
+        'uses' => 'BobrovoController@getMyQuestionsPage',
+        'as' => 'questions.my'
+      ]);
+      Route::post('/moje', [
+        'uses' => 'BobrovoController@postMyQuestionsPage',
+        'as' => 'questions.my'
       ]);
       
       Route::get('/{id}', [
@@ -469,6 +478,19 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
       Route::post('/pridat', [
         'uses' => 'BobrovoController@postAddQuestionPage',
         'as' => 'questions.add'
+      ]);
+
+      Route::get('/filter', [
+        'uses' => 'BobrovoController@getFilterPage',
+        'as' => 'questions.filter'
+      ]);
+      Route::post('/filter', [
+        'uses' => 'BobrovoController@postFilterPage',
+        'as' => 'questions.filter'
+      ]);
+      Route::get('/filter/reset', [
+        'uses' => 'BobrovoController@getFilterReset',
+        'as' => 'questions.filter.reset'
       ]);
 
       Route::get('/vymazat/{id}', [
