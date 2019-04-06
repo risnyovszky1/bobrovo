@@ -32,7 +32,7 @@
                                 <td>{{$user->email}}</td>
                                 <td class="text-center">{{$user->students_total}}</td>
                                 <td class="text-center">{!!$user->is_admin ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'!!}</td>
-                                <td class="text-center"><a href="{{ route('users.toggle-admin', ['id' => $user->id]) }}" class="text-warning"><i class="fas fa-users-cog"></i></a></td>
+                                <td class="text-center"><a href="{{ route('users.toggle-admin', ['id' => $user->id]) }}" class="text-info"><i class="fas fa-users-cog"></i></a></td>
                                 <td class="text-center"><a href="{{route('users.delete', ['id' => $user->id]) }}" class="text-danger"><i class="fas fa-trash"></i></a></td>
                             </tr>
                         @endforeach

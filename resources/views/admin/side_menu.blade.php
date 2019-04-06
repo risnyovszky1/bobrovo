@@ -151,4 +151,22 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-header text-left">
+      <h3 class="mb-0">
+        <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#profile" aria-expanded="true" aria-controls="collapseSeven">
+          <i class="fas fa-cogs"></i> Profil
+        </button>
+      </h3>
+    </div>
+    <div id="profile" class="collapse {{ Request::is('ucitel/profil/*') || Request::is('ucitel/profil') ? 'show': '' }}" aria-labelledby="profile" data-parent="#admin-menu">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="{{ route('admin.profil') }}">Upraviť profil</a></li>
+          <li class="list-group-item"><a href="{{ route('admin.profil.delete') }}">Vymazať profil</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </div>
