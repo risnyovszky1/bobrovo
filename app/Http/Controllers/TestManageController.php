@@ -114,4 +114,99 @@ class TestManageController extends Controller
           ])->delete();
         return redirect()->route('tests.one', ['id' => $tid]);
       }
+
+      public function getResultsOfTestPage($id){
+        $test = DB::table('tests')->select('name', 'group_id', 'id')->where('id', $id)->first();
+        
+        $studentsQuery = DB::table('student_group')
+            ->join('students', 'student_group.student_id', 'students.id')
+            ->select('first_name', 'last_name', 'students.id')
+            ->where('group_id', $test->group_id)
+            ->get();
+        
+        $students = $this->getStudentsTestResults($studentsQuery, $id);
+        
+        return view('admin.tests_result', ['test' => $test, 'students'=>$students]);
+      }
+
+      public function getStudentsTestResults($students, $tid){
+        $questions = DB::table('question_test')
+            ->join('questions', 'question_test.question_id', 'questions.id')
+            ->select('questions.id', 'questions.answer')
+            ->where('test_id', $tid)->get();
+
+        foreach($students as $st){
+          $state = DB::table('test_student_state')->where([
+            ['student_id', $st->id],
+            ['test_id', $tid]
+          ])->first();
+          $st->state = $state ? $state->state : 1;
+          $st->percent = $st->state == 1 ? 0 : $this->getStudentTestPercent($questions, $st->id, $tid);
+        }
+
+        return $students;
+      }
+
+      public function getStudentTestPercent($questions, $sid, $tid){
+        $good = 0;
+        foreach($questions as $q){
+          $answer = DB::table('answers')
+            ->select('answer')
+            ->where([
+              ['test_id', $tid],
+              ['student_id', $sid],
+              ['question_id', $q->id]
+            ])
+            ->first();
+          if ($answer && $answer->answer == $q->answer){
+            $good++;
+          }
+        }
+
+        return round($good / count($questions) * 100, 1);
+      }
+
+      public function getResultOfStudentForPage($tid, $sid){
+        $test = DB::table('tests')->select('name', 'group_id', 'id')->where('id', $tid)->first();
+        $student = DB::table('students')->select('first_name', 'last_name', 'id')->where('id', $sid)->first();
+
+        $questions = DB::table('question_test')
+            ->join('questions', 'question_test.question_id', 'questions.id')
+            ->select('title', 'question', 'answer', 'a', 'b', 'c', 'd', 'id', 'type')
+            ->where('test_id', $tid)
+            ->get();
+        
+        $answerQuery = DB::table('answers')->select('question_id', 'answer')->where([
+              ['test_id' , $tid], 
+              ['student_id', $sid]
+            ])
+            ->get();
+
+        $answers = [];
+        foreach($answerQuery as $ans){
+          $answers[$ans->question_id] = $ans->answer;
+        }
+
+        $good = 0;
+        foreach ($questions as $q) {
+          if (!empty($answers[$q->id])){
+            if ($answers[$q->id] == $q->answer){
+              $good++;
+            }
+          }
+        }
+        $stats = array(
+          'total' => count($questions),
+          'answered' => count($answers),
+          'good' => $good
+        );
+
+        return view('admin.tests_result_student', [
+            'student' => $student, 
+            'test'=> $test, 
+            'questions' => $questions, 
+            'answers' => $answers,
+            'stats' => $stats
+            ]);
+      }
 }

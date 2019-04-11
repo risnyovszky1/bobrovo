@@ -123,7 +123,9 @@
       
 
       <div class="form-group mt-3">
-        <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i>Upraviť</a>
+        <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i> Upraviť</a>
+        <a href="{{ route('tests.results', ['id' => $test->id]) }}" class="btn btn-success"><i class="fas fa-poll"></i> Výsledky</a>
+        
       </div>
 
         

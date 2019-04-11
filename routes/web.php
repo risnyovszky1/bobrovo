@@ -436,6 +436,15 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'as' => 'tests.delete.question'
       ])->where('test_id', '[0-9]+')
         ->where('question_id', '[0-9]+');;
+
+      Route::get('/vysledky/{id}', [
+        'uses' => 'TestManageController@getResultsOfTestPage',
+        'as' => 'tests.results'
+      ])->where('id', '[0-9]+');
+      Route::get('/vysledky/{id}/{sid}', [
+        'uses' => 'TestManageController@getResultOfStudentForPage',
+        'as' => 'tests.results.student'
+      ])->where('id', '[0-9]+')->where('sid', '[0-9]+');
   });
 
 

@@ -8,3 +8,19 @@ function newMessagesCount(){
       ['seen', false]
     ])->count();
 }
+
+function getQuestionsAnswerText($question, $answer){
+  switch ($answer) {
+    case 'a':
+      return $question->a;
+    case 'b':
+      return $question->b;
+    case 'c':
+      return $question->c;
+    case 'd':
+      return $question->d;
+    default:
+      return $answer;
+      break;
+  }
+}

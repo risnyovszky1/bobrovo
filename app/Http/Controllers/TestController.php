@@ -95,7 +95,7 @@ class TestController extends Controller
 
   public function getSolvingPage($id){
     $ss = Session::get('testSettings');
-
+    
     $questions = DB::table('question_test')
       ->join('questions', 'question_test.question_id', 'questions.id')
       ->select('questions.id', 'title', 'question', 'answer', 'a', 'b', 'c', 'd', 'description', 'type')
