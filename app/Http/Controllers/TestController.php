@@ -83,27 +83,24 @@ class TestController extends Controller
         ['student_id', Auth::user()->id]
       ])
       ->first();
-    
+  
     $settings = DB::table('tests')
-        ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers')
-        ->where('id', $id)
-        ->first();
-    Session::put('testSettings', $settings);
-    
-    return view('student.test_one', ['test' => $test, 'state' => $state]);
-  }
-
-  public function getSolvingPage($id){
-    $ss = Session::get('testSettings');
-    
+      ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers')
+      ->where('id', $id)
+      ->first();
     $questions = DB::table('question_test')
       ->join('questions', 'question_test.question_id', 'questions.id')
       ->select('questions.id', 'title', 'question', 'answer', 'a', 'b', 'c', 'd', 'description', 'type')
       ->where('test_id', $id)
       ->get();  
-      
-    Session::put('testQuestions', $ss->mix_questions == 0 ? $questions : $questions->shuffle());
+
+    Session::put('testSettings', $settings);
+    Session::put('testQuestions', $settings->mix_questions == 0 ? $questions : $questions->shuffle());
     
+    return view('student.test_one', ['test' => $test, 'state' => $state]);
+  }
+
+  public function getSolvingPage($id){
     $state = DB::table('test_student_state')
       ->where([
         ['test_id', $id],
@@ -261,5 +258,35 @@ class TestController extends Controller
     }
 
     return view('student.results', ['answers' => $ans, 'questions' => $realAns, 'stats' => $stats]);
+  }
+
+  public function getMeasereQuestionTime(Request $request){
+    $time = DB::table('measurements')
+      ->where([
+        ['student_id', Auth::user()->id],
+        ['question_id', $request->input('question_id')],
+        ['test_id', $request->input('test_id')]
+      ])->value('time_spent');
+
+    if ($time){
+      DB::table('measurements')
+        ->where([
+          ['student_id', Auth::user()->id],
+          ['question_id', $request->input('question_id')],
+          ['test_id', $request->input('test_id')]
+        ])
+        ->update([
+          'time_spent' => $time + floatval($request->input('time'))
+        ]);
+    }
+    else{
+      DB::table('measurements')->insert([
+        'test_id' => $request->input('test_id'),
+        'question_id' => $request->input('question_id'),
+        'student_id' => Auth::user()->id,
+        'time_spent' => $request->input('time')
+      ]);
+    }
+    return response('Hello Word!', 200);
   }
 }

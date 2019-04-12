@@ -8,11 +8,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 pt-3">
-            <h3>Výsledky</h3>
-
+        <div class="col-lg-8 pt-4">
+                <h3>Výsledky</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            
             @foreach ($questions as $question)
-                <div class="card border-primary mt-3">
+                <div class="card border-primary mt-2">
                     <div class="card-header text-white bg-primary">
                         Názov
                     </div>
@@ -129,7 +133,7 @@
                 <hr>
             @endforeach
         </div>
-        <div class="col-md-4 pt-4">
+        <div class="col-lg-4 pt-2">
             @if(Session::get('testSettings')->available_answers && !empty($stats))
                 @php
                     $val = round( $stats['good'] / $stats['total'] * 100, 1);
@@ -145,6 +149,11 @@
             @else
                 <div class="alert alert-danger">Výsledky nie sú k dizpozícií.</div>
             @endif
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 pb-2">
+            <a href="{{route('testone_student', ['id' => Session::get('testSettings')->id])}}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Späť na test</a>
         </div>
     </div>
 </div>   

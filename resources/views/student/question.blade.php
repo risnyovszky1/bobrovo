@@ -207,4 +207,33 @@
     </div>
 </div>   
 
+<script>
+$(document).ready(function() {
+    $.ajaxSetup({
+        beforeSend: function(xhr, type) {
+            if (!type.crossDomain) {
+                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+            }
+        },
+    });
+    var start = new Date();
+    $(window).on('unload', function(e){
+        var end = new Date();
+        var time = (end - start) / 1000;
+        $.ajax({ 
+        method: "GET",
+        url: "/ziak/measure",
+        data: {
+            test_id: {{ Session::get('testSettings')->id }},
+            question_id: {{ $question->id }},
+            time: time.toFixed(2),
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            },
+        async: false
+        });
+    });
+});
+
+</script>
+
 @endsection

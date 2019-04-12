@@ -8,10 +8,13 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 pt-3">
-            <h3>Stránka testu</h3>
-
-            <div class="card mt-3 border-primary">
+        <div class="col-lg-5 pt-4">
+                <h3>Stránka testu</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mt-2 border-primary">
                 <div class="card-header bg-primary text-white">
                     Názov
                 </div>
@@ -54,8 +57,8 @@
             </div>
         </div>
         
-        <div class="col-md-4 pt-3">
-            <div class="card mt-3 border-danger">
+        <div class="col-md-4">
+            <div class="card mt-2 border-danger">
                 <div class="card-header text-white bg-danger">
                     Stav
                 </div>
@@ -80,9 +83,11 @@
 
     <div class="row">
         <div class="col-md-8 pt-3 pb-3">
-            <a href="{{ route('solving_student', ['id' => $test->id]) }}" class="btn btn-primary">
-                <i class="fas fa-pencil-alt"></i> Začni riešiť
-            </a>
+            @if (empty($state) || $state->state != 3)
+                <a href="{{ route('solving_student', ['id' => $test->id]) }}" class="btn btn-primary">
+                    <i class="fas fa-pencil-alt"></i> Začni riešiť
+                </a>
+            @endif
             @if (!empty($state) && $state->state == 3)
                 <a href="{{ route('results_student', ['id' => $test->id]) }}" class="btn btn-success">
                     <i class="far fa-check-square"></i> Pozri výsledky

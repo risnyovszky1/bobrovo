@@ -72,14 +72,17 @@ class BobrovoController extends Controller
     }
 
     public function getToggleAdminUser($id){
-      $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
       
-      DB::table('users')
-          ->where('id', $id)
-          ->update([
-            'is_admin' => $val ? 0 : 1
-          ]);
-
+      if ($id != Auth::user()->id){
+        $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
+      
+        DB::table('users')
+            ->where('id', $id)
+            ->update([
+              'is_admin' => $val ? 0 : 1
+            ]);  
+      }
+    
       return redirect()->route('users.all');
     }
 

@@ -118,6 +118,11 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
     'uses' => 'TestController@postQuestionPage',
     'as' => 'question_student',
   ])->where('id', '[0-9]+')->where('ord', '[0-9]+');
+
+  Route::get('/measure', [
+    'uses' => 'TestController@getMeasereQuestionTime', 
+    'as' => 'measure_student'
+  ]);
 });
 
 

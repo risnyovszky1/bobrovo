@@ -241,7 +241,7 @@
             @endif
             
           {{ csrf_field() }}
-          <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť zmeny</button>
+          <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť</button>
         </div>
       </div>
     </form>

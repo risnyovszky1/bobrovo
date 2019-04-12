@@ -72,6 +72,8 @@
               </div>
             </div>
           </div>
+          @php 
+          /*
           <div class="row">
             <div class="col-md-12 mb-4">
               <div class="custom-control custom-radio">
@@ -84,6 +86,8 @@
               </div>
             </div>
           </div>
+          */
+          @endphp
           <div class="row">
             <div class="col-md-12">
               {{ csrf_field() }}

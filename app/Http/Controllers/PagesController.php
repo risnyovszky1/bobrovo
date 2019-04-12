@@ -64,7 +64,6 @@ class PagesController extends Controller
       'password' => 'required|min:6|required_with:password-rpt|same:password-rpt',
       'password-rpt' => 'required|min:6',
       'default-conditions' => 'required',
-      'is-admin' => 'required'
     ]);
 
 
@@ -73,7 +72,7 @@ class PagesController extends Controller
       'first_name' => $request->input('first-name'),
       'last_name' => $request->input('last-name'),
       'password' => bcrypt($request->input('password')),
-      'is_admin' => $request->input('is-admin') == 'yes' ? true : false,
+      'is_admin' => false,
     ]);
 
     $newUser->save();

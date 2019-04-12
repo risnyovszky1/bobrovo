@@ -14,7 +14,7 @@ class MessageController extends Controller
     public function getMessagesPage(){
         $messages = DB::table('messages')
                   ->join('users', 'messages.from', 'users.id')
-                  ->select('messages.id', 'messages.subject', 'messages.created_at', 'users.email', 'users.first_name', 'users.last_name')
+                  ->select('messages.id', 'messages.subject', 'messages.created_at', 'users.email', 'users.first_name', 'users.last_name',  'messages.seen')
                   ->where('to', Auth::user()->id)
                   ->orderBy('messages.created_at', 'DESC')
                   ->get();

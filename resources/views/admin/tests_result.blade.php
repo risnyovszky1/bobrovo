@@ -56,7 +56,7 @@
                     </tbody>
                 </table>
 
-                <a href="{{ route('tests.one', ['id'=>$test->id]) }}" class="btn btn-primary">Spať na test</a>
+                <a href="{{ route('tests.one', ['id'=>$test->id]) }}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Spať na test</a>
             </div>
         </div>
     </div>
