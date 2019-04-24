@@ -24,7 +24,7 @@ class TestManageController extends Controller
         $test = DB::table('tests')
             ->join('groups', 'groups.id', 'tests.group_id')
             ->select('tests.id', 'tests.name', 'tests.description', 'tests.available_from', 'tests.group_id', 
-                      'tests.available_to', 'tests.available_description', 'tests.available_answers', 
+                      'tests.available_to', 'tests.available_description', 'tests.time_to_do', 'tests.available_answers', 
                       'tests.mix_questions', 'tests.public', 'groups.name as group_name')
             ->where('tests.id', $id)->first();
   
@@ -51,6 +51,7 @@ class TestManageController extends Controller
           'group' => 'required',
           'available_from' => 'required',
           'available_to' => 'required',
+          'time_to_do' => 'required'
         ]);
   
         DB::table('tests')
@@ -66,6 +67,7 @@ class TestManageController extends Controller
                 'mix_questions' => $request->input('mix-questions') != null,
                 'public' => $request->input('public') != null,
                 'updated_at' => date('Y-m-d H:i:s'),
+                'time_to_do' => $request->input('time_to_do')
               ]);
             
         return redirect()->route('tests.one', ['id' => $id]);
@@ -83,6 +85,7 @@ class TestManageController extends Controller
           'group' => 'required',
           'available_from' => 'required',
           'available_to' => 'required',
+          'time_to_do' => 'required'
         ]);
   
         $test = new Test([
@@ -95,7 +98,8 @@ class TestManageController extends Controller
           'available_answers' => $request->input('available-ans') != null,
           'mix_questions' => $request->input('mix-questions') != null,
           'public' => $request->input('public') != null,
-          'teacher_id' => Auth::user()->id
+          'teacher_id' => Auth::user()->id,
+          'time_to_do' => $request->input('time_to_do')
           ]);
         $test->save();
         

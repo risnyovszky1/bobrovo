@@ -12,11 +12,11 @@
 
           @if (!empty($errors))
               @foreach ($errors->all() as $err)
-                <div class="alert alert-danger mt-4">Potrebuješ označiť odpoveď!</div>
+                <div class="alert alert-danger mb-4">Potrebuješ označiť odpoveď!</div>
               @endforeach
           @endif
 
-            <div class="question-container pt-3">
+            <div class="question-container">
                 <form action="" method="post">
                     <div class="card mb-3 border-danger">
                         <div class="card-header bg-danger text-white">

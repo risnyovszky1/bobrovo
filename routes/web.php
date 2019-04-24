@@ -109,6 +109,11 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
     'uses' => 'TestController@postFinishPage',
     'as' => 'finish_student',
   ])->where('id', '[0-9]+');
+  
+  Route::get('/testuj/dokoncit-timer/{id}', [
+    'uses' => 'TestController@getFinishTimer',
+    'as' => 'finish_student_timer',
+  ])->where('id', '[0-9]+');
 
   Route::get('/testuj/{id}/{ord}', [
     'uses' => 'TestController@getQuestionPage',

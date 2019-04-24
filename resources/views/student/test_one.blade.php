@@ -83,11 +83,15 @@
 
     <div class="row">
         <div class="col-md-8 pt-3 pb-3">
-            @if (empty($state) || $state->state != 3)
+            @php
+                $currTime = strtotime(date('Y-m-d H:i:s'));
+            @endphp
+            @if ((empty($state) || $state->state != 3) && strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime)
                 <a href="{{ route('solving_student', ['id' => $test->id]) }}" class="btn btn-primary">
                     <i class="fas fa-pencil-alt"></i> Začni riešiť
                 </a>
             @endif
+            
             @if (!empty($state) && $state->state == 3)
                 <a href="{{ route('results_student', ['id' => $test->id]) }}" class="btn btn-success">
                     <i class="far fa-check-square"></i> Pozri výsledky

@@ -25,12 +25,12 @@
                         <li class="list-group-item">
                             <a href="{{ route('testone_student', ['id' => $test->id]) }}">
                             @php
-                                $currTime = time();
+                                $currTime = strtotime(date('Y-m-d H:i:s'));
                                 if (strtotime($test->available_to) < $currTime){
                                     // test is not available
                                     echo '<i class="fas fa-times text-danger"></i>';
                                 }
-                                else if (strtotime($test->available_from) < $currTime && (strtotime($test->available_to) > $currTime)){
+                                else if (strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime){
                                     // test is going
                                     echo '<i class="fas fa-play text-warning"></i>';
                                 }

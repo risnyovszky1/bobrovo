@@ -21,8 +21,9 @@ class CreateTestsTable extends Migration
             $table->integer('group_id')->unsigned();
             $table->integer('teacher_id')->unsigned();
             
-            $table->timestamp('available_from')->default(DB::raw('CURRENT_TIMESTAMP'));;
-            $table->timestamp('available_to')->default(DB::raw('CURRENT_TIMESTAMP'));;
+            $table->timestamp('available_from')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('available_to')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->integer('time_to_do');
             $table->boolean('available_description');
             $table->boolean('mix_questions');
             $table->boolean('available_answers');

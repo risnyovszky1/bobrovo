@@ -16,7 +16,7 @@
               <th scope="col">Predmet</th>
               <th scope="col">Od</th>
               <th scope="col">Kedy</th>
-              <th scope="col">Videný</th>
+              <th scope="col" class="text-center">Videný</th>
               <th scope="col" class="text-center" >Delete</th>
             </tr>
           </thead>
@@ -26,7 +26,7 @@
                 <td><a href="{{ route('msg.one', ['id' => $msg->id])}}">{{ $msg->subject }}</a></td>
                 <td>{{ $msg->first_name . ' ' . $msg->last_name . ' ('. $msg->email . ')' }}</td>
                 <td>{{ $msg->created_at }}</td>
-                <td>{!! $msg->seen ? '<i class="fas fa-eye text-success"></i>' : '<i class="fas fa-eye-slash text-secondary"></i>' !!}</td>
+                <td class="text-center">{!! $msg->seen ? '<i class="fas fa-eye text-success"></i>' : '<i class="fas fa-eye-slash text-secondary"></i>' !!}</td>
                 <td class="text-center">
                   <a href="{{ route('msg.delete', ['id' => $msg->id]) }}" class="text-danger" title="Vymazať {{ $msg->subject }}">
                     <i class="fas fa-trash"></i>

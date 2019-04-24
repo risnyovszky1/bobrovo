@@ -17,6 +17,8 @@ class CreateTestStudentStateTable extends Migration
             $table->integer('test_id')->unsigned();
             $table->integer('student_id')->unsigned();
             $table->integer('state')->default(1);
+            $table->timestamp('started_at')->nullable()->default(null);
+            $table->timestamp('finished_at')->nullable()->default(null);
 
             $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');

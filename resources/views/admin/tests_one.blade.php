@@ -53,7 +53,7 @@
       </div>
 
       <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card mt-3">
                 <div class="card-header">
                     Odkedy je dostupný
@@ -66,7 +66,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card mt-3">
                 <div class="card-header">
                     Dokedy je dostupný
@@ -76,6 +76,16 @@
                         {{ $test->available_to }}
                     </p>  
                 </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mt-3">
+              <div class="card-header">
+                Čas na vypracovanie
+              </div>
+              <div class="card-body">
+                  {{ $test->time_to_do }} min.
+              </div>
             </div>
           </div>
       </div>

@@ -62,7 +62,7 @@
           </div>
 
           <div class="row">
-              <div class="col-md-6">
+              <div class="col-lg-5">
                   <div class="form-group">
                     <label for="available_from">Dostupný od</label>
                     <div class="input-group form-datetime date">
@@ -73,7 +73,7 @@
                     </div>
                   </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-lg-5">
                 <div class="form-group">
                     <label for="available_to">Dostupný do</label>
                     <div class="input-group form-datetime date">
@@ -82,6 +82,16 @@
                           <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
                         </div>
                       </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-2">
+                <div class="form-group">
+                  <label for="time_to_do">Čas</label>
+                  <select name="time_to_do" id="" class="form-control">
+                    @for ($i = 0; $i < 15; $i++)
+                      <option value="{{ ($i + 1) * 5 }}">{{ ($i + 1) * 5 }}</option>
+                    @endfor
+                  </select>
                 </div>
               </div>
           </div>

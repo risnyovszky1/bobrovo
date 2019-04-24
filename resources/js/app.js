@@ -35,6 +35,7 @@ window.Vue = require('vue');
 require('./jquery.min');
 require('./bootstrap-datetimepicker');
 require('./bootstrap-datetimepicker.sk');
+require('./jquery.countdown');
 
 $(document).ready(function(){
   // settings

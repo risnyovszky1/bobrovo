@@ -85,7 +85,7 @@ class TestController extends Controller
       ->first();
   
     $settings = DB::table('tests')
-      ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers')
+      ->select('id', 'name', 'available_description', 'mix_questions', 'available_answers', 'time_to_do')
       ->where('id', $id)
       ->first();
     $questions = DB::table('question_test')
@@ -113,7 +113,8 @@ class TestController extends Controller
           ->insert([
             'state' => 2,
             'student_id' => Auth::user()->id,
-            'test_id' => $id
+            'test_id' => $id,
+            'started_at' => date('Y-m-d H:i:s'),
             ]);
         
         $state = DB::table('test_student_state')
@@ -123,7 +124,7 @@ class TestController extends Controller
           ])
           ->first();
       }
-      else if ($state->state != 3){
+      else if ($state->state != 3 && $state->state != 2){
         DB::table('test_student_state')
           ->where([
             ['test_id', $id],
@@ -147,8 +148,21 @@ class TestController extends Controller
         ['question_id', Session::get('testQuestions')->get($ord - 1)->id]
       ])->first();
 
+    $started = DB::table('test_student_state')
+      ->where([
+        ['student_id', Auth::user()->id],
+        ['test_id', Session::get('testSettings')->id]
+      ])
+      ->value('started_at');
 
-    return view('student.question', ['question' => $question, 'curr'=> $ord, 'answer' => $ans]);
+    $minutes_to_add = Session::get('testSettings')->time_to_do;
+
+    $time = new \DateTime($started);
+    $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+    
+    $stamp = $time->format('Y/m/d H:i');
+
+    return view('student.question', ['question' => $question, 'curr'=> $ord, 'answer' => $ans, 'finish' => $stamp]);
   }
 
   public function postQuestionPage(Request $request, $id, $ord){
@@ -194,7 +208,50 @@ class TestController extends Controller
   }
 
   public function getFinishPage($id){
-    return view('student.finish', ['qid' => $id]);
+    $started = DB::table('test_student_state')
+      ->where([
+        ['student_id', Auth::user()->id],
+        ['test_id', Session::get('testSettings')->id]
+      ])
+      ->value('started_at');
+
+    $minutes_to_add = Session::get('testSettings')->time_to_do;
+
+    $time = new \DateTime($started);
+    $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+    
+    $stamp = $time->format('Y/m/d H:i');
+
+    return view('student.finish', ['qid' => $id, 'finish' => $stamp]);
+  }
+
+  public function getFinishTimer($id){
+    $was = DB::table('test_student_state')
+      ->where([
+        ['student_id', Auth::user()->id],
+        ['test_id', $id]
+      ])
+      ->first();
+
+    if ($was){
+      DB::table('test_student_state')
+        ->where([
+          ['student_id', Auth::user()->id],
+          ['test_id', $id]
+        ])
+        ->update(['state' => 3, 'finished_at' => date('Y-m-d H:i:s')]);
+    }
+    else{
+      DB::table('test_student_state')
+        ->insert([
+          'state' => 3,
+          'student_id' => Auth::user()->id,
+          'test_id' => $id,
+          'finished_at' => date('Y-m-d H:i:s'),
+          ]);
+    }
+
+    return redirect()->route('testone_student', ['id' => $id]);
   }
 
   public function postFinishPage($id){
@@ -211,14 +268,15 @@ class TestController extends Controller
           ['student_id', Auth::user()->id],
           ['test_id', $id]
         ])
-        ->update(['state' => 3]);
+        ->update(['state' => 3, 'finished_at' => date('Y-m-d H:i:s')]);
     }
     else{
       DB::table('test_student_state')
         ->insert([
           'state' => 3,
           'student_id' => Auth::user()->id,
-          'test_id' => $id
+          'test_id' => $id,
+          'finished_at' => date('Y-m-d H:i:s'),
           ]);
     }
 
