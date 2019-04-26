@@ -38,7 +38,20 @@
                             <td><a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a></td>
                             <td><span class="extra-small">{!! count($item->categories) > 0 ? implode($item->categories, '<br>') : 'Bez kategórie' !!}</span></td>
                             <td class="text-center">{{ $item->difficulty }}</td>
-                            <td class="text-center">{{ $item->type }}</td>
+                            <td class="text-center">
+                                @switch($item->type)
+                                    @case(1)
+                                    @case(2)
+                                    @case(3)
+                                        <i class="fas fa-align-left text-primary" title="Textový typ"></i>
+                                        @break
+                                    @case(4)
+                                        <i class="fas fa-image text-success" title="Obrázkový typ"></i>
+                                        @break
+                                    @default
+                                        <i class="fas fa-puzzle-piece text-danger" title="Interaktívny typ"></i>
+                                @endswitch
+                            </td>
                             <td class="text-center">
                             
                                 @if($item->rating < 1)

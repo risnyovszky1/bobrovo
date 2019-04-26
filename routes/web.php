@@ -532,6 +532,11 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
         'as' => 'questions.rating'
       ])->where('id', '[0-9]+')
         ->where('rating', '[1-5]');
+
+      Route::post('/comment/{id}/', [
+        'uses' => 'BobrovoController@postAddComment',
+        'as' => 'questions.addcomment'
+      ])->where('id', '[0-9]+');
   });
 
 

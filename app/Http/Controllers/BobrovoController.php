@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Test;
 use App\Question;
+use App\Comment;
 use Auth;
 use Faker\Factory as Faker;
 
@@ -318,6 +319,18 @@ class BobrovoController extends Controller
               'test_id' => $request->input('test')
             ]);
       }
+
+      return redirect()->route('questions.one', ['id' => $id]);
+    }
+
+    public function postAddComment(Request $request, $id){
+      $comment = new Comment([
+        'user_id' => Auth::user()->id,
+        'question_id' => $id,
+        'comment' => $request->input('comment')
+      ]);
+
+      $comment->save();
 
       return redirect()->route('questions.one', ['id' => $id]);
     }
