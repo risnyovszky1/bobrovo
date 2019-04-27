@@ -63,13 +63,19 @@ class BobrovoController extends Controller
     // ---- USERS ----
     public function getAllUsersPage(){
       $users = DB::table('users')
-          ->join('students', 'users.id', 'students.teacher_id')
-          ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email', DB::raw('count(students.id) as students_total'))
+          //->join('students', 'users.id', 'students.teacher_id')
+          ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email' )
           ->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC')
-          ->groupBy('teacher_id')
+          //->groupBy('teacher_id')
           ->get();
+
+      $count = [];
       
-      return view('admin.users_all', ['users' => $users]);
+      foreach($users as $user){
+        $count[$user->id] = DB::table('students')->select('id')->where('teacher_id', $user->id)->count();
+      }
+
+      return view('admin.users_all', ['users' => $users, 'count' => $count]);
     }
 
     public function getToggleAdminUser($id){

@@ -22,7 +22,7 @@
 
             <div class="card border-primary mt-3">
                 <div class="card-header bg-primary text-white">
-                    Študent
+                    Test
                 </div>
                 <div class="card-body">
                     <h5 class="card-title mb-0">{{ $test->name }}</h5>
