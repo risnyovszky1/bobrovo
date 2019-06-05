@@ -16,7 +16,7 @@ class QuestionCategorySeeder extends Seeder
         //
         $faker = Faker::create();
         
-        for($i = 0; $i < 40; $i++){
+        for($i = 0; $i < 20; $i++){
             $qid = $faker->numberBetween(1, 35);
             $cid = $faker->numberBetween(1, 17);
 

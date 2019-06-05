@@ -150,13 +150,13 @@ class BobrovoController extends Controller
         }
         
         $qCat = DB::table('question_category')->where('question_id', $q->id)->pluck('category_id');
+        
         if ($category && !$this->haveCategory($qCat, $category)) continue;
         
         if ($diffFrom && $diffTo && ($diffFrom >= $q->difficulty && $diffTo <= $q->difficulty)) continue;
 
         $rating = DB::table('ratings')->select('rating')->where('question_id', $q->id)->avg('rating');
 
-        
         $list[] = (object) array(
           'id' => $q->id,
           'title' => $q->title,

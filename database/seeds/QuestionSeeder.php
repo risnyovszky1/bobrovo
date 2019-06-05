@@ -17,7 +17,7 @@ class QuestionSeeder extends Seeder
         $faker = Faker::create();
         $arr = array('a', 'b', 'c', 'd');
 
-        for($i = 0; $i < 15; $i++){
+        /*for($i = 0; $i < 15; $i++){
             $question = new Question([
                 'title' => $faker->sentence,
                 'question' => '<p>' . $faker->paragraph . '</p>',
@@ -35,7 +35,7 @@ class QuestionSeeder extends Seeder
             ]);
 
             $question->save();
-        }
+        }*/
 
         $file = File::get('database/data/questions.json');
         $json = json_decode($file);

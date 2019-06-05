@@ -297,7 +297,7 @@ class TestController extends Controller
     
     $realAns = DB::table('question_test')
       ->join('questions', 'question_test.question_id', 'questions.id')
-      ->select('questions.id', 'title', 'question', 'a', 'b', 'c', 'd', 'answer')
+      ->select('questions.id', 'title', 'question', 'a', 'b', 'c', 'd', 'answer', 'type')
       ->where('test_id', $id)
       ->get();
 
