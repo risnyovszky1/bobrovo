@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 pt-4">
-                <h3>Výsledky</h3>
+            <h3>{{ __('student.results') }}</h3>
         </div>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
             @foreach ($questions as $question)
                 <div class="card border-primary mt-2">
                     <div class="card-header text-white bg-primary">
-                        Názov
+                        {{ __('student.title') }}
                     </div>
 
                     <div class="card-body">
@@ -37,7 +37,7 @@
                                 @else 
                                     <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}" alt="tvoja odpoved" class="ml-3">
                                 @endif
-                                <span class="text-muted"> (tvoja odpoveď)</span>
+                                <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
                             </div>
                         @else
                             <div class="border-danger border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
@@ -47,7 +47,7 @@
                                 @else 
                                     <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}" alt="tvoja odpoved" class="ml-3">
                                 @endif
-                                <span class="text-muted"> (tvoja odpoveď)</span>
+                                <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
                             </div>
                             
                             <div class="border-success border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
@@ -57,13 +57,13 @@
                                 @else 
                                     <img src="{{ getQuestionsAnswerText($question, $question->answer) }}" alt="tvoja odpoved" class="ml-2">
                                 @endif
-                                <span class="text-muted"> (správna odpoveď)</span>
+                                <span class="text-muted"> ({{ __('student.correct-asnwer') }})</span>
                             </div>
                         @endif
                     @else
                         <div class="border-danger border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
-                            <i class="fas fa-times text-danger"></i> 
-                            Nezodpovedané
+                            <i class="fas fa-times text-danger"></i>
+                            {{ __('student.not-asnwered') }}
                         </div>
                         <div class="border-success border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
                             <i class="fas fa-check text-success"></i>  
@@ -72,7 +72,7 @@
                             @else 
                                 <img src="{{ getQuestionsAnswerText($question, $question->answer) }}" alt="spravna odpoved">
                             @endif
-                            <span class="text-muted"> (správna odpoveď)</span>
+                            <span class="text-muted"> ({{ __('student.correct-asnwer') }})</span>
                         </div>
                     @endif
                 @else
@@ -84,9 +84,9 @@
                             @else 
                                 <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}" alt="tvoja odpoved">
                             @endif
-                            <span class="text-muted"> (tvoja odpoveď)</span>
+                            <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
                         @else
-                            Nezodpovedané
+                            {{ __('student.not-asnwered') }}
                         @endif
                     </div>
                 @endif
@@ -102,18 +102,20 @@
                     else if ($val >= 75) $bg = 'bg-info';
                     else if ($val >= 50) $bg = 'bg-warning';
                 @endphp
-                Úspešnosť <span class="small">({{ $val }} %)</span>
+                {{ __('student.prediction') }} <span class="small">({{ $val }} %)</span>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped {{ $bg }}" role="progressbar" style="width: {{ $val }}%;" aria-valuenow="{{ $val }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             @else
-                <div class="alert alert-danger">Výsledky nie sú k dizpozícií.</div>
+                <div class="alert alert-danger">{{ __('student.results-not-available') }}</div>
             @endif
         </div>
     </div>
     <div class="row">
         <div class="col-lg-8 pb-2">
-            <a href="{{route('testone_student', ['id' => Session::get('testSettings')->id])}}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Späť na test</a>
+            <a href="{{route('testone_student', ['id' => Session::get('testSettings')->id])}}" class="btn btn-primary">
+                <i class="fas fa-arrow-circle-left"></i> {{ __('student.back-to-test') }}
+            </a>
         </div>
     </div>
 </div>   

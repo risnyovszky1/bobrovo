@@ -9,9 +9,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 pt-3">
-            <h3>Testy</h3>
+            <h3>{{  __('student.Tests') }}</h3>
             @if (empty($groups))
-                <p>Prepáč, ale ešte nemáš skupinu. <i class="fas fa-frown text-danger"></i></p>
+                <p>{{ __('student.no-group-yet') }} <i class="fas fa-frown text-danger"></i></p>
             @endif
             
             @foreach ($groups as $group)
@@ -47,7 +47,7 @@
                 @else
                     <div class="card-body">
                     <p class="card-text">
-                        K tejto skupine nie je priradený ešte žiadny test.
+                        {{ __('student.no-tests-yet-in-group') }}
                     </p>
                     </div>
                 @endif

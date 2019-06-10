@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-orange">
           <a class="navbar-brand" href="{{ route('student_home') }}"> 
               <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo"> 
-              Bobrovo
+              {{ __('student.Bobrovo') }}
           </a>
           <button class="navbar-toggler bg-bobrovo-orange text-white border-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,13 +28,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a href="{{ route('tests_student') }}" class="nav-link"><i class="fas fa-file-alt"></i> Testy</a>
+                <a href="{{ route('tests_student') }}" class="nav-link"><i class="fas fa-file-alt"></i> {{  __('student.Tests') }}</a>
               </li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link"><i class="fas fa-users"></i> Skupiny</a>
+                <a href="#" class="nav-link"><i class="fas fa-users"></i> {{  __('student.Groups') }}</a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-danger btn-sm nav-link ml-2" href="{{ route('logout_student') }}"><i class="fas fa-sign-out-alt"></i> Odhlásiť</a>
+                <a class="btn btn-danger btn-sm nav-link ml-2" href="{{ route('logout_student') }}"><i class="fas fa-sign-out-alt"></i> {{  __('student.Logout') }}</a>
               </li>
             </ul>
           </div>

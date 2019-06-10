@@ -12,7 +12,7 @@
 
           @if (!empty($errors))
               @foreach ($errors->all() as $err)
-                <div class="alert alert-danger mb-4">Potrebuješ označiť odpoveď!</div>
+                <div class="alert alert-danger mb-4">{{ __('student.need-to-mark-question') }}</div>
               @endforeach
           @endif
 
@@ -20,7 +20,7 @@
                 <form action="" method="post">
                     <div class="card mb-3 border-danger">
                         <div class="card-header bg-danger text-white">
-                            Otázka
+                            {{ __('student.question') }}
                         </div>
                         <div class="card-body font-lg">
                             {!!$question->question!!}                            
@@ -29,7 +29,7 @@
                     @if (Session::get('testSettings')->available_description && !empty($question->description) && strlen($question->description))
                         <div class="card mb-3 border-secondary">
                             <div class="card-header bg-secondary text-white">
-                                Popis
+                                {{ __('student.description') }}
                             </div>
                             <div class="card-body">
                                 {!!$question->description!!}                            
@@ -194,7 +194,7 @@
                     <div class="form-group mt-4">
                         {{ csrf_field() }}
                         <input type="hidden" name="question-id" id="" value="{{ $question->id }}">
-                        <button type="submit" class="btn btn-lg btn-primary"><i class="fas fa-save"></i> Uložiť odpoveď</button>
+                        <button type="submit" class="btn btn-lg btn-primary"><i class="fas fa-save"></i> {{ __('student.save-answer') }}</button>
                     </div>
                     <hr>
                 </form>

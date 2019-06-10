@@ -24,9 +24,12 @@
     .count-down-container .count-down-col{
         display: inline-block;
     }
-</style> 
+</style>
+
 <hr>
-<h4 class="mb-3">Menu</h4>
+
+<h4 class="mb-3">{{ __('student.menu') }}</h4>
+
 <div class="row">
     <div class="col-3 text-center pb-2">
         <a href="{{ route('solving_student', ['id' => Session::get('testSettings')->id]) }}" class="btn btn-sm btn-success btn-block">
