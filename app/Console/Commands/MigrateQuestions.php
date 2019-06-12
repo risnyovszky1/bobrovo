@@ -4,6 +4,10 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Sunra\PhpSimple\HtmlDomParser;
+use App\Question;
+use App\Category;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class MigrateQuestions extends Command
 {
@@ -12,7 +16,7 @@ class MigrateQuestions extends Command
      *
      * @var string
      */
-    protected $signature = 'migrate:questions';
+    protected $signature = 'import:questions';
 
     /**
      * The console command description.
@@ -56,6 +60,7 @@ class MigrateQuestions extends Command
         $post_str = substr($post_str, 0, -1);
         $cookie_file = "cookie.txt";
 
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'http://btest.ibobor.sk/' );
         curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -63,8 +68,8 @@ class MigrateQuestions extends Command
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
-        curl_setopt($ch, CURLOPT_AUTOREFERER, 1); 
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+        curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         $response = curl_exec($ch );
         //echo $response;
         curl_close($ch);
@@ -87,11 +92,96 @@ class MigrateQuestions extends Command
 
             $data = $this->getQuestionDataFromHtmlDom($section);
 
-            if ($data !== false)
+            if ($data !== false){
                 $this->printArrayWithKeys($data);
+
+                $this->saveQuestion($data);
+            }
 
             if ($i > 10) break;
         }
+    }
+
+    private function saveQuestion($data){
+        $question = new Question([
+            'title' => $data['title'],
+            'description' => '  ',
+            'description_teacher' => '   ',
+            'type' => $data['type'],
+            'answer' => $data['answer'],
+            'created_by' => 1,
+            'public' => 1
+        ]);
+
+        if ($data['type'] < 4){
+            $question->a = $data['a'];
+            $question->b = $data['b'];
+            $question->c = $data['c'];
+            $question->d = $data['d'];
+        }
+        else{
+            $image_a_url = str_replace('..', 'http://btest.ibobor.sk/', $data['a']);
+            $image_b_url = str_replace('..', 'http://btest.ibobor.sk/', $data['b']);
+            $image_c_url = str_replace('..', 'http://btest.ibobor.sk/', $data['c']);
+            $image_d_url = str_replace('..', 'http://btest.ibobor.sk/', $data['d']);
+
+            $image_a_name = substr($image_a_url, strrpos($image_a_url, '/') + 1);
+            $image_b_name = substr($image_b_url, strrpos($image_b_url, '/') + 1);
+            $image_c_name = substr($image_c_url, strrpos($image_c_url, '/') + 1);
+            $image_d_name = substr($image_d_url, strrpos($image_d_url, '/') + 1);
+
+            Storage::disk('public_uploads')->put('img/answers/' . $image_a_name, file_get_contents($image_a_url));
+            Storage::disk('public_uploads')->put('img/answers/' . $image_b_name, file_get_contents($image_b_url));
+            Storage::disk('public_uploads')->put('img/answers/' . $image_c_name, file_get_contents($image_c_url));
+            Storage::disk('public_uploads')->put('img/answers/' . $image_d_name, file_get_contents($image_d_url));
+
+            $question->a = '/img/answers/' . $image_a_name;
+            $question->b = '/img/answers/' . $image_b_name;
+            $question->c = '/img/answers/' . $image_c_name;
+            $question->d = '/img/answers/' . $image_d_name;
+        }
+
+        $html = HtmlDomParser::str_get_html($data['text']);
+        $imgs = $html->find('img');
+
+        if ($imgs == null){
+            $question->question = $data['text'];
+            $question->difficulty = 1;
+            $question->save();
+
+            echo "otazka pridany: " . $question->title;
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private function getCategoryId($cat){
+        switch ($cat){
+            case 'DG': return 2;
+            case 'ALG': return 3;
+            case 'PC': return 4;
+            case 'SPOL': return 5;
+
+            case 'INF00': return 1;
+            case 'INF01': return 6;
+            case 'INF02': return 7;
+            case 'INF03': return 8;
+            case 'INF04': return 9;
+            case 'INF05': return 10;
+            case 'INF06': return 11;
+            case 'INF10': return 12;
+            case 'INF20': return 13;
+            case 'INF30': return 14;
+            case 'INF40': return 15;
+            case 'INF50': return 16;
+            case 'INF60': return 17;
+
+            default: break;
+        }
+
+        return false;
     }
 
     private function getQuestionDataFromHtmlDom($html){
@@ -185,7 +275,6 @@ class MigrateQuestions extends Command
         $filteredStr = $this->removeTextFromStrongTags($str);
 
         $data = explode("<strong></strong>", trim($filteredStr));
-
 
         $finalData = [
             'title' => $data[1],
