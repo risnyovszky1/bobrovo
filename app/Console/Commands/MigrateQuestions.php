@@ -97,7 +97,6 @@ class MigrateQuestions extends Command
 
             if ($data !== false){
                 echo "Inserting : " . $data['title'] . " .... ";
-                $this->printArrayWithKeys($data);
                 if ($this->saveQuestion($data)){
                     echo "Inserted \n";
                     $count++;
