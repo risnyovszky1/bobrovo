@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
-use Sunra\PhpSimple\HtmlDomParser;
+use KubAT\PhpSimple\HtmlDomParser;
 use App\Question;
 use App\Category;
 use Illuminate\Support\Facades\File;
@@ -97,12 +97,13 @@ class MigrateQuestions extends Command
 
             if ($data !== false){
                 echo "Inserting : " . $data['title'] . " .... ";
+                $this->printArrayWithKeys($data);
                 if ($this->saveQuestion($data)){
                     echo "Inserted \n";
                     $count++;
                 }
                 else{
-                    echo "Not inserted: \n";
+                    echo "Not inserted \n";
                 }
             }
         }
@@ -110,6 +111,11 @@ class MigrateQuestions extends Command
     }
 
     private function saveQuestion($data){
+        $isInserted = DB::table('questions')->where('title', $data['title'])->count();
+        if ($isInserted > 0){
+            return false;
+        }
+
         $question = new Question([
             'title' => $data['title'],
             'description' => '  ',

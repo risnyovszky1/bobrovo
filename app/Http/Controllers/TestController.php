@@ -55,8 +55,7 @@ class TestController extends Controller
         ->get();
 
     $tests = array();
-    // to do 
-    $states = array();
+    // to do
 
     foreach($groups as $group){
       $tests[$group->id] = DB::table('tests')
@@ -68,8 +67,6 @@ class TestController extends Controller
         ->orderBy('name', 'ASC')
         ->get();
     }
-
-    dd($tests);
 
     return view('student.tests', ['groups' => $groups, 'tests' => $tests]);
   }
