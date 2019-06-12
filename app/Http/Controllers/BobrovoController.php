@@ -140,8 +140,6 @@ class BobrovoController extends Controller
       $type = !empty($filter['type']) ? $filter['type'] : null;
       $diffFrom = !empty($filter['difficulty_from']) ? $filter['difficulty_from'] : null;
       $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
-      
-      $c = 0;
 
       foreach($questions as $q){
         if ($type){
@@ -153,7 +151,7 @@ class BobrovoController extends Controller
         
         if ($category && !$this->haveCategory($qCat, $category)) continue;
         
-        if ($diffFrom && $diffTo && ($diffFrom >= $q->difficulty && $diffTo <= $q->difficulty)) continue;
+        if ($diffFrom && $diffTo && ($diffFrom > $q->difficulty || $q->difficulty > $diffTo)) continue;
 
         $rating = DB::table('ratings')->select('rating')->where('question_id', $q->id)->avg('rating');
 

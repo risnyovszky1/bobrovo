@@ -43,7 +43,7 @@
                 Názov
               </label>
               <input type="text" name="title" id="" value="{{ $news->title }}" class="form-control form-control-lg">
-              <input type="hidden" name="news-id" value="{{ $news->news_id }}">
+              <input type="hidden" name="news-id" value="{{ $news->id }}">
             </div>
           </div>
         </div>

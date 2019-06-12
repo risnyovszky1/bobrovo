@@ -22,7 +22,9 @@
                         <div class="card-header bg-danger text-white">
                             {{ __('student.question') }}
                         </div>
+
                         <div class="card-body font-lg">
+                            <h3 class="card-title">{{ $question->title }}</h3>
                             {!!$question->question!!}                            
                         </div>
                     </div>

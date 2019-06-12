@@ -19,12 +19,12 @@ class PagesController extends Controller
   // ====================================
 
   public function getHomePage(){
-    $newsFeed = DB::table('news')->select('news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
+    $newsFeed = DB::table('news')->select('id as news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
     return view('general.index', ['newsFeed' => $newsFeed]);
   }
 
   public function postHomePage(Request $request){
-    $newsFeed = DB::table('news')->select('news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
+    $newsFeed = DB::table('news')->select('news as news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
     
     $this->validate($request, [
       'name' => 'required',
@@ -81,13 +81,13 @@ class PagesController extends Controller
   }
 
   public function getNewsPage(){
-    $newsFeed = DB::table('news')->select('news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->get();
+    $newsFeed = DB::table('news')->select('id as news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->get();
     return view('general.news', ['newsFeed' => $newsFeed]);
   }
 
   public function getNewsOnePage($id){
-    $news = DB::table('news')->select('title', 'content', 'created_at')->where('news_id', $id)->limit(1)->get();
-    return view('general.newsone', ['news' => $news->first()]);
+    $news = DB::table('news')->select('title', 'content', 'created_at')->where('id', $id)->first();
+    return view('general.newsone', ['news' => $news]);
   }
 
   public function getDefaultConditionPage(){

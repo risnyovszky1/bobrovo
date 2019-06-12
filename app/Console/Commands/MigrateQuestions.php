@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use mysql_xdevapi\Exception;
 use Sunra\PhpSimple\HtmlDomParser;
 use App\Question;
 use App\Category;
@@ -61,20 +63,21 @@ class MigrateQuestions extends Command
         $cookie_file = "cookie.txt";
 
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://btest.ibobor.sk/' );
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
-        curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        $response = curl_exec($ch );
-        //echo $response;
-        curl_close($ch);
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, 'http://btest.ibobor.sk/' );
+//        curl_setopt($ch, CURLOPT_POST, TRUE);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+//        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
+//        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
+//        curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+//        $response = curl_exec($ch );
+//        //echo $response;
+//        curl_close($ch);
 
         // RETRIEVE QUESTION PAGES AFTER LOGIN
+        $count = 0;
         for ($i = 1; $i < 522; $i++) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'http://btest.ibobor.sk/ucitel/ulohy.php?uloha=' . $i);
@@ -93,13 +96,17 @@ class MigrateQuestions extends Command
             $data = $this->getQuestionDataFromHtmlDom($section);
 
             if ($data !== false){
-                $this->printArrayWithKeys($data);
-
-                $this->saveQuestion($data);
+                echo "Inserting : " . $data['title'] . " .... ";
+                if ($this->saveQuestion($data)){
+                    echo "Inserted \n";
+                    $count++;
+                }
+                else{
+                    echo "Not inserted: \n";
+                }
             }
-
-            if ($i > 10) break;
         }
+        echo "INSERTED TOTAL : " . $count . "\n";
     }
 
     private function saveQuestion($data){
@@ -110,7 +117,7 @@ class MigrateQuestions extends Command
             'type' => $data['type'],
             'answer' => $data['answer'],
             'created_by' => 1,
-            'public' => 1
+            'public' => 1,
         ]);
 
         if ($data['type'] < 4){
@@ -120,68 +127,182 @@ class MigrateQuestions extends Command
             $question->d = $data['d'];
         }
         else{
-            $image_a_url = str_replace('..', 'http://btest.ibobor.sk/', $data['a']);
-            $image_b_url = str_replace('..', 'http://btest.ibobor.sk/', $data['b']);
-            $image_c_url = str_replace('..', 'http://btest.ibobor.sk/', $data['c']);
-            $image_d_url = str_replace('..', 'http://btest.ibobor.sk/', $data['d']);
+            try{
+                $image_a_url = str_replace('..', 'http://btest.ibobor.sk/', $data['a']);
+                $image_b_url = str_replace('..', 'http://btest.ibobor.sk/', $data['b']);
+                $image_c_url = str_replace('..', 'http://btest.ibobor.sk/', $data['c']);
+                $image_d_url = str_replace('..', 'http://btest.ibobor.sk/', $data['d']);
 
-            $image_a_name = substr($image_a_url, strrpos($image_a_url, '/') + 1);
-            $image_b_name = substr($image_b_url, strrpos($image_b_url, '/') + 1);
-            $image_c_name = substr($image_c_url, strrpos($image_c_url, '/') + 1);
-            $image_d_name = substr($image_d_url, strrpos($image_d_url, '/') + 1);
+                $image_a_name = substr($image_a_url, strrpos($image_a_url, '/') + 1);
+                $image_b_name = substr($image_b_url, strrpos($image_b_url, '/') + 1);
+                $image_c_name = substr($image_c_url, strrpos($image_c_url, '/') + 1);
+                $image_d_name = substr($image_d_url, strrpos($image_d_url, '/') + 1);
 
-            Storage::disk('public_uploads')->put('img/answers/' . $image_a_name, file_get_contents($image_a_url));
-            Storage::disk('public_uploads')->put('img/answers/' . $image_b_name, file_get_contents($image_b_url));
-            Storage::disk('public_uploads')->put('img/answers/' . $image_c_name, file_get_contents($image_c_url));
-            Storage::disk('public_uploads')->put('img/answers/' . $image_d_name, file_get_contents($image_d_url));
+                Storage::disk('public_uploads')->put('img/answers/' . $image_a_name, file_get_contents($image_a_url));
+                Storage::disk('public_uploads')->put('img/answers/' . $image_b_name, file_get_contents($image_b_url));
+                Storage::disk('public_uploads')->put('img/answers/' . $image_c_name, file_get_contents($image_c_url));
+                Storage::disk('public_uploads')->put('img/answers/' . $image_d_name, file_get_contents($image_d_url));
 
-            $question->a = '/img/answers/' . $image_a_name;
-            $question->b = '/img/answers/' . $image_b_name;
-            $question->c = '/img/answers/' . $image_c_name;
-            $question->d = '/img/answers/' . $image_d_name;
+                $question->a = '/img/answers/' . $image_a_name;
+                $question->b = '/img/answers/' . $image_b_name;
+                $question->c = '/img/answers/' . $image_c_name;
+                $question->d = '/img/answers/' . $image_d_name;
+            }
+            catch (\Exception $exception){
+                return false;
+            }
+
         }
 
         $html = HtmlDomParser::str_get_html($data['text']);
         $imgs = $html->find('img');
 
-        if ($imgs == null){
+        if (count($imgs) == 0){
             $question->question = $data['text'];
-            $question->difficulty = 1;
-            $question->save();
-
-            echo "otazka pridany: " . $question->title;
-            return true;
+        }
+        else{
+            foreach ($imgs as $img){
+                try{
+                    $image_url = str_replace('..', 'http://btest.ibobor.sk/', $img->src);
+                    $image_name = substr($image_url, strrpos($image_url, '/') + 1);
+                    Storage::disk('public_uploads')->put('img/questions/' . $image_name, file_get_contents($image_url));
+                    $img->src = '/img/questions/' . $image_name;
+                }
+                catch (\Exception $exception){
+                    return false;
+                }
+            }
+            $question->question = $html->outertext;
         }
 
-        return false;
+        $difficulty = $this->getDifficultyFromString($data['difficulty']);
+        if (!$difficulty){
+            return false;
+        }
 
+        $question->difficulty = $difficulty;
+
+        $question->save();
+
+        foreach ($this->getCategoryIds($data['category']) as $categoryId){
+            DB::table('question_category')->insert([
+               'question_id' => $question->id,
+               'category_id' => $categoryId
+            ]);
+        }
+
+        return true;
     }
 
-    private function getCategoryId($cat){
-        switch ($cat){
-            case 'DG': return 2;
-            case 'ALG': return 3;
-            case 'PC': return 4;
-            case 'SPOL': return 5;
+    private function getDifficultyFromString($string)
+    {
+        $difficulties = explode(',', $string);
 
-            case 'INF00': return 1;
-            case 'INF01': return 6;
-            case 'INF02': return 7;
-            case 'INF03': return 8;
-            case 'INF04': return 9;
-            case 'INF05': return 10;
-            case 'INF06': return 11;
-            case 'INF10': return 12;
-            case 'INF20': return 13;
-            case 'INF30': return 14;
-            case 'INF40': return 15;
-            case 'INF50': return 16;
-            case 'INF60': return 17;
+        for($i = 0; $i < count($difficulties); $i++){
+            $difficulties[$i] = trim($difficulties[$i]);
+        }
 
-            default: break;
+        if (count($difficulties) == 1){
+            if ($difficulties[0] == 'Bobrík'){
+                return 1;
+            }
+            else if ($difficulties[0] == 'Benjamín'){
+                return 2;
+            }
+            else if ($difficulties[0] == 'Kadet'){
+                return 4;
+            }
+            else if ($difficulties[0] == 'Junior'){
+                return 5;
+            }
+            else if ($difficulties[0] == 'Senior'){
+                return 7;
+            }
+        }
+
+        if (count($difficulties) == 2){
+            if ($difficulties[0] == 'Bobrík' && $difficulties[1] == 'Benjamín'){
+                return 2;
+            }
+            else if ($difficulties[0] == 'Benjamín' && $difficulties[1] == 'Kadet'){
+                return 3;
+            }
+            else if ($difficulties[0] == 'Kadet' && $difficulties[1] == 'Junior'){
+                return 4;
+            }
+            else if ($difficulties[0] == 'Junior' && $difficulties[1] == 'Senior'){
+                return 6;
+            }
+            else if ($difficulties[0] == 'Benjamín' && $difficulties[1] == 'Senior'){
+                return 5;
+            }
+            else if ($difficulties[0] == 'Benjamín' && $difficulties[1] == 'Junior'){
+                return 4;
+            }
+        }
+
+        if (count($difficulties) == 3){
+            if ($difficulties[0] == 'Bobrík' && $difficulties[1] == 'Benjamín' && $difficulties[2] == 'Kadet'){
+                return 3;
+            }
+            else if ($difficulties[0] == 'Benjamín' && $difficulties[1] == 'Kadet' && $difficulties[2] == 'Junior'){
+                return 4;
+            }
+            else if ($difficulties[0] == 'Kadet' && $difficulties[1] == 'Junior' && $difficulties[2] == 'Senior'){
+                return 6;
+            }
+        }
+
+        if (count($difficulties) == 4){
+            if ($difficulties[0] == 'Bobrík' && $difficulties[1] == 'Benjamín' && $difficulties[2] == 'Kadet' && $difficulties[3] == 'Junior'){
+                return 3;
+            }
+            else if ($difficulties[0] == 'Benjamín' && $difficulties[1] == 'Kadet' && $difficulties[2] == 'Junior' && $difficulties[3] == 'Senior'){
+                return 5;
+            }
+        }
+
+        if (count($difficulties) == 5){
+            return 4;
         }
 
         return false;
+    }
+
+    private function getCategoryIds($cat){
+        $result = [];
+
+        $categories = explode(',', $cat);
+
+        for($i = 0; $i < count($categories); $i++){
+            $categories[$i] = trim($categories[$i]);
+        }
+
+        foreach ($categories as $category){
+            switch ($category){
+                case 'DG': $result[] = 2; break;
+                case 'ALG': $result[] =  3; break;
+                case 'PC': $result[] =  4; break;
+                case 'SPOL': $result[] =  5; break;
+
+                case 'INF00': $result[] =  1; break;
+                case 'INF01': $result[] =  6; break;
+                case 'INF02': $result[] =  7; break;
+                case 'INF03': $result[] =  8; break;
+                case 'INF04': $result[] =  9; break;
+                case 'INF05': $result[] =  10; break;
+                case 'INF06': $result[] =  11; break;
+                case 'INF10': $result[] =  12; break;
+                case 'INF20': $result[] =  13; break;
+                case 'INF30': $result[] =  14; break;
+                case 'INF40': $result[] =  15; break;
+                case 'INF50': $result[] =  16; break;
+                case 'INF60': $result[] =  17; break;
+
+                default: break;
+            }
+        }
+        return $result;
     }
 
     private function getQuestionDataFromHtmlDom($html){
@@ -189,9 +310,10 @@ class MigrateQuestions extends Command
         $answers = $html->find('div#dZadanie ol li');
         $text = $html->find('div#dZadanie', 0);
 
-        if (count($answers) == 0){
+        if (count($answers) == 0 || count($html->find('object'))){
             return false;
         }
+
         // basic info
         $data1 = $this->getMainQuestionDataFromStr($detail->innertext);
 
@@ -201,7 +323,9 @@ class MigrateQuestions extends Command
         // odpovede
         $data3 = $this->getQuestionAnswerDetails($answers);
 
-            //
+        if ($data1 == false || $data2 == false || $data3 == false)
+            return false;
+
         return array_merge($data1, $data2, $data3);
     }
 
@@ -219,28 +343,32 @@ class MigrateQuestions extends Command
         $result = [];
 
         $type = $this->getQuestionTypeFromAnswers($data);
-
-        foreach ($data as $item){
-            if ($type < 4){
-                $result[$char] = $item->plaintext;
-                $correct = $item->find('img');
-                if ($correct != null){
-                    $answer = $char;
+        try{
+            foreach ($data as $item){
+                if ($type < 4){
+                    $result[$char] = $item->plaintext;
+                    $correct = $item->find('img');
+                    if ($correct != null){
+                        $answer = $char;
+                    }
                 }
-            }
-            else{
-                $imgs = $correct = $item->find('img');
-                $result[$char] = $imgs[0]->src;
-                if (count($imgs) > 1){
-                    $answer = $char;
+                else{
+                    $imgs = $correct = $item->find('img');
+                    $result[$char] = $imgs[0]->src;
+                    if (count($imgs) > 1){
+                        $answer = $char;
+                    }
                 }
+
+                $char++;
             }
 
-            $char++;
+            $result['type'] = $type;
+            $result['answer'] = $answer;
         }
-
-        $result['type'] = $type;
-        $result['answer'] = $answer;
+        catch (\Exception $exception){
+            return false;
+        }
         return $result;
     }
 
@@ -304,7 +432,5 @@ class MigrateQuestions extends Command
         foreach ($keys as $key){
             echo " " . $key . ": ". $data[$key] . "\n";
         }
-
-        echo "=========\n\n";
     }
 }

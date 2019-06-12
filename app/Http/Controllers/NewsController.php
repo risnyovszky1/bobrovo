@@ -13,7 +13,7 @@ class NewsController extends Controller
     public function getAllNewsPage(){
         $newsFeed = DB::table('news')
                 ->join('users', 'users.id', 'news.created_by')
-                ->select('users.first_name', 'users.last_name', 'news.news_id', 'news.title', 'news.created_at')
+                ->select('users.first_name', 'users.last_name', 'news.id as news_id', 'news.title', 'news.created_at')
                 ->get();
         return view('admin.news_all', ['newsFeed' => $newsFeed]);
       }
@@ -41,7 +41,7 @@ class NewsController extends Controller
       }
   
       public function getEditNewsPage($news_id){
-        $news = DB::table('news')->where('news_id', $news_id)->limit(1)->get();
+        $news = DB::table('news')->where('id', $news_id)->limit(1)->get();
         return view('admin.news_edit', ['news' => $news->first()]);
       }
   
@@ -51,14 +51,14 @@ class NewsController extends Controller
         $content = $request->input('content');
         $visible = $request->input('is-visible') == 'yes' ? true : false;
   
-        DB::table('news')->where('news_id', $id)->update([
+        DB::table('news')->where('id', $id)->update([
           'title' => $title,
           'content' => $content,
           'visible' => $visible,
           'updated_at' => date('Y-m-d H:i:s')
         ]);
   
-        $news = DB::table('news')->where('news_id', $news_id)->limit(1)->get();
+        $news = DB::table('news')->where('id', $news_id)->limit(1)->get();
         return view('admin.news_edit', ['news' => $news->first()]);
       }
   

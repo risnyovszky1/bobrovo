@@ -63,7 +63,7 @@
                     @else
                         <div class="border-danger border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
                             <i class="fas fa-times text-danger"></i>
-                            {{ __('student.not-asnwered') }}
+                            {{ __('student.not-answered') }}
                         </div>
                         <div class="border-success border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
                             <i class="fas fa-check text-success"></i>  
@@ -86,7 +86,7 @@
                             @endif
                             <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
                         @else
-                            {{ __('student.not-asnwered') }}
+                            {{ __('student.not-answered') }}
                         @endif
                     </div>
                 @endif

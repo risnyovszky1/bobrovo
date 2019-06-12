@@ -68,7 +68,9 @@ class TestController extends Controller
         ->orderBy('name', 'ASC')
         ->get();
     }
-    
+
+    dd($tests);
+
     return view('student.tests', ['groups' => $groups, 'tests' => $tests]);
   }
 

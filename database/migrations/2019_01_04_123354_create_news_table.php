@@ -15,7 +15,7 @@ class CreateNewsTable extends Migration
     {
         //Schema::dropIfExists('news');
         Schema::create('news', function (Blueprint $table) {
-            $table->increments('news_id');
+            $table->increments('id');
             $table->string('title', 100);
             $table->text('content');
             $table->boolean('visible');
