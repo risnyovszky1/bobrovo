@@ -1,4 +1,4 @@
-#Install manual
+# Install manual
 
 - clone repo from git to server
 - run `composer install`, to import dependencies
@@ -10,7 +10,7 @@
 
 With these steps you created the default values but you dont imported the questions from the old site.
 
-###Import questions
+### Import questions
 
 - login to the old site: `risnyo96@gmail.com` / `risnyo96`
 - list all questions without interactive questions
