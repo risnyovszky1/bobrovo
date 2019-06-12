@@ -1,23 +1,28 @@
-## install manual
+#Install manual
 
-- get composer 
-- clone repo to local
-- make localhost and a database 
-- in .env edit DB and smtp login data 
-- run: php artisan migrate:refresh --seed
-- run: php artisan serve
-- visit localhost in browser 
+- clone repo from git to server
+- run `composer install`, to import dependencies
+- create `.env` file with database and smtp data from `.env.example` 
+- run `npm run dev`, to compile scss and js (optional)
+- run `php artisan migrate` to create DB structure
+- run `php artisan seed` to create default values to db
+- login as admin: `risnyo96@gmail.com` / `asdasd`
 
-## manual for developing
+With these steps you created the default values but you dont imported the questions from the old site.
 
-- get composer, node, npm
-- clone repo to local 
-- make localhost and db
-- edit .env -> db and smtp login 
-- run: npm install 
-- run: php artisan migrate:refresh --seed
-- run: npm run watch
-- run: php artisan serve
-- edit files then commit 
+###Import questions
 
-### enjoy :)
+- login to the old site: `risnyo96@gmail.com` / `risnyo96`
+- list all questions without interactive questions
+- copy the `SESSIONID` from cookies to `cookie.txt` on server (replace the old one)
+- run `php artisan import:questions`
+- if the command dont work fix the problem with the rights of wrinting files to the serve
+- wait to finish
+
+---
+
+Login and control if everything works fine. If is necessary then fix the problems with the rights of wirting to the server. 
+
+![logo](public/img/logo-web.png) enjoy the app  
+
+
