@@ -293,14 +293,25 @@ class BobrovoController extends Controller
           ->select('name')
           ->where('question_id', $id)
           ->get();
+
+      $avgTime = null;
+
+      if (Auth::user()->is_admin){
+          $avgTime = DB::table('measurements')
+              ->select('time_spent')
+              ->where('question_id', $id)
+              ->avg('time_spent');
+      }
+
       
       return view('admin.questions_one', [
-        'question' => $question,
-        'comments' => $comments,
-        'rating' => round($rating, 1),
-        'tests' => $tests,
-        'myRating' => $myRating,
-        'categories' => $categories
+          'question' => $question,
+          'comments' => $comments,
+          'rating' => round($rating, 1),
+          'tests' => $tests,
+          'myRating' => $myRating,
+          'categories' => $categories,
+          'avgTime' => $avgTime
       ]);
     }
 

@@ -52,22 +52,22 @@
         @if ($question->type == 4)
           <div class="row">
             <div class="col-md-6 text-center mb-2 mt-2 question-possibilities-show">
-              <img src="{{$question->a}}" alt="odpoved a" class="img-thumbnail d-block mx-auto">
+              <img src="{{$question->a}}" alt="odpoved a" class="img-thumbnail d-block mx-auto mt-2">
               {!! $question->answer == 'a' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
             </div>
             
             <div class="col-md-6 text-center mb-2 mt-2 question-possibilities-show">
-              <img src="{{$question->b}}" alt="odpoved b" class="img-thumbnail d-block mx-auto">
+              <img src="{{$question->b}}" alt="odpoved b" class="img-thumbnail d-block mx-auto  mt-2">
               {!! $question->answer == 'b' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
             </div>
             
             <div class="col-md-6 text-center mb-2 question-possibilities-show">
-              <img src="{{$question->c}}" alt="odpoved c" class="img-thumbnail d-block mx-auto">
+              <img src="{{$question->c}}" alt="odpoved c" class="img-thumbnail d-block mx-auto  mt-2">
               {!! $question->answer == 'c' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
             </div>
 
             <div class="col-md-6 text-center mb-2 question-possibilities-show">
-              <img src="{{$question->d}}" alt="odpoved d" class="img-thumbnail d-block mx-auto">
+              <img src="{{$question->d}}" alt="odpoved d" class="img-thumbnail d-block mx-auto  mt-2">
               {!! $question->answer == 'd' ? '<span class="text-success"><i class="fas fa-check"></i></span>': '<span class="text-danger"><i class="fas fa-times"></i></span>' !!}
             </div>
           </div>    
@@ -75,7 +75,7 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
           <div class="card border-primary mt-3">
             <div class="card-header text-white bg-primary">
               Kategórie  
@@ -85,16 +85,18 @@
                   <p class="card-text">Nie je zaradená do žiadnej kategórie</p>
                 </div>
             @else
-                <ul class="list-group list-group-flush">
                   @foreach ($categories as $item)
-                    <li class="list-group-item">{{$item->name}}</li>
+                    <div class="card-body">
+                      <p class="card-text h5">
+                        {{$item->name}}
+                      </p>
+                    </div>
                   @endforeach
-                </ul>
             @endif
           </div>  
         </div>
         
-        <div class="col-lg-6">
+        <div class="col-lg-4">
           <div class="card border-success mt-3">
             <div class="card-header text-white bg-success">
               Hodnotenie
@@ -112,7 +114,24 @@
             </div>
           </div>
         </div>
+
+        @if(Auth::user()->is_admin)
+          <div class="col-lg-4">
+            <div class="card border-secondary mt-3">
+              <div class="card-header text-white bg-secondary">
+                Priemerný strávený čas na otázke
+              </div>
+              <div class="card-body">
+                <p class="card-text h5">
+                  {{ $avgTime ? $avgTime . ' s / test / otázka / žiak' : 'Nehodnotené' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        @endif
       </div>
+
+
 
       <div class="card mt-3 border-dark">
         <div class="card-header bg-dark text-white">

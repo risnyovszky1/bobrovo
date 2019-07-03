@@ -35,7 +35,7 @@
     <form action="" method="post">
       <div class="row">
         <div class="col-md-12">
-          <h2>Upraviť y</h2>
+          <h2>Upraviť</h2>
           <div class="form-group">
             <label for="answer">
               Otázka
