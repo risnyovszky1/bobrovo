@@ -165,15 +165,17 @@ class BobrovoController extends Controller
             $query->orderBy('title', 'asc');
         }
 
+
+
+        $query->groupBy('id');
+
         if ($category){
             foreach ($category as $c){
                 $query->orHaving('categories', 'like', $c);
             }
         }
 
-        $count = intval($query->count());
-
-        $query->groupBy('id');
+        $count = count($query->get());
 
         $page = \Illuminate\Support\Facades\Input::get('page') ? \Illuminate\Support\Facades\Input::get('page') - 1 :  0;
 
