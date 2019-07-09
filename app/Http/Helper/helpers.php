@@ -2,6 +2,10 @@
 use Illuminate\Support\Facades\DB;
 //use Auth;
 
+
+$QUESTIONS_IN_ONE_PAGE = 50;
+
+
 function newMessagesCount(){
   return DB::table('messages')->select('id')->where([
       ['to', Auth::user()->id],

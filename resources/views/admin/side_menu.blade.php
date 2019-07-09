@@ -1,5 +1,11 @@
-<div class="accordion" id="admin-menu">
 
+<div class="row d-md-none">
+  <div class="col-md-12 pt-3 pb-3 pl-4 pr-4">
+    <button id="toggle-admin-menu" class="btn btn-success btn-block justify-content-between d-flex align-self-center"><span>Menu </span> <i class="fas fa-caret-down"></i></button>
+  </div>
+</div>
+
+<div class="accordion display-none d-md-block d-lg-block d-xl-block" id="admin-menu">
   <!-- ADMIN PART -->
   @if(Auth::user()->is_admin == 1)
   <div class="card">

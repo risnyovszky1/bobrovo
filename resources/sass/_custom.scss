@@ -125,3 +125,16 @@ table.table th{
 .question-possibilities-show img{
   max-height: 80px;
 }
+
+.display-none{
+  display: none;
+}
+
+#pagination{
+  .btn{
+    margin-right: 10px;
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}

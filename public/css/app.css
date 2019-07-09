@@ -11362,3 +11362,15 @@ table.table th {
   max-height: 80px;
 }
 
+.display-none {
+  display: none;
+}
+
+#pagination .btn {
+  margin-right: 10px;
+}
+
+#pagination .btn:last-child {
+  margin-right: 0;
+}
+

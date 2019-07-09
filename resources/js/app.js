@@ -157,28 +157,25 @@ $(document).ready(function(){
     .mouseenter(function(){
       var index = $(this).index()
       $('.rating-star').each(function(i){
-        console.log(index, i);
-        if (i < index){
+        if (i <= index){
           $(this).removeClass('text-secondary');
           $(this).addClass('text-warning');
         }
         else{
-          $(this).addClass('text-warning');
-          $(this).removeClass('text-secondary');
+          $(this).removeClass('text-warning');
+          $(this).addClass('text-secondary');
         }
       });
     })
     .mouseleave(function(){
       $('.rating-star').each(function(i){
-        console.log($(this).data('original'));
-        
         if ($(this).data('original') == true){
           $(this).removeClass('text-secondary');
           $(this).addClass('text-warning');
         }
         else{
-          $(this).addClass('text-warning');
-          $(this).removeClass('text-secondary');
+          $(this).removeClass('text-warning');
+          $(this).addClass('text-secondary');
         }
       });
     });
@@ -199,5 +196,10 @@ $(document).ready(function(){
       pickerPosition: "top-right"
     });
 
+    // -- admin menu
+    $('#toggle-admin-menu').click(function () {
+      $('#admin-menu').slideToggle();
+      $('#toggle-admin-menu i').toggleClass('fa-caret-down fa-caret-up')
+    });
     
 });

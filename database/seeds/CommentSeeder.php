@@ -17,7 +17,7 @@ class CommentSeeder extends Seeder
         //
         $faker = Faker::create();
 
-        for($i = 0; $i < 38; $i++){
+        for($i = 0; $i < 400; $i++){
             $comment = new Comment([
                 'user_id' => DB::table('users')->select('id')->inRandomOrder()->first()->id,
                 'question_id' => DB::table('questions')->select('id')->inRandomOrder()->first()->id,

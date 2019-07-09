@@ -7,8 +7,8 @@
 @section('admin_content')
 <form action="" method="post">
   <div class="row">
-    <div class="col-lg-8 pt-3 pb-3">
-        <h2>{{ $title }} <span class="badge badge-secondary badge-pill">{{ count($questions) }}</span></h2>
+    <div class="col-lg-9 pt-3 pb-3">
+        <h2>{{ $title }} <span class="badge badge-secondary badge-pill">{{ $total }}</span></h2>
 
       @if(count($errors) > 0)
             @foreach($errors->all() as $err)
@@ -29,6 +29,9 @@
                         <td scope="col" class="text-center">Náročnosť</td>
                         <td scope="col" class="text-center">Typ</td>
                         <td scope="col" class="text-center">Hodnotenie</td>
+                        <td scope="col" class="text-center">Počet <br>hodnotení</td>
+                        <td scope="col" class="text-center">Počet <br>kommentov</td>
+                        <td scope="col" class="text-center">Počet <br>použití</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +39,17 @@
                         <tr>
                             <td><input type="checkbox" name="questions[]" id="" value="{{$item->id}}"></td>
                             <td><a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a></td>
-                            <td><span class="extra-small">{!! count($item->categories) > 0 ? implode($item->categories, '<br>') : 'Bez kategórie' !!}</span></td>
+                            <td>
+                                <span class="extra-small">
+                                    @if(count(explode(',', $item->categories)) > 0)
+                                        @foreach( explode(',', $item->categories) as $itemCategory)
+                                            {!! $categories[$itemCategory] . '<br>' !!}
+                                        @endforeach
+                                    @else
+                                        Bez kategórie
+                                    @endif
+                                </span>
+                            </td>
                             <td class="text-center">{{ $item->difficulty }}</td>
                             <td class="text-center">
                                 @switch($item->type)
@@ -53,29 +66,45 @@
                                 @endswitch
                             </td>
                             <td class="text-center">
-                            
                                 @if($item->rating < 1)
                                     <span class="badge badge-pill badge-danger">Nehodnotené</span>
                                 @elseif($item->rating >= 4 )
-                                    <span class="badge badge-pill badge-success">{{$item->rating}}</span>
+                                    <span class="badge badge-pill badge-success">{{round($item->rating, 1)}}</span>
                                 @else
-                                    <span class="badge badge-pill badge-warning">{{$item->rating}}</span>
-                                @endif 
-                                 
+                                    <span class="badge badge-pill badge-warning">{{round($item->rating, 1)}}</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                {{ $item->rating_count }}
+                            </td>
+                            <td class="text-center">
+                                {{ $item->comments }}
+                            </td>
+                            <td class="text-center">
+                                {{ $item->popularity }}
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            
         </div>
+
+          <div id="pagination" class="text-center pt-3 pb-3">
+              @php
+                $totalPages = intval(ceil($total / 50));
+                $actualPage = \Illuminate\Support\Facades\Input::get('page') ? \Illuminate\Support\Facades\Input::get('page') - 1 :  0;
+              @endphp
+              @for($i = 0; $i < $totalPages; $i++)
+                  <a href="{{ route('questions.all') . '?page=' . ($i+1) }}" class="btn {{ $actualPage == $i ? 'btn-dark' : 'btn-secondary' }}">{{ $i+1 }}</a>
+              @endfor
+          </div>
       @else
         <p>Zaťiaľ žiadne otázky sa tu nenachádzajú.</p>
       @endif
 
       
     </div>
-    <div class="col-lg-4 pt-3 pb-3">
+    <div class="col-lg-3 pt-3 pb-3">
         <div class="form-group text-right">
             <button class="btn btn-sm btn-danger" id="unselect-all" data-select="questions[]">Zrušiť označenie</button>
             <button class="btn btn-sm btn-success" id="select-all" data-select="questions[]">Označit všetko</button>
