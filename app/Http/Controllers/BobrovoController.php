@@ -12,6 +12,7 @@ use App\Test;
 use App\Question;
 use App\Comment;
 use Auth;
+use \Illuminate\Support\Facades\Input;
 use Faker\Factory as Faker;
 
 class BobrovoController extends Controller
@@ -136,23 +137,36 @@ class BobrovoController extends Controller
         $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
         $order = !empty($filter['order']) ? $filter['order'] : null;
 
-        $query = DB::table('questions_view')
-            ->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
-                'rating_count', 'comments', 'popularity', DB::raw('GROUP_CONCAT(category_id) as categories'));
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver");
+
+        $query = DB::table('questions_view');
+
+        if ($driver != 'pgsql'){
+            $query->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
+                    'rating_count', 'comments', 'popularity', DB::raw('GROUP_CONCAT(category_id) as categories'))
+                ->leftJoin('question_category', 'questions_view.id','question_category.question_id')
+                ->groupBy('id');
+        }else{
+            // TODO: fix filtering questions for postgresql
+            $query
+                ->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
+                    'rating_count', 'comments', 'popularity',
+                    DB::raw('array_to_string(array(SELECT category_id FROM question_category WHERE question_id=id),\', \') as categories'))
+                ->groupBy('id', 'questions_view.title', 'questions_view.type', 'questions_view.difficulty',  'questions_view.created_by',
+                    'questions_view.rating', 'questions_view.rating_count', 'questions_view.comments', 'questions_view.popularity');
+        }
 
         if($own){
             $query->where('created_by', Auth::user()->id);
         }
         if ($type){
             if ($type == 'just-interactive') $query->where('type', '=',5);
-            if ($type == 'no-interactive') $query->where('type', '!=', 5);
+            if ($type == 'no-interactive') $query->where('type', '<', 5);
         }
         if ($diffFrom && $diffTo){
             $query->whereBetween('difficulty', [$diffFrom, $diffTo]);
         }
-
-        $query
-            ->leftJoin('question_category', 'questions_view.id','question_category.question_id');
 
         if ($order){
             if ($order == 1){ $query->orderBy('title', 'asc'); }
@@ -165,10 +179,6 @@ class BobrovoController extends Controller
             $query->orderBy('title', 'asc');
         }
 
-
-
-        $query->groupBy('id');
-
         if ($category){
             foreach ($category as $c){
                 $query->orHaving('categories', 'like', $c);
@@ -177,14 +187,12 @@ class BobrovoController extends Controller
 
         $count = count($query->get());
 
-        $page = \Illuminate\Support\Facades\Input::get('page') ? \Illuminate\Support\Facades\Input::get('page') - 1 :  0;
+        $page = Input::get('page') ? Input::get('page') - 1 :  0;
 
         $result = array(
             'total' => $count,
             'questions' => $query->offset($page * 50)->limit(50)->get()
         );
-
-        //dd($count);
 
         return $result;
     }
@@ -195,6 +203,8 @@ class BobrovoController extends Controller
         foreach($categories as $cat){
             $result[$cat->id] = $cat->name;
         }
+
+//        /dd($result);
 
         return $result;
     }

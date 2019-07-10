@@ -43,7 +43,7 @@
                                 <span class="extra-small">
                                     @if(count(explode(',', $item->categories)) > 0)
                                         @foreach( explode(',', $item->categories) as $itemCategory)
-                                            {!! $categories[$itemCategory] . '<br>' !!}
+                                            {!! $categories[trim($itemCategory)] . '<br>' !!}
                                         @endforeach
                                     @else
                                         Bez kategórie
