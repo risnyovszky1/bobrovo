@@ -24,7 +24,7 @@ class PagesController extends Controller
   }
 
   public function postHomePage(Request $request){
-    $newsFeed = DB::table('news')->select('news as news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
+    $newsFeed = DB::table('news')->select('id as news_id', 'title', 'created_at')->where('visible', 1)->orderBy('created_at', 'desc')->limit(3)->get();
     
     $this->validate($request, [
       'name' => 'required',

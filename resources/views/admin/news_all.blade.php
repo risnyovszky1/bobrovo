@@ -12,7 +12,7 @@
       @if(!empty($newsFeed) && count($newsFeed) > 0)
         <div id="news-feed">
           <div class="table-responsive">
-            <table class="table mt-2 table-hover">
+            <table class="table mt-2 table-hover table-light">
               <thead>
                 <tr class="table-secondary">
                   <th scope="col">Názov</th>

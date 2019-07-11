@@ -138,3 +138,12 @@ table.table th{
     }
   }
 }
+
+#student-group-wrapper{
+  .card .card-body:last-child{
+    padding-top: 0;
+  }
+  .card .card-img i{
+    font-size: 8em;
+  }
+}

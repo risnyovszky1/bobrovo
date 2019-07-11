@@ -21,7 +21,7 @@
               <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo"> 
               {{ __('student.Bobrovo') }}
           </a>
-          <button class="navbar-toggler bg-bobrovo-orange text-white border-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler bg-bobrovo-green-light text-white border-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
   
@@ -31,7 +31,7 @@
                 <a href="{{ route('tests_student') }}" class="nav-link"><i class="fas fa-file-alt"></i> {{  __('student.Tests') }}</a>
               </li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link"><i class="fas fa-users"></i> {{  __('student.Groups') }}</a>
+                <a href="{{ route('groups_student') }}" class="nav-link"><i class="fas fa-users"></i> {{  __('student.Groups') }}</a>
               </li>
               <li class="nav-item">
                 <a class="btn btn-danger btn-sm nav-link ml-2" href="{{ route('logout_student') }}"><i class="fas fa-sign-out-alt"></i> {{  __('student.Logout') }}</a>

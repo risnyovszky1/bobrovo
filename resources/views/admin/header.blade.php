@@ -36,7 +36,7 @@
   </head>
   <body>
     <header id="header-admin">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-green">
+      <nav class="navbar navbar-expand-sm navbar-dark bg-bobrovo-green">
         <a class="navbar-brand" href="{{ route('admin') }}"> 
             <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo"> 
             Bobrovo
@@ -46,7 +46,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto mt-2 mt-sm-0">
             <li class="nav-item">
               <a class="btn btn-danger btn-sm nav-link" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Odhlásiť</a>
             </li>

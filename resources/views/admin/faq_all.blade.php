@@ -12,7 +12,7 @@
       @if(!empty($faq) && count($faq) > 0)
         <div id="faq-feed">
           <div class="table-responsive">
-            <table class="table mt-2 table-hover">
+            <table class="table mt-2 table-hover table-light">
               <thead>
                 <tr class="table-secondary">
                   <th scope="col">Otázka</th>

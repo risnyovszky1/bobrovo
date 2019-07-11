@@ -11,7 +11,7 @@
 
       @if(!empty($tests) && count($tests) > 0)
         <div class="table-responsive">
-            <table class="table mt-2 table-hover">
+            <table class="table mt-2 table-hover table-light">
                 <thead>
                     <tr class="table-secondary">
                         <th scope="col">Názov</th>

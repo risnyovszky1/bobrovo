@@ -346,4 +346,39 @@ class TestController extends Controller
     }
     return response('Hello Word!', 200);
   }
+
+  public function getGroupsPage(){
+        $groups = DB::table('student_group')
+            ->select('id', 'name', 'description')
+            ->join('groups', 'student_group.group_id', 'groups.id')
+            ->where('student_group.student_id', Auth::user()->id)
+            ->orderBy('name')
+            ->get();
+
+      return view('student.groups', ['groups' => $groups]);
+  }
+
+  public function getOneGroupPage($id){
+      $group = DB::table('groups')
+          ->select('groups.id', 'name', 'description', DB::raw("CONCAT(users.first_name, ' ', users.last_name) as teacher_name"))
+          ->join('users', 'groups.created_by', 'users.id')
+          ->where('groups.id', $id)
+          ->first();
+
+      $tests = DB::table('tests')
+          ->select('id', 'name', 'available_from', 'available_to')
+          ->where('group_id', $id)
+          ->orderBy('name', 'asc')
+          ->get();
+
+      $students = DB::table('student_group')
+          ->select(DB::raw("CONCAT(students.first_name, ' ', students.last_name) as name"))
+          ->join('students', 'student_group.student_id', 'students.id')
+          ->where('student_id', '!=', Auth::user()->id)
+          ->where('student_group.group_id', $id)
+          ->orderBy('name', 'asc')
+          ->pluck('name');
+
+      return view('student.group_one', ['group'=> $group, 'students' => $students, 'tests' => $tests]);
+  }
 }

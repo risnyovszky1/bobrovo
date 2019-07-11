@@ -15,92 +15,8 @@ use Auth;
 use \Illuminate\Support\Facades\Input;
 use Faker\Factory as Faker;
 
-class BobrovoController extends Controller
+class QuestionController extends Controller
 {
-    // LOGIN ADMIN / TEACHER
-    public function getLogut(){
-        Auth::logout();
-        return redirect()->route('homepage');
-    }
-
-    public function getLoginTeacherPage(){
-        return view('general.login_teacher');
-    }
-
-    public function getBadLinkPage(){
-        return view('admin.badlink');
-    }
-
-    public function postLoginTeacherPage(Request $request){
-        $this->validate($request, [
-                'email' => 'email|required',
-                'password' => 'required'
-            ]
-        );
-
-        $userData = array(
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-        );
-
-        if (Auth::attempt($userData)){
-            return redirect()->route('admin');
-        }
-
-        return view('general.login_teacher');;
-    }
-
-    // ====================================
-    // |                                  |
-    // |            ADMIN PAGES           |
-    // |                                  |
-    // ====================================
-
-    public function getUcitelAdminPage(){
-        return view('admin.admin');
-    }
-
-    // ---- USERS ----
-    public function getAllUsersPage(){
-        $users = DB::table('users')
-            //->join('students', 'users.id', 'students.teacher_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email' )
-            ->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC')
-            //->groupBy('teacher_id')
-            ->get();
-
-        $count = [];
-
-        foreach($users as $user){
-            $count[$user->id] = DB::table('students')->select('id')->where('teacher_id', $user->id)->count();
-        }
-
-        return view('admin.users_all', ['users' => $users, 'count' => $count]);
-    }
-
-    public function getToggleAdminUser($id){
-
-        if ($id != Auth::user()->id){
-            $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
-
-            DB::table('users')
-                ->where('id', $id)
-                ->update([
-                    'is_admin' => $val ? 0 : 1
-                ]);
-        }
-
-        return redirect()->route('users.all');
-    }
-
-    public function getDeleteUser($id){
-        if ($id != Auth::user()->id){
-            DB::table('users')->where('id', $id)->delete();
-        }
-
-        return redirect()->route('users.all');
-    }
-
 
     // ====================================
     // |                                  |
@@ -144,7 +60,7 @@ class BobrovoController extends Controller
 
         if ($driver != 'pgsql'){
             $query->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
-                    'rating_count', 'comments', 'popularity', DB::raw('GROUP_CONCAT(category_id) as categories'))
+                    'rating_count', 'comments', 'popularity', DB::raw("CONCAT(',', GROUP_CONCAT(category_id), ',') as categories"))
                 ->leftJoin('question_category', 'questions_view.id','question_category.question_id')
                 ->groupBy('id');
         }else{
@@ -181,7 +97,7 @@ class BobrovoController extends Controller
 
         if ($category){
             foreach ($category as $c){
-                $query->orHaving('categories', 'like', $c);
+                $query->orHaving('categories', 'like', '%,' . $c . ',%' );
             }
         }
 

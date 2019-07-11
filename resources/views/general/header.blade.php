@@ -17,7 +17,7 @@
   </head>
   <body>
     <header id="header-bobrovo">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-bobrovo-green">
+      <nav class="navbar navbar-expand-sm navbar-dark bg-bobrovo-green">
         <a class="navbar-brand" href="{{ route('homepage') }}">
           <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="Bobrovo logo">
           Bobrovo</a>

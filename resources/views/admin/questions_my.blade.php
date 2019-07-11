@@ -20,7 +20,7 @@
 
                 @if(!empty($questions) && count($questions) > 0)
                     <div class="table-responsive">
-                        <table class="table table-hover mt-2">
+                        <table class="table table-hover mt-2 table-light">
                             <thead>
                             <tr class="table-secondary">
                                 <td scope="col">#</td>

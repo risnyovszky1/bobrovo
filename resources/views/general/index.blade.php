@@ -121,26 +121,26 @@
         <div class="col-md-12 text-center">
           <h1>Povedali o nás</h1>
         </div>
-        <div class="row">
-          <div class="col-lg-8 offset-lg-3 pt-4 pb-3">
-            <div class="slick-slider">
-              <div class="slider-item">
-                <div class="testimonial">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <div class="testimonial-img-holder">
-                        <img src="/img/user.jpg" alt="" class="img-thumbnail mb-2">
-                      </div>
-                    </div>
-                    <div class="col-lg-8">
-                      <h3>Jozef Bobor</h3>
-                      <p class="text-muted mb-1">Učiteľ</p>
-                      <blockquote class="blockquote">
-                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                      </blockquote>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 offset-lg-3 pt-4 pb-3">
+          <div class="slick-slider">
+            <div class="slider-item">
+              <div class="testimonial">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="testimonial-img-holder">
+                      <img src="/img/user.jpg" alt="" class="img-thumbnail mb-2">
                     </div>
                   </div>
-                </div>
+                  <div class="col-lg-8">
+                    <h3>Jozef Bobor</h3>
+                    <p class="text-muted mb-1">Učiteľ</p>
+                    <blockquote class="blockquote">
+                      <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                    </blockquote>
+                  </div>
+                </div>d
               </div>
             </div>
           </div>

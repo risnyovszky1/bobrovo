@@ -11374,3 +11374,11 @@ table.table th {
   margin-right: 0;
 }
 
+#student-group-wrapper .card .card-body:last-child {
+  padding-top: 0;
+}
+
+#student-group-wrapper .card .card-img i {
+  font-size: 8em;
+}
+
