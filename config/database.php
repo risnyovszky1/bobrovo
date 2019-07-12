@@ -66,7 +66,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'schema' => 'bobrovo',
+            'schema' => 'public',
             'sslmode' => 'prefer',
         ],
 
