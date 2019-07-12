@@ -21,7 +21,7 @@
         </div>
       @endif
 
-      <div class="card mt-3 border-primary">
+      <div class="card mt-4 border-primary shadow">
         <div class="card-header bg-primary text-white">
           Názov
         </div>
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <div class="card mt-3 border-secondary">
+      <div class="card mt-4 border-secondary shadow">
         <div class="card-header bg-secondary text-white">
           Popis
         </div>
@@ -41,7 +41,7 @@
 
       <div class="row">
         <div class="col-md-6">
-          <div class="card mt-3 border-info">
+          <div class="card mt-4 border-info shadow">
             <div class="card-header bg-info text-white">
               Vytvorený
             </div>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-md-6">
-          <div class="card mt-3 border-info">
+          <div class="card mt-4 border-info shadow">
             <div class="card-header bg-info text-white">
               Počet žiakov
             </div>
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div class="card mt-3 border-success">
+      <div class="card mt-4 border-success shadow">
         <div class="card-header bg-success text-white">
           Žiaci
         </div>
@@ -85,9 +85,9 @@
         @endif
       </div>
 
-      <div class="form-group mt-3">
-        <a href="{{ route('groups.edit', ['id' => $group->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i> Upraviť</a>
-        <a href="{{ route('groups.export', ['id' => $group->id]) }}" class="btn btn-secondary" target="_blank"><i class="fas fa-print"></i> Vytlačiť zoznam žiakov</a>   
+      <div class="form-group mt-4">
+        <a href="{{ route('groups.edit', ['id' => $group->id]) }}" class="btn btn-primary shadow"><i class="far fa-edit"></i> Upraviť</a>
+        <a href="{{ route('groups.export', ['id' => $group->id]) }}" class="btn btn-secondary shadow" target="_blank"><i class="fas fa-print"></i> Vytlačiť zoznam žiakov</a>
       </div>
     </div>
   </div>

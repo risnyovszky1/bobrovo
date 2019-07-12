@@ -9,10 +9,10 @@
   <div class="admin-panel pt-2 pb-2">
 
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8 pb-3">
             <h2>Výsledky testu</h2>
 
-            <div class="card border-primary mt-3">
+            <div class="card border-primary mt-4 mb-3 shadow">
                 <div class="card-header bg-primary text-white">
                     Test
                 </div>
@@ -55,9 +55,8 @@
                         @endforeach
                     </tbody>
                 </table>
-
-                <a href="{{ route('tests.one', ['id'=>$test->id]) }}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Spať na test</a>
             </div>
+            <a href="{{ route('tests.one', ['id'=>$test->id]) }}" class="btn btn-primary shadow"><i class="fas fa-arrow-circle-left"></i> Spať na test</a>
         </div>
     </div>
     

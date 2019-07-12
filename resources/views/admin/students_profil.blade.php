@@ -41,7 +41,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card mt-3 border-primary">
+        <div class="card mt-4 border-primary shadow">
           <div class="card-header bg-primary text-white">
             Meno
           </div>
@@ -50,9 +50,9 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-md-6">
-        <div class="card mt-3 border-danger">
+        <div class="card mt-4 border-danger shadow">
           <div class="card-header bg-danger text-white">
             Priezvisko
           </div>
@@ -65,7 +65,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card mt-3 border-secondary">
+        <div class="card mt-4 border-secondary shadow">
           <div class="card-header bg-secondary text-white">
             Kód
           </div>
@@ -74,9 +74,9 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-md-6">
-        <div class="card mt-3 border-info">
+        <div class="card mt-4 border-info shadow">
           <div class="card-header bg-info text-white">
             Registrovaný
           </div>
@@ -91,7 +91,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card mt-3 border-success">
+        <div class="card mt-4 border-success shadow">
             <div class="card-header bg-success text-white">
               Skupiny
             </div>

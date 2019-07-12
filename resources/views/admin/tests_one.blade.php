@@ -21,7 +21,7 @@
         </div>
       @endif
 
-      <div class="card mt-3 border-primary">
+      <div class="card mt-4 border-primary shadow">
         <div class="card-header bg-primary text-white">
           Názov
         </div>
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <div class="card mt-3 border-success">
+      <div class="card mt-4 border-success shadow">
           <div class="card-header bg-success text-white">
               Skupina
           </div>
@@ -43,7 +43,7 @@
           </div>
       </div>
 
-      <div class="card mt-3 border-info">
+      <div class="card mt-4 border-info shadow">
         <div class="card-header bg-info text-white">
           Popis
         </div>
@@ -54,7 +54,7 @@
 
       <div class="row">
           <div class="col-md-4">
-            <div class="card mt-3">
+            <div class="card mt-4 shadow">
                 <div class="card-header">
                     Odkedy je dostupný
                 </div>
@@ -67,7 +67,7 @@
           </div>
 
           <div class="col-md-4">
-            <div class="card mt-3">
+            <div class="card mt-4 shadow">
                 <div class="card-header">
                     Dokedy je dostupný
                 </div>
@@ -79,7 +79,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card mt-3">
+            <div class="card mt-4 shadow">
               <div class="card-header">
                 Čas na vypracovanie
               </div>
@@ -90,7 +90,7 @@
           </div>
       </div>
       
-      <div class="card mt-3 border-secondary">
+      <div class="card mt-4 border-secondary shadow">
         <div class="card-header text-white bg-secondary">
             Nastavenia
         </div>
@@ -114,7 +114,7 @@
       </div>
 
       @if (!empty($questions) && count($questions) > 0)
-        <div class="card mt-3 border-dark">
+        <div class="card mt-4 border-dark shadow">
             <div class="card-header text-white bg-dark">
                 Otázky na teste
             </div>
@@ -132,9 +132,9 @@
       @endif
       
 
-      <div class="form-group mt-3">
-        <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary"><i class="far fa-edit"></i> Upraviť</a>
-        <a href="{{ route('tests.results', ['id' => $test->id]) }}" class="btn btn-success"><i class="fas fa-poll"></i> Výsledky</a>
+      <div class="form-group mt-4">
+        <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary shadow"><i class="far fa-edit"></i> Upraviť</a>
+        <a href="{{ route('tests.results', ['id' => $test->id]) }}" class="btn btn-success shadow"><i class="fas fa-poll"></i> Výsledky</a>
         
       </div>
 

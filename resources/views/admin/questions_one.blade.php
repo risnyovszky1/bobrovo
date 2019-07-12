@@ -10,7 +10,7 @@
       <h2>Otázka</h2>
       
 
-      <div class="card mt-3 border-primary">
+      <div class="card mt-4 border-primary shadow">
         <div class="card-header bg-primary text-white">
           Názov
         </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="card mt-3 border-success">
+      <div class="card mt-4 border-success shadow">
         <div class="card-header bg-success text-white">
           Otázka pre študenta
         </div>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="card mt-3 border-info">
+      <div class="card mt-4 border-info shadow">
         <div class="card-header bg-info text-white">
           Možné riešenia
         </div>
@@ -76,7 +76,7 @@
 
       <div class="row">
         <div class="col-lg-4">
-          <div class="card border-primary mt-3">
+          <div class="card border-primary mt-4 shadow">
             <div class="card-header text-white bg-primary">
               Kategórie  
             </div>  
@@ -97,7 +97,7 @@
         </div>
         
         <div class="col-lg-4">
-          <div class="card border-success mt-3">
+          <div class="card border-success mt-4 shadow">
             <div class="card-header text-white bg-success">
               Hodnotenie
             </div>
@@ -117,7 +117,7 @@
 
         @if(Auth::user()->is_admin)
           <div class="col-lg-4">
-            <div class="card border-secondary mt-3">
+            <div class="card border-secondary mt-4 shadow">
               <div class="card-header text-white bg-secondary">
                 Priemerný strávený čas na otázke
               </div>
@@ -131,39 +131,40 @@
         @endif
       </div>
 
-
-
-      <div class="card mt-3 border-dark">
-        <div class="card-header bg-dark text-white">
-            Vysvetlenie pre učiteľa
+      @if(!empty(trim($question->description_teacher)))
+        <div class="card mt-4 border-dark shadow">
+          <div class="card-header bg-dark text-white">
+              Vysvetlenie pre učiteľa
+          </div>
+          <div class="card-body">
+              {!! $question->description_teacher !!}
+          </div>
         </div>
-        <div class="card-body">
-            {!! $question->description_teacher !!}
-        </div>
-      </div>
+      @endif
 
-      <div class="card mt-3 border-secondary">
-        <div class="card-header bg-secondary text-white">
-            Vysvetlenie pre študenta
+      @if(!empty(trim($question->description)))
+        <div class="card mt-4 border-secondary shadow">
+          <div class="card-header bg-secondary text-white">
+              Vysvetlenie pre študenta
+          </div>
+          <div class="card-body">
+              {!! $question->description !!}
+          </div>
         </div>
-        <div class="card-body">
-            {!! $question->description !!}
-        </div>
-      </div>
-
-      <div class="form-group mt-3">
+      @endif
+      <div class="form-group mt-4">
         @if (Auth::user()->is_admin || $question->created_by == Auth::user()->id)
-          <a href="{{ route('questions.edit', ['id' => $question->id]) }}" class="btn btn-primary">
+          <a href="{{ route('questions.edit', ['id' => $question->id]) }}" class="btn btn-primary shadow">
             <i class="far fa-edit"></i> Upraviť
           </a>
-          <a href="{{ route('questions.delete', ['id' => $question->id]) }}" class="btn btn-danger">
+          <a href="{{ route('questions.delete', ['id' => $question->id]) }}" class="btn btn-danger shadow">
             <i class="fas fa-trash"></i> Vymazať
           </a>
         @endif
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#comment-modal">
+        <button class="btn btn-secondary shadow" data-toggle="modal" data-target="#comment-modal">
           <i class="fas fa-pen"></i> Napísať komment
         </button>
-        <button class="btn btn-warning" data-toggle="modal" data-target="#rating-modal">
+        <button class="btn btn-warning shadow" data-toggle="modal" data-target="#rating-modal">
           <i class="far fa-star"></i> Hodnotiť
         </button>
         
@@ -191,7 +192,7 @@
       @endif
       
 
-      <div class="card border-warning mt-4">
+      <div class="card border-warning mt-4 shadow">
         <div class="card-header text-dark bg-warning">
           Komenty
         </div>
