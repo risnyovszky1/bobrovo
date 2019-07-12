@@ -6,12 +6,12 @@
 
 @section('content')
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 pt-3">
-            <h4>{{  __('student.Welcome') }}, {{ Auth::user()->first_name . ' ' .  Auth::user()->last_name }}!</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 pt-3">
+                <h4>{{  __('student.Welcome') }}, {{ Auth::user()->first_name . ' ' .  Auth::user()->last_name }}!</h4>
+            </div>
         </div>
     </div>
-</div>   
 
 @endsection

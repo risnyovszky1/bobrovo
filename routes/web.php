@@ -55,7 +55,6 @@ Route::get('/faq', [
 ]);
 
 
-
 // --------
 // | TestController / Pages for students
 // --------
@@ -140,9 +139,6 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
 });
 
 
-
-
-
 // --------
 // | QuestionController / admin pages
 // --------
@@ -165,9 +161,7 @@ Route::post('/upload-img', [
 ]);
 
 
-
-
-Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
+Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     Route::get('/', [
         'uses' => 'UserController@getUcitelAdminPage',
         'as' => 'admin'
@@ -183,7 +177,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     ]);
 
     // USERS
-    Route::group(['prefix' => 'pouzivatelia'], function(){
+    Route::group(['prefix' => 'pouzivatelia'], function () {
         Route::get('/', [
             'uses' => 'UserController@getAllUsersPage',
             'as' => 'users.all'
@@ -205,7 +199,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     // |  NewsController / only for admin
     // --------
 
-    Route::group(['prefix' => 'novinky'], function(){
+    Route::group(['prefix' => 'novinky'], function () {
         Route::get('/', [
             'uses' => 'NewsController@getAllNewsPage',
             'as' => 'news.all'
@@ -240,7 +234,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     // |  FaqController / only for admins
     // ---------
 
-    Route::group(['prefix' => 'faq'], function(){
+    Route::group(['prefix' => 'faq'], function () {
         Route::get('/', [
             'uses' => 'FaqController@getAllFAQPage',
             'as' => 'faq.all'
@@ -275,7 +269,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     // |  MessageController / for admins and teachers
     // ------
 
-    Route::group(['prefix' => 'spravy'], function(){
+    Route::group(['prefix' => 'spravy'], function () {
         Route::get('/', [
             'uses' => 'MessageController@getMessagesPage',
             'as' => 'msg.all'
@@ -312,7 +306,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     // -------
     // |   GroupController / for admins and teachers /
     // ------
-    Route::group(['prefix' => 'skupiny'], function(){
+    Route::group(['prefix' => 'skupiny'], function () {
         Route::get('/', [
             'uses' => 'GroupController@getGroupsPage',
             'as' => 'groups.all'
@@ -358,7 +352,7 @@ Route::group(['prefix' => 'ucitel', 'middleware'=>'auth'], function(){
     // |  StudentController / for admins and teachers
     // -----
 
-    Route::group(['prefix' => 'ziaci'], function(){
+    Route::group(['prefix' => 'ziaci'], function () {
         Route::get('/', [
             'uses' => 'StudentController@getStudentsPage',
             'as' => 'students.all'

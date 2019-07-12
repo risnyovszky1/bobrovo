@@ -25,9 +25,9 @@ class QuestionController extends Controller
     // ====================================
 
 
-
-    // ---- QUESTIONS ---- 
-    public function getAllQuestionsPage(){
+    // ---- QUESTIONS ----
+    public function getAllQuestionsPage()
+    {
         $tests = DB::table('tests')
             ->select('id', 'name')
             ->where('teacher_id', Auth::user()->id)
@@ -45,7 +45,8 @@ class QuestionController extends Controller
         ]);
     }
 
-    private function getFilteredQuestions($own = false){
+    private function getFilteredQuestions($own = false)
+    {
         $filter = Session::get('questionFilter');
         $category = !empty($filter['category']) ? $filter['category'] : null;
         $type = !empty($filter['type']) ? $filter['type'] : null;
@@ -58,52 +59,61 @@ class QuestionController extends Controller
 
         $query = DB::table('questions_view');
 
-        if ($driver != 'pgsql'){
+        if ($driver != 'pgsql') {
             $query->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
-                    'rating_count', 'comments', 'popularity', DB::raw("CONCAT(',', GROUP_CONCAT(category_id), ',') as categories"))
-                ->leftJoin('question_category', 'questions_view.id','question_category.question_id')
+                'rating_count', 'comments', 'popularity', DB::raw("CONCAT(',', GROUP_CONCAT(category_id), ',') as categories"))
+                ->leftJoin('question_category', 'questions_view.id', 'question_category.question_id')
                 ->groupBy('id');
-        }else{
+        } else {
             // TODO: fix filtering questions for postgresql
             $query
                 ->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
                     'rating_count', 'comments', 'popularity',
                     DB::raw('array_to_string(array(SELECT category_id FROM question_category WHERE question_id=id),\', \') as categories'))
-                ->groupBy('id', 'questions_view.title', 'questions_view.type', 'questions_view.difficulty',  'questions_view.created_by',
+                ->groupBy('id', 'questions_view.title', 'questions_view.type', 'questions_view.difficulty', 'questions_view.created_by',
                     'questions_view.rating', 'questions_view.rating_count', 'questions_view.comments', 'questions_view.popularity');
         }
 
-        if($own){
+        if ($own) {
             $query->where('created_by', Auth::user()->id);
         }
-        if ($type){
-            if ($type == 'just-interactive') $query->where('type', '=',5);
+        if ($type) {
+            if ($type == 'just-interactive') $query->where('type', '=', 5);
             if ($type == 'no-interactive') $query->where('type', '<', 5);
         }
-        if ($diffFrom && $diffTo){
+        if ($diffFrom && $diffTo) {
             $query->whereBetween('difficulty', [$diffFrom, $diffTo]);
         }
 
-        if ($order){
-            if ($order == 1){ $query->orderBy('title', 'asc'); }
-            if ($order == 2){ $query->orderBy('comments', 'desc'); }
-            if ($order == 3){ $query->orderBy('rating', 'desc'); }
-            if ($order == 4){ $query->orderBy('rating_count', 'desc'); }
-            if ($order == 5){ $query->orderBy('popularity', 'desc'); }
-        }
-        else{
+        if ($order) {
+            if ($order == 1) {
+                $query->orderBy('title', 'asc');
+            }
+            if ($order == 2) {
+                $query->orderBy('comments', 'desc');
+            }
+            if ($order == 3) {
+                $query->orderBy('rating', 'desc');
+            }
+            if ($order == 4) {
+                $query->orderBy('rating_count', 'desc');
+            }
+            if ($order == 5) {
+                $query->orderBy('popularity', 'desc');
+            }
+        } else {
             $query->orderBy('title', 'asc');
         }
 
-        if ($category){
-            foreach ($category as $c){
-                $query->orHaving('categories', 'like', '%,' . $c . ',%' );
+        if ($category) {
+            foreach ($category as $c) {
+                $query->orHaving('categories', 'like', '%,' . $c . ',%');
             }
         }
 
         $count = count($query->get());
 
-        $page = Input::get('page') ? Input::get('page') - 1 :  0;
+        $page = Input::get('page') ? Input::get('page') - 1 : 0;
 
         $result = array(
             'total' => $count,
@@ -113,10 +123,11 @@ class QuestionController extends Controller
         return $result;
     }
 
-    private function getAllCategories(){
+    private function getAllCategories()
+    {
         $categories = DB::table('categories')->select('id', 'name')->get();
         $result = [];
-        foreach($categories as $cat){
+        foreach ($categories as $cat) {
             $result[$cat->id] = $cat->name;
         }
 
@@ -125,7 +136,8 @@ class QuestionController extends Controller
         return $result;
     }
 
-    public function postAllQuestionsPage(Request $request){
+    public function postAllQuestionsPage(Request $request)
+    {
         $this->validate($request, [
             'questions' => 'required',
             'test-select' => 'required'
@@ -138,7 +150,7 @@ class QuestionController extends Controller
                     ['test_id', $request->input('test-select')]])
                 ->count();
 
-            if ($count == 0){
+            if ($count == 0) {
                 DB::table('question_test')->insert([
                     'question_id' => $q,
                     'test_id' => $request->input('test-select')
@@ -149,7 +161,8 @@ class QuestionController extends Controller
         return redirect()->route('questions.all');
     }
 
-    public function getMyQuestionsPage(){
+    public function getMyQuestionsPage()
+    {
         $tests = DB::table('tests')
             ->select('id', 'name')
             ->where('teacher_id', Auth::user()->id)
@@ -167,7 +180,8 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function postMyQuestionsPage(Request $request){
+    public function postMyQuestionsPage(Request $request)
+    {
         $this->validate($request, [
             'questions' => 'required',
             'test-select' => 'required'
@@ -180,7 +194,7 @@ class QuestionController extends Controller
                     ['test_id', $request->input('test-select')]])
                 ->count();
 
-            if ($count == 0){
+            if ($count == 0) {
                 DB::table('question_test')->insert([
                     'question_id' => $q,
                     'test_id' => $request->input('test-select')
@@ -191,7 +205,8 @@ class QuestionController extends Controller
         return redirect()->route('questions.my');
     }
 
-    public function getQuestionPage($id){
+    public function getQuestionPage($id)
+    {
         $question = DB::table('questions')->where('id', $id)->first();
         $comments = DB::table('comments')
             ->join('users', 'comments.user_id', 'users.id')
@@ -226,7 +241,7 @@ class QuestionController extends Controller
 
         $avgTime = null;
 
-        if (Auth::user()->is_admin){
+        if (Auth::user()->is_admin) {
             $avgTime = DB::table('measurements')
                 ->select('time_spent')
                 ->where('question_id', $id)
@@ -245,7 +260,8 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function postQuestionPage(Request $request, $id){
+    public function postQuestionPage(Request $request, $id)
+    {
         $this->validate($request, [
             'test' => 'required'
         ]);
@@ -257,7 +273,7 @@ class QuestionController extends Controller
             ])
             ->count();
 
-        if ($count == 0){
+        if ($count == 0) {
             DB::table('question_test')
                 ->insert([
                     'question_id' => $id,
@@ -268,7 +284,8 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $id]);
     }
 
-    public function postAddComment(Request $request, $id){
+    public function postAddComment(Request $request, $id)
+    {
         $comment = new Comment([
             'user_id' => Auth::user()->id,
             'question_id' => $id,
@@ -280,13 +297,15 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $id]);
     }
 
-    public function getDeleteQuestion($id){
+    public function getDeleteQuestion($id)
+    {
         $question = Question::find($id);
         $question->delete();
         return redirect()->route('questions.all');
     }
 
-    public function getEditQuestionPage($id){
+    public function getEditQuestionPage($id)
+    {
         $question = Question::find($id);
         $cat = DB::table('question_category')->select('category_id')->where('question_id', $id)->get();
 
@@ -298,7 +317,8 @@ class QuestionController extends Controller
         return view('admin.questions_edit', ['question' => $question, 'categories' => $categories]);
     }
 
-    public function postEditQuestionPage(Request $request, $id){
+    public function postEditQuestionPage(Request $request, $id)
+    {
         $question = Question::find($id);
 
         $this->validate($request, [
@@ -318,7 +338,7 @@ class QuestionController extends Controller
         $question->description_teacher = $request->input('description_teacher') ? $request->input('description_teacher') : ' ';
         $question->public = $request->input('public') != null ? true : false;
 
-        if ($question->type <= 3){
+        if ($question->type <= 3) {
             $this->validate($request, [
                 'answer-a' => 'required',
                 'answer-b' => 'required',
@@ -330,25 +350,24 @@ class QuestionController extends Controller
             $question->b = $request->input('answer-b');
             $question->c = $request->input('answer-c');
             $question->d = $request->input('answer-d');
-        }
-        else if ($question->type == 4){
-            if ($request->file('answer-a-img') != null){
-                Storage::disk('public_uploads')->delete(ltrim($question->a,  '/'));
+        } else if ($question->type == 4) {
+            if ($request->file('answer-a-img') != null) {
+                Storage::disk('public_uploads')->delete(ltrim($question->a, '/'));
                 $path = $request->file('answer-a-img')->storeAs('img/answers', $question->id . 'a' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
                 $question->a = '/' . $path;
             }
-            if ($request->file('answer-b-img') != null){
-                Storage::disk('public_uploads')->delete(ltrim($question->b,  '/'));
+            if ($request->file('answer-b-img') != null) {
+                Storage::disk('public_uploads')->delete(ltrim($question->b, '/'));
                 $path = $request->file('answer-b-img')->storeAs('img/answers', $question->id . 'b' . '.' . $request->file('answer-b-img')->getClientOriginalExtension(), 'public_uploads');
                 $question->b = '/' . $path;
             }
-            if ($request->file('answer-c-img') != null){
-                Storage::disk('public_uploads')->delete(ltrim($question->c,  '/'));
+            if ($request->file('answer-c-img') != null) {
+                Storage::disk('public_uploads')->delete(ltrim($question->c, '/'));
                 $path = $request->file('answer-c-img')->storeAs('img/answers', $question->id . 'c' . '.' . $request->file('answer-c-img')->getClientOriginalExtension(), 'public_uploads');
                 $question->c = '/' . $path;
             }
-            if ($request->file('answer-d-img') != null){
-                Storage::disk('public_uploads')->delete(ltrim($question->d,  '/'));
+            if ($request->file('answer-d-img') != null) {
+                Storage::disk('public_uploads')->delete(ltrim($question->d, '/'));
                 $path = $request->file('answer-d-img')->storeAs('img/answers', $question->id . 'd' . '.' . $request->file('answer-d-img')->getClientOriginalExtension(), 'public_uploads');
                 $question->d = '/' . $path;
             }
@@ -357,7 +376,7 @@ class QuestionController extends Controller
         $question->save();
 
         DB::table('question_category')->where('question_id', $id)->delete();
-        if ($request->input('category')){
+        if ($request->input('category')) {
             foreach ($request->input('category') as $cat) {
                 DB::table('question_category')->insert([
                     'question_id' => $id,
@@ -369,7 +388,8 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $id]);
     }
 
-    public function getQuestionRating($id, $rating){
+    public function getQuestionRating($id, $rating)
+    {
         $count = DB::table('ratings')
             ->where([
                 ['question_id', $id],
@@ -377,14 +397,13 @@ class QuestionController extends Controller
             ])
             ->count();
 
-        if ($count == 0){
+        if ($count == 0) {
             DB::table('ratings')->insert([
                 'question_id' => $id,
                 'user_id' => Auth::user()->id,
                 'rating' => $rating
             ]);
-        }
-        else{
+        } else {
             DB::table('ratings')
                 ->where([
                     ['question_id', $id],
@@ -398,12 +417,14 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $id]);
     }
 
-    public function getAddQuestionPage(){
+    public function getAddQuestionPage()
+    {
 
         return view('admin.questions_add');
     }
 
-    public function postAddQuestionPage(Request $request){
+    public function postAddQuestionPage(Request $request)
+    {
         $this->validate($request, [
             'title' => 'required',
             'question' => 'required',
@@ -414,7 +435,7 @@ class QuestionController extends Controller
 
         $type = intval($request->input('type'));
 
-        if ($type >= 1 && $type <= 3){
+        if ($type >= 1 && $type <= 3) {
             // if type is text: in rows, in cols, 2x2
             $this->validate($request, [
                 'answer-a' => 'required',
@@ -440,8 +461,7 @@ class QuestionController extends Controller
             ]);
 
             $q->save();
-        }
-        else if ($type == 4){
+        } else if ($type == 4) {
             // if type is img
             $this->validate($request, [
                 'answer-a-img' => 'required',
@@ -468,10 +488,10 @@ class QuestionController extends Controller
 
             $q->save();
 
-            $path1 = $request->file('answer-a-img')->storeAs('img/answers', $q->id . 'a' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path2 = $request->file('answer-b-img')->storeAs('img/answers', $q->id . 'b' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path3 = $request->file('answer-c-img')->storeAs('img/answers', $q->id . 'c' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path4 = $request->file('answer-d-img')->storeAs('img/answers', $q->id . 'd' . '.' .$request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path1 = $request->file('answer-a-img')->storeAs('img/answers', $q->id . 'a' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path2 = $request->file('answer-b-img')->storeAs('img/answers', $q->id . 'b' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path3 = $request->file('answer-c-img')->storeAs('img/answers', $q->id . 'c' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path4 = $request->file('answer-d-img')->storeAs('img/answers', $q->id . 'd' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
 
             $q->a = '/' . $path1;
             $q->b = '/' . $path2;
@@ -479,12 +499,11 @@ class QuestionController extends Controller
             $q->d = '/' . $path4;
 
             $q->save();
-        }
-        else{
+        } else {
             // if type is interactive
         }
 
-        if ($request->input('category')){
+        if ($request->input('category')) {
             foreach ($request->input('category') as $cat) {
                 DB::table('question_category')->insert([
                     'question_id' => $q->id,
@@ -496,11 +515,13 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $q->id]);
     }
 
-    public function getFilterPage(){
+    public function getFilterPage()
+    {
         return view('admin.questions_filter');
     }
 
-    public function postFilterPage(Request $request){
+    public function postFilterPage(Request $request)
+    {
         $filter = array(
             'category' => $request->input('category'),
             'difficulty_from' => $request->input('difficulty_from'),
@@ -514,7 +535,8 @@ class QuestionController extends Controller
         return redirect()->route('questions.all');
     }
 
-    public function getFilterReset(){
+    public function getFilterReset()
+    {
         Session::put('questionFilter', null);
         return redirect()->route('questions.all');
     }

@@ -38,7 +38,9 @@
                             @foreach ($questions as $item)
                                 <tr>
                                     <td><input type="checkbox" name="questions[]" id="" value="{{$item->id}}"></td>
-                                    <td><a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a></td>
+                                    <td>
+                                        <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
+                                    </td>
                                     <td>
                                 <span class="extra-small">
                                     @if(count(explode(',', $item->categories)) > 0)
@@ -95,7 +97,8 @@
                             $actualPage = \Illuminate\Support\Facades\Input::get('page') ? \Illuminate\Support\Facades\Input::get('page') - 1 :  0;
                         @endphp
                         @for($i = 0; $i < $totalPages; $i++)
-                            <a href="{{ route('questions.my') . '?page=' . ($i+1) }}" class="btn {{ $actualPage == $i ? 'btn-dark' : 'btn-secondary' }}">{{ $i+1 }}</a>
+                            <a href="{{ route('questions.my') . '?page=' . ($i+1) }}"
+                               class="btn {{ $actualPage == $i ? 'btn-dark' : 'btn-secondary' }}">{{ $i+1 }}</a>
                         @endfor
                     </div>
                 @else
@@ -106,8 +109,10 @@
             </div>
             <div class="col-lg-3 pt-3 pb-3">
                 <div class="form-group text-right">
-                    <button class="btn btn-sm btn-danger" id="unselect-all" data-select="questions[]">Zrušiť označenie</button>
-                    <button class="btn btn-sm btn-success" id="select-all" data-select="questions[]">Označit všetko</button>
+                    <button class="btn btn-sm btn-danger" id="unselect-all" data-select="questions[]">Zrušiť označenie
+                    </button>
+                    <button class="btn btn-sm btn-success" id="select-all" data-select="questions[]">Označit všetko
+                    </button>
                 </div>
                 @if (!empty($tests) && count($tests) > 0)
                     <div class="form-group">
@@ -124,7 +129,8 @@
                     </div>
 
                     <div class="form-group">
-                        <a href="{{ route('questions.filter.reset') }}" class="btn btn-danger btn-block"><i class="fas fa-redo-alt"></i> Zrušiť filter</a>
+                        <a href="{{ route('questions.filter.reset') }}" class="btn btn-danger btn-block"><i
+                                    class="fas fa-redo-alt"></i> Zrušiť filter</a>
                     </div>
                 @endif
 

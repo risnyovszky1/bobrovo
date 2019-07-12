@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -9,20 +10,24 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     // LOGIN ADMIN / TEACHER
-    public function getLogut(){
+    public function getLogut()
+    {
         Auth::logout();
         return redirect()->route('homepage');
     }
 
-    public function getLoginTeacherPage(){
+    public function getLoginTeacherPage()
+    {
         return view('general.login_teacher');
     }
 
-    public function getBadLinkPage(){
+    public function getBadLinkPage()
+    {
         return view('admin.badlink');
     }
 
-    public function postLoginTeacherPage(Request $request){
+    public function postLoginTeacherPage(Request $request)
+    {
         $this->validate($request, [
                 'email' => 'email|required',
                 'password' => 'required'
@@ -34,19 +39,21 @@ class UserController extends Controller
             'password' => $request->input('password'),
         );
 
-        if (Auth::attempt($userData)){
+        if (Auth::attempt($userData)) {
             return redirect()->route('admin');
         }
 
         return view('general.login_teacher');;
     }
 
-    public function getUcitelAdminPage(){
+    public function getUcitelAdminPage()
+    {
         return view('admin.admin');
     }
 
     // ---- USERS ----
-    public function getAllUsersPage(){
+    public function getAllUsersPage()
+    {
         $users = DB::table('users')
             ->leftJoin('students', 'users.id', 'students.teacher_id')
             ->leftJoin('tests', 'users.id', 'tests.teacher_id')
@@ -58,9 +65,10 @@ class UserController extends Controller
         return view('admin.users_all', ['users' => $users]);
     }
 
-    public function getToggleAdminUser($id){
+    public function getToggleAdminUser($id)
+    {
 
-        if ($id != Auth::user()->id){
+        if ($id != Auth::user()->id) {
             $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
 
             DB::table('users')
@@ -73,8 +81,9 @@ class UserController extends Controller
         return redirect()->route('users.all');
     }
 
-    public function getDeleteUser($id){
-        if ($id != Auth::user()->id){
+    public function getDeleteUser($id)
+    {
+        if ($id != Auth::user()->id) {
             DB::table('users')->where('id', $id)->delete();
         }
 
