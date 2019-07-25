@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Upraviť novinku</h2>
@@ -57,6 +57,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6 pt-3 pb-4">
+                            <input type="file" name="featured_img">
+                        </div>
+                        @if(!empty($news->featured_img))
+                            <div class="col-md-6">
+                                <img src="{{$news->featured_img}}" alt="news featured image" class="img-thumbnail">
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="custom-control custom-radio">

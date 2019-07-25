@@ -38,7 +38,7 @@
                                         <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}"
                                              alt="tvoja odpoved" class="ml-3">
                                     @endif
-                                    <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
+                                    <span class="text-muted"> ({{ __('student.your-answer') }})</span>
                                 </div>
                             @else
                                 <div class="border-danger border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
@@ -49,7 +49,7 @@
                                         <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}"
                                              alt="tvoja odpoved" class="ml-3">
                                     @endif
-                                    <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
+                                    <span class="text-muted"> ({{ __('student.your-answer') }})</span>
                                 </div>
 
                                 <div class="border-success border rounded bg-white mt-2 pt-2 pb-2 pl-3 pl-4">
@@ -60,7 +60,7 @@
                                         <img src="{{ getQuestionsAnswerText($question, $question->answer) }}"
                                              alt="tvoja odpoved" class="ml-2">
                                     @endif
-                                    <span class="text-muted"> ({{ __('student.correct-asnwer') }})</span>
+                                    <span class="text-muted"> ({{ __('student.correct-answer') }})</span>
                                 </div>
                             @endif
                         @else
@@ -76,7 +76,7 @@
                                     <img src="{{ getQuestionsAnswerText($question, $question->answer) }}"
                                          alt="spravna odpoved">
                                 @endif
-                                <span class="text-muted"> ({{ __('student.correct-asnwer') }})</span>
+                                <span class="text-muted"> ({{ __('student.correct-answer') }})</span>
                             </div>
                         @endif
                     @else
@@ -89,7 +89,7 @@
                                     <img src="{{ getQuestionsAnswerText($question, $answers[$question->id]) }}"
                                          alt="tvoja odpoved">
                                 @endif
-                                <span class="text-muted"> ({{ __('student.your-asnwer') }})</span>
+                                <span class="text-muted"> ({{ __('student.your-answer') }})</span>
                             @else
                                 {{ __('student.not-answered') }}
                             @endif

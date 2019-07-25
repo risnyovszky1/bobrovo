@@ -168,6 +168,10 @@
                     @foreach($newsFeed as $news)
                         <div class="col-md-4 pb-2">
                             <div class="card mb-2 equal-height border-bobrovo-green">
+
+                                @if(!empty($news->featured_img))
+                                    <img src="{{$news->featured_img}}" alt="news featured img" class="card-img-top">
+                                @endif
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $news->title }}</h5>
                                     <p class="card-text text-muted">{{ $news->created_at }}</p>

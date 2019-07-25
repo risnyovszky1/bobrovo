@@ -212,7 +212,7 @@ class QuestionController extends Controller
             ->join('users', 'comments.user_id', 'users.id')
             ->select('comment', 'comments.created_at', 'first_name', 'last_name')
             ->where('question_id', $id)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at', 'ASC')
             ->get();
         $rating = DB::table('ratings')
             ->select('rating')

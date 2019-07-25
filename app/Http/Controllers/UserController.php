@@ -56,7 +56,6 @@ class UserController extends Controller
     {
         $users = DB::table('users')
             ->leftJoin('students', 'users.id', 'students.teacher_id')
-            ->leftJoin('tests', 'users.id', 'tests.teacher_id')
             ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email', DB::raw('count(students.id) as total'))
             ->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC')
             ->groupBy('users.id')

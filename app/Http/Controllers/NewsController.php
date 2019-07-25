@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\News;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -16,6 +17,7 @@ class NewsController extends Controller
         $newsFeed = DB::table('news')
             ->join('users', 'users.id', 'news.created_by')
             ->select('users.first_name', 'users.last_name', 'news.id as news_id', 'news.title', 'news.created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('admin.news_all', ['newsFeed' => $newsFeed]);
     }
@@ -46,8 +48,8 @@ class NewsController extends Controller
 
     public function getEditNewsPage($news_id)
     {
-        $news = DB::table('news')->where('id', $news_id)->limit(1)->get();
-        return view('admin.news_edit', ['news' => $news->first()]);
+        $news = DB::table('news')->where('id', $news_id)->first();
+        return view('admin.news_edit', ['news' => $news]);
     }
 
     public function postEditNewsPage(Request $request, $news_id)
@@ -56,11 +58,23 @@ class NewsController extends Controller
         $title = $request->input('title');
         $content = $request->input('content');
         $visible = $request->input('is-visible') == 'yes' ? true : false;
+        $haveImg = !empty($request->file("featured_img"));
+        $path = "";
+
+        if ($haveImg){
+            $oldImg = DB::table('news')->where('id', $news_id)->pluck('featured_img')->first();
+            if ($oldImg){
+                Storage::disk('public_uploads')->delete(ltrim($oldImg, '/'));
+            }
+
+            $path = $request->file('featured_img')->store('img', 'public_uploads');
+        }
 
         DB::table('news')->where('id', $id)->update([
             'title' => $title,
             'content' => $content,
             'visible' => $visible,
+            'featured_img' => empty($path) ? null : '/' . $path,
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
