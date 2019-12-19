@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -26,7 +27,7 @@ class QuestionController extends Controller
 
 
     // ---- QUESTIONS ----
-    public function getAllQuestionsPage()
+    public function getAllQuestionsPage(Request $request)
     {
         $tests = DB::table('tests')
             ->select('id', 'name')
@@ -38,10 +39,10 @@ class QuestionController extends Controller
 
         return view('admin.questions_all', [
             'tests' => $tests,
-            'questions' => $questions['questions'],
-            'total' => $questions['total'],
+            'questions' => $questions,
             'categories' => $this->getAllCategories(),
-            'title' => 'Všetky otázky'
+            'title' => 'Všetky otázky',
+            'inputs' => $request->all(),
         ]);
     }
 
@@ -54,29 +55,12 @@ class QuestionController extends Controller
         $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
         $order = !empty($filter['order']) ? $filter['order'] : null;
 
-        $connection = config('database.default');
-        $driver = config("database.connections.{$connection}.driver");
-
-        $query = DB::table('questions_view');
-
-        if ($driver != 'pgsql') {
-            $query->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
-                'rating_count', 'comments', 'popularity', DB::raw("CONCAT(',', GROUP_CONCAT(category_id), ',') as categories"))
-                ->leftJoin('question_category', 'questions_view.id', 'question_category.question_id')
-                ->groupBy('id');
-        } else {
-            // TODO: fix filtering questions for postgresql
-            $query
-                ->select('id', 'title', 'type', 'difficulty', 'created_by', 'rating',
-                    'rating_count', 'comments', 'popularity',
-                    DB::raw('array_to_string(array(SELECT category_id FROM question_category WHERE question_id=id),\', \') as categories'))
-                ->groupBy('id', 'questions_view.title', 'questions_view.type', 'questions_view.difficulty', 'questions_view.created_by',
-                    'questions_view.rating', 'questions_view.rating_count', 'questions_view.comments', 'questions_view.popularity');
-        }
+        $query = Question::query()->with('categories', 'comments', 'tests');
 
         if ($own) {
             $query->where('created_by', Auth::user()->id);
         }
+
         if ($type) {
             if ($type == 'just-interactive') $query->where('type', '=', 5);
             if ($type == 'no-interactive') $query->where('type', '<', 5);
@@ -106,21 +90,14 @@ class QuestionController extends Controller
         }
 
         if ($category) {
-            foreach ($category as $c) {
-                $query->orHaving('categories', 'like', '%,' . $c . ',%');
-            }
+            $query->whereHas('categories', function ($query) use ($category) {
+                $query->whereIn('id', $category);
+            });
         }
 
-        $count = count($query->get());
+        $questions = $query->paginate(25);
 
-        $page = Input::get('page') ? Input::get('page') - 1 : 0;
-
-        $result = array(
-            'total' => $count,
-            'questions' => $query->offset($page * 50)->limit(50)->get()
-        );
-
-        return $result;
+        return $questions;
     }
 
     private function getAllCategories()
@@ -388,30 +365,24 @@ class QuestionController extends Controller
         return redirect()->route('questions.one', ['id' => $id]);
     }
 
-    public function getQuestionRating($id, $rating)
+    public function getQuestionRating($id, $userRating)
     {
-        $count = DB::table('ratings')
-            ->where([
-                ['question_id', $id],
-                ['user_id', Auth::user()->id]
-            ])
-            ->count();
+        $rating = Rating::where([
+            ['question_id', $id],
+            ['user_id', Auth::user()->id]
+        ])->first();
 
-        if ($count == 0) {
-            DB::table('ratings')->insert([
-                'question_id' => $id,
-                'user_id' => Auth::user()->id,
-                'rating' => $rating
+
+        if ($rating) {
+            $rating->update([
+                'rating' => $userRating
             ]);
         } else {
-            DB::table('ratings')
-                ->where([
-                    ['question_id', $id],
-                    ['user_id', Auth::user()->id]
-                ])
-                ->update([
-                    'rating' => $rating,
-                ]);
+            Rating::create([
+                'question_id' => $id,
+                'user_id' => Auth::user()->id,
+                'rating' => $userRating
+            ]);
         }
 
         return redirect()->route('questions.one', ['id' => $id]);

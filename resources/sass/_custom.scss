@@ -93,13 +93,13 @@ table.table th{
   margin-bottom: 0px !important;
 }
 
-#admin-menu{ 
+#admin-menu{
   .card-header .btn{
     background-color: $bobrovo-orange !important;
     color: $bobrovo-orange-dark;
     &:hover{
       text-decoration: none !important;
-    } 
+    }
   }
   .card-body a{
     color: $bobrovo-orange-dark;
@@ -146,4 +146,8 @@ table.table th{
   .card .card-img i{
     font-size: 8em;
   }
+}
+
+#pagination ul.pagination {
+    justify-content: center;
 }
