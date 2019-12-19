@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\Question;
-use Faker\Factory as Faker;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Arr;
 
 class QuestionSeeder extends Seeder
 {
@@ -13,50 +14,28 @@ class QuestionSeeder extends Seeder
      */
     public function run()
     {
-        //
-        $faker = Faker::create();
-        $arr = array('a', 'b', 'c', 'd');
+        if (!File::exists(storage_path() . '/appquestions.php')) {
+            return;
+        }
 
-        /*for($i = 0; $i < 15; $i++){
-            $question = new Question([
-                'title' => $faker->sentence,
-                'question' => '<p>' . $faker->paragraph . '</p>',
-                'a' => $faker->word,
-                'b' => $faker->word,
-                'c' => $faker->word,
-                'd' => $faker->word,
-                'answer' => $arr[$faker->numberBetween(0, 3)],
-                'type' => $faker->numberBetween(1, 3),
-                'difficulty' => $faker->numberBetween(1, 7),
-                'description' => '<p>' . $faker->paragraph . '</p>',
-                'description_teacher' => '<p>' . $faker->paragraph . '</p>',
-                'created_by' => 1,
-                'public' => true
-            ]);
+        $questionRaws = File::getRequire(storage_path() . '/appquestions.php');
 
-            $question->save();
-        }*/
+        if (!is_array($questionRaws)) {
+            return;
+        }
 
-        $file = File::get('database/data/questions.json');
-        $json = json_decode($file);
-        foreach($json as $data){
-            $q = new Question([
-                'title' => $data->title,
-                'question' => $data->otazka,
-                'a' => $data->a,
-                'b' => $data->b,
-                'c' => $data->c,
-                'd' => $data->d,
-                'answer' => $data->ans,
-                'type' => empty($data->type) ? $faker->numberBetween(1, 3) : $data->type,
-                'difficulty' => $faker->numberBetween(1, 7),
-                'description' => $data->desc,
-                'description_teacher' => $data->desc_teache,
-                'created_by' => 1,
-                'public' => true
-            ]);
+        foreach ($questionRaws as $questionRaw) {
+            $data = empty($questionRaw['categories']) ? $questionRaw : Arr::except($questionRaw, ['categories']);
 
-            $q->save();
+            if (!is_array($data) || !in_array($data['answer'], ["a", "b", "c", "d"])) {
+                continue;
+            }
+
+            $question = Question::create($data);
+
+            if (!empty($questionRaw['categories'])) {
+                $question->categories()->sync($questionRaw['categories']);
+            }
         }
     }
 }
