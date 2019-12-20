@@ -35,18 +35,17 @@ class QuestionController extends Controller
             ->orderBy('name', 'ASC')
             ->get();
 
-        $questions = $this->getFilteredQuestions();
+        $questions = $this->getFilteredQuestions('all');
 
         return view('admin.questions_all', [
             'tests' => $tests,
             'questions' => $questions,
-            'categories' => $this->getAllCategories(),
             'title' => 'Všetky otázky',
             'inputs' => $request->all(),
         ]);
     }
 
-    private function getFilteredQuestions($own = false)
+    private function getFilteredQuestions($q = 'all')
     {
         $filter = Session::get('questionFilter');
         $category = !empty($filter['category']) ? $filter['category'] : null;
@@ -57,8 +56,16 @@ class QuestionController extends Controller
 
         $query = Question::query()->with('categories', 'comments', 'tests');
 
-        if ($own) {
-            $query->where('created_by', Auth::user()->id);
+
+        switch ($q){
+            case 'my':
+                $query->where('created_by', Auth::user()->id);
+                break;
+            case 'other':
+                $query->where('created_by', '!=', Auth::user()->id);
+            case 'all':
+            default:
+            $query->where('public', true);
         }
 
         if ($type) {
@@ -74,16 +81,32 @@ class QuestionController extends Controller
                 $query->orderBy('title', 'asc');
             }
             if ($order == 2) {
-                $query->orderBy('comments', 'desc');
+                $query->withCount(['comments as commentCount' => function ($query){
+                    $query->select(DB::raw('coalesce(count(*),0)'));
+                }]);
+                $query->orderBy('commentCount', 'desc')
+                    ->orderBy('title', 'asc');
             }
             if ($order == 3) {
-                $query->orderBy('rating', 'desc');
+                $query->withCount(['ratings as ratingAvg' => function ($query){
+                    $query->select(DB::raw('coalesce(avg(rating),0)'));
+                }]);
+                $query->orderBy('ratingAvg', 'desc')
+                    ->orderBy('title', 'asc');
             }
             if ($order == 4) {
-                $query->orderBy('rating_count', 'desc');
+                $query->withCount(['ratings as ratingCount' => function ($query){
+                    $query->select(DB::raw('coalesce(count(*),0)'));
+                }]);
+                $query->orderBy('ratingCount', 'desc')
+                    ->orderBy('title', 'asc');
             }
             if ($order == 5) {
-                $query->orderBy('popularity', 'desc');
+                $query->withCount(['tests as popularity' => function ($query){
+                    $query->select(DB::raw('coalesce(count(*),0)'));
+                }]);
+                $query->orderBy('popularity', 'desc')
+                    ->orderBy('title', 'asc');
             }
         } else {
             $query->orderBy('title', 'asc');
@@ -98,19 +121,6 @@ class QuestionController extends Controller
         $questions = $query->paginate(25);
 
         return $questions;
-    }
-
-    private function getAllCategories()
-    {
-        $categories = DB::table('categories')->select('id', 'name')->get();
-        $result = [];
-        foreach ($categories as $cat) {
-            $result[$cat->id] = $cat->name;
-        }
-
-//        /dd($result);
-
-        return $result;
     }
 
     public function postAllQuestionsPage(Request $request)
@@ -138,7 +148,7 @@ class QuestionController extends Controller
         return redirect()->route('questions.all');
     }
 
-    public function getMyQuestionsPage()
+    public function getMyQuestionsPage(Request $request)
     {
         $tests = DB::table('tests')
             ->select('id', 'name')
@@ -146,14 +156,13 @@ class QuestionController extends Controller
             ->orderBy('name', 'ASC')
             ->get();
 
-        $questions = $this->getFilteredQuestions(true);
+        $questions = $this->getFilteredQuestions('my');
 
-        return view('admin.questions_my', [
+        return view('admin.questions_all', [
             'tests' => $tests,
-            'questions' => $questions['questions'],
-            'total' => $questions['total'],
-            'categories' => $this->getAllCategories(),
-            'title' => 'Moje otázky'
+            'questions' => $questions,
+            'title' => 'Všetky otázky',
+            'inputs' => $request->all(),
         ]);
     }
 
@@ -180,6 +189,24 @@ class QuestionController extends Controller
         }
 
         return redirect()->route('questions.my');
+    }
+
+    public function getOtherQuestionsPage(Request $request)
+    {
+        $tests = DB::table('tests')
+            ->select('id', 'name')
+            ->where('teacher_id', Auth::user()->id)
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        $questions = $this->getFilteredQuestions('other');
+
+        return view('admin.questions_all', [
+            'tests' => $tests,
+            'questions' => $questions,
+            'title' => 'Otázky od iných',
+            'inputs' => $request->all(),
+        ]);
     }
 
     public function getQuestionPage($id)

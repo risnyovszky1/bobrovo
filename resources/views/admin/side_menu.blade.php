@@ -2,7 +2,7 @@
     <div class="col-md-12 pt-3 pb-3 pl-4 pr-4">
         <button id="toggle-admin-menu"
                 class="btn btn-success btn-block justify-content-between d-flex align-self-center"><span>Menu </span> <i
-                    class="fas fa-caret-down"></i></button>
+                class="fas fa-caret-down"></i></button>
     </div>
 </div>
 
@@ -174,6 +174,9 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
                     <li class="list-group-item"><a href="{{ route('questions.my') }}">Moje otázky</a></li>
+                    @if (auth()->user()->is_admin)
+                        <li class="list-group-item"><a href="{{ route('questions.other') }}">Otázky od iných</a></li>
+                    @endif
                     <li class="list-group-item"><a href="{{ route('questions.add') }}">Pridaj nový</a></li>
                     <li class="list-group-item"><a href="{{ route('questions.filter') }}">Filter otázkov</a></li>
                 </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     // LOGIN ADMIN / TEACHER
-    public function getLogut()
+    public function getLogout()
     {
         Auth::logout();
         return redirect()->route('homepage');
@@ -54,11 +55,9 @@ class UserController extends Controller
     // ---- USERS ----
     public function getAllUsersPage()
     {
-        $users = DB::table('users')
-            ->leftJoin('students', 'users.id', 'students.teacher_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'is_admin', 'email', DB::raw('count(students.id) as total'))
-            ->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC')
-            ->groupBy('users.id')
+        $users = User::with('students')
+            ->orderBy('first_name', 'asc')
+            ->orderBy('last_name', 'asc')
             ->get();
 
         return view('admin.users_all', ['users' => $users]);

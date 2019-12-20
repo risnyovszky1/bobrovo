@@ -167,7 +167,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
         'as' => 'admin'
     ]);
     Route::get('/odhlasit', [
-        'uses' => 'UserController@getLogut',
+        'uses' => 'UserController@getLogout',
         'as' => 'logout'
     ]);
 
@@ -484,14 +484,14 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
             'as' => 'questions.my'
         ]);
 
-        Route::get('/{id}', [
-            'uses' => 'QuestionController@getQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
-        Route::post('/{id}', [
-            'uses' => 'QuestionController@postQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
+        Route::get('/ostatne', [
+            'uses' => 'QuestionController@getOtherQuestionsPage',
+            'as' => 'questions.other'
+        ]);
+        Route::post('/ostatne', [
+            'uses' => 'QuestionController@postOtherQuestionsPage',
+            'as' => 'questions.other'
+        ]);
 
         Route::get('/pridat', [
             'uses' => 'QuestionController@getAddQuestionPage',
@@ -539,6 +539,15 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
         Route::post('/comment/{id}/', [
             'uses' => 'QuestionController@postAddComment',
             'as' => 'questions.addcomment'
+        ])->where('id', '[0-9]+');
+
+        Route::get('/{id}', [
+            'uses' => 'QuestionController@getQuestionPage',
+            'as' => 'questions.one'
+        ])->where('id', '[0-9]+');
+        Route::post('/{id}', [
+            'uses' => 'QuestionController@postQuestionPage',
+            'as' => 'questions.one'
         ])->where('id', '[0-9]+');
     });
 

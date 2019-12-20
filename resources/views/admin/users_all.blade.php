@@ -30,7 +30,7 @@
                                 <td>{{$user->first_name}}</td>
                                 <td>{{$user->last_name}}</td>
                                 <td>{{$user->email}}</td>
-                                <td class="text-center">{{$user->total}}</td>
+                                <td class="text-center">{{$user->students->count()}}</td>
                                 <td class="text-center">{!!$user->is_admin ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'!!}</td>
                                 <td class="text-center"><a href="{{ route('users.toggle-admin', ['id' => $user->id]) }}"
                                                            class="text-info"><i class="fas fa-users-cog"></i></a></td>
