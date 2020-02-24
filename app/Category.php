@@ -13,4 +13,14 @@ class Category extends Model
     {
         return $this->belongsToMany(Question::class, 'question_category', 'category_id', 'question_id');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function subcategories()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
 }

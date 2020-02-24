@@ -55,6 +55,7 @@ class FaqController extends Controller
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
+
         $news = DB::table('faqs')->where('id', $id)->limit(1)->get();
         return view('admin.faq_edit', ['faq' => $news->first()]);
     }

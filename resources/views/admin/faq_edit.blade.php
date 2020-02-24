@@ -40,9 +40,9 @@
                             <label for="answer">
                                 Otázka
                             </label>
-                            <input type="text" name="question" id="" class="form-control form-control-lg"
+                            <input type="text" name="question" class="form-control form-control-lg"
                                    value="{{ $faq->question }}">
-                            <input type="hidden" name="faq-id" id="" class="form-control form-control-lg"
+                            <input type="hidden" name="faq-id" class="form-control form-control-lg"
                                    value="{{ $faq->id }}">
                         </div>
                     </div>
@@ -51,8 +51,14 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="answer">Odpoveď</label>
-                            <textarea name="answer" rows="8" class="form-control"
-                                      id="faq-content-input">{{ $faq->answer }}</textarea>
+                            <tinymce
+                                id="answer"
+                                name="answer"
+                                :content="`{{ $faq->answer }}`"
+                            ></tinymce>
+
+
+
                         </div>
                     </div>
                 </div>

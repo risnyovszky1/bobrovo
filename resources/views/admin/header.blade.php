@@ -18,31 +18,9 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
 
-    <!-- Include Editor style. -->
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_editor.min.css' rel='stylesheet'
-          type='text/css'/>
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_style.min.css' rel='stylesheet'
-          type='text/css'/>
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/plugins/code_view.min.css' rel='stylesheet'
-          type='text/css'/>
+    <link href="https://cdn.quilljs.com/1.2.6/quill.snow.css" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
-
-    <!-- Include JS file. -->
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/froala_editor.min.js'></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/font_size.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/paragraph_format.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/image.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/code_view.min.js'></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 </head>

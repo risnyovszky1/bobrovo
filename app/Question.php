@@ -32,4 +32,9 @@ class Question extends Model
     {
         return $this->hasMany(Rating::class, 'question_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

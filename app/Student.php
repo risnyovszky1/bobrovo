@@ -13,12 +13,22 @@ class Student extends Authenticatable
 {
     //
     use Notifiable;
-    
+
     protected $guard = 'bobor';
-    
+
     protected $fillable = ['first_name', 'last_name', 'code', 'teacher_id'];
 
     protected $hidden = [
-       'remember_token',
+        'remember_token',
     ];
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Student::class, 'student_group', 'student_id', 'group_id');
+    }
 }

@@ -32,4 +32,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Student::class, 'teacher_id');
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'created_by');
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, 'created_by');
+    }
 }

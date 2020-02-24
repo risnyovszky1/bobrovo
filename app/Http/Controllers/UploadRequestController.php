@@ -10,14 +10,18 @@ class UploadRequestController extends Controller
 
     public function postUploadQuestionImage(Request $request)
     {
+        $file = $request->file('image');
 
-        if ($request->input('froala')) {
-            $file = $request->file('image_param');
-            $path = '/' . $file->store('img/questions', 'public_uploads');
-
-            return stripslashes(response()->json(['link' => $path])->content());
+        if (!$file) {
+            return response()->json(['error' => 'ERROR'], 400);
         }
 
-        return "";
+        $path = $file->store(public_path('img/uploads/') . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension());
+
+        return response()->json([
+            'data' => [
+                'url' => $path
+            ]
+        ]);
     }
 }

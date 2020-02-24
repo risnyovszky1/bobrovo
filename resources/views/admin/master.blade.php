@@ -5,7 +5,9 @@
             @include('admin.side_menu')
         </div>
         <div class="col-lg-10 col-md-9 bg-bobrovo-orange-light">
-            @yield('admin_content')
+            <div id="app">
+                @yield('admin_content')
+            </div>
         </div>
     </div>
 </div>
