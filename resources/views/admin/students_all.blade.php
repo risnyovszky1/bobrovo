@@ -36,7 +36,7 @@
                                     <td class="text-center">{{ $student->code }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('students.delete', ['id' => $student->id]) }}"
-                                           class="text-danger"
+                                           class="btn btn-danger btn-sm"
                                            title="Vymazať {{ $student->first_name . ' ' . $student->last_name }}">
                                             <i class="fas fa-trash"></i>
                                         </a>

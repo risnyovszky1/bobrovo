@@ -38,7 +38,7 @@
                                     {{ $group['created_at']}}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('groups.delete', ['id'=> $group['id']]) }}" class="text-danger"
+                                    <a href="{{ route('groups.delete', ['id'=> $group['id']]) }}" class="btn btn-danger btn-sm"
                                        title="Vymazať {{ $group['name'] }}">
                                         <i class="fas fa-trash"></i>
                                     </a>

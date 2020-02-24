@@ -28,7 +28,7 @@
                             <td>{{ $msg->created_at }}</td>
                             <td class="text-center">{!! $msg->seen ? '<i class="fas fa-eye text-success"></i>' : '<i class="fas fa-eye-slash text-secondary"></i>' !!}</td>
                             <td class="text-center">
-                                <a href="{{ route('msg.delete', ['id' => $msg->id]) }}" class="text-danger"
+                                <a href="{{ route('msg.delete', ['id' => $msg->id]) }}" class="btn btn-danger btn-sm"
                                    title="Vymazať {{ $msg->subject }}">
                                     <i class="fas fa-trash"></i>
                                 </a>

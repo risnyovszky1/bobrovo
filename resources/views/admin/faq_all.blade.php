@@ -28,7 +28,7 @@
                                     </td>
                                     <td>{{ $f->created_at }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('faq.delete', ['id' => $f->id]) }}" class="text-danger"
+                                        <a href="{{ route('faq.delete', ['id' => $f->id]) }}" class="btn btn-danger btn-sm"
                                            title="Vymazať {{ $f->question}}">
                                             <i class="fas fa-trash"></i>
                                         </a>

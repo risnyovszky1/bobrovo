@@ -31,7 +31,7 @@
                                     <td>{{ $news->created_at }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('news.delete', ['news_id' => $news->news_id]) }}"
-                                           class="text-danger" title="Vymazať {{ $news->title }}">
+                                           class="btn btn-danger btn-sm" title="Vymazať {{ $news->title }}">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </td>

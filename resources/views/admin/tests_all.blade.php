@@ -53,7 +53,7 @@
                                     {{ $test->available_to }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('tests.delete', ['id' => $test->id]) }}" class="text-danger"
+                                    <a href="{{ route('tests.delete', ['id' => $test->id]) }}" class="btn btn-danger btn-sm"
                                        title="Vymazať {{ $test->name }}">
                                         <i class="fas fa-trash"></i>
                                     </a>
