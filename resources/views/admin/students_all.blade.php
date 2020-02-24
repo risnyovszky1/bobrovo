@@ -25,7 +25,7 @@
                             @foreach($students as $student)
                                 <tr>
                                     <td class="text-center">
-                                        <input type="checkbox" value="{{ $student->id }}" name="students[]">
+                                        <input type="checkbox" value="{{ $student->id }}" name="students[]" id="student-{{$student->id}}">
                                     </td>
                                     <td scope="row">
                                         <a href="{{ route('students.profil', ['id'=>$student->id]) }}"

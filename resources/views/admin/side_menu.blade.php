@@ -78,7 +78,10 @@
                 <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#messeges"
                         aria-expanded="true" aria-controls="collapseSeven">
                     <i class="far fa-comment"></i>
-                    Správy {!! newMessagesCount() > 0 ? '<span class="badge badge-pill badge-warning">'.newMessagesCount().'</span>': '' !!}
+                    @php
+                        $newMessagesCount = newMessagesCount();
+                    @endphp
+                    Správy @if ($newMessagesCount) <span class="badge badge-warning">{{ $newMessagesCount }}</span>@endif
                 </button>
             </h3>
         </div>

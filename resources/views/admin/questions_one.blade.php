@@ -103,6 +103,9 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text h5">
+                                @php
+                                    $rating = $question->ratings->avg('rating');
+                                @endphp
                                 @if(empty($rating) || $rating < 1)
                                     <span class="badge badge-pill badge-danger">Nehodnotené</span>
                                 @elseif($rating >=4 )
@@ -196,15 +199,15 @@
                 <div class="card-header text-dark bg-warning">
                     Komenty
                 </div>
-                @if (empty($comments) || count($comments) < 1)
+                @if ($question->comments->isEmpty())
                     <div class="card-body">
                         <p class="card-text">Ešte neboli žiadne komenty.</p>
                     </div>
                 @else
                     <ul class="list-group list-group-flush">
-                        @foreach ($comments as $item)
+                        @foreach ($question->comments as $item)
                             <li class="list-group-item">
-                                <strong>{{ $item->first_name . ' ' . $item->last_name}}</strong>, {{$item->created_at}}
+                                <strong>{{ $item->user->first_name . ' ' . $item->user->last_name}}</strong>, {{$item->created_at}}
                                 <br>
                                 {{$item->comment}}
                             </li>
@@ -278,8 +281,8 @@
                         {{ csrf_field() }}
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Zatvoriť</button>
                         <button type="submit" class="btn btn-primary">Uložiť koment</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvoriť</button>
                     </div>
                 </form>
             </div>

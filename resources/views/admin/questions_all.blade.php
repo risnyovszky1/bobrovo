@@ -37,7 +37,10 @@
                             <tbody>
                             @foreach ($questions as $item)
                                 <tr>
-                                    <td><input type="checkbox" name="questions[]" id="" value="{{$item->id}}"></td>
+                                    <td>
+                                        <input type="checkbox" name="questions[]" id="question-{{ $item->id }}"
+                                               value="{{$item->id}}">
+                                    </td>
                                     <td>
                                         <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
                                     </td>
@@ -70,13 +73,13 @@
                                     <td class="text-center">
                                         @php($avg = $item->ratings->avg('rating'))
                                         @if($avg < 1)
-                                            <span class="badge badge-pill badge-danger">Nehodnotené</span>
+                                            <span class="badge badge-danger">Nehodnotené</span>
                                         @elseif($avg >= 4 )
                                             <span
-                                                class="badge badge-pill badge-success">{{round($avg, 1)}}</span>
+                                                class="badge badge-success">{{round($avg, 1)}}</span>
                                         @else
                                             <span
-                                                class="badge badge-pill badge-warning">{{round($avg, 1)}}</span>
+                                                class="badge badge-warning">{{round($avg, 1)}}</span>
                                         @endif
                                     </td>
                                     <td class="text-center">

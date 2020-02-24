@@ -211,17 +211,13 @@ class QuestionController extends Controller
 
     public function getQuestionPage($id)
     {
-        $question = DB::table('questions')->where('id', $id)->first();
+        $question = Question::with('comments.user', 'ratings')->find($id);
         $comments = DB::table('comments')
             ->join('users', 'comments.user_id', 'users.id')
             ->select('comment', 'comments.created_at', 'first_name', 'last_name')
             ->where('question_id', $id)
             ->orderBy('created_at', 'ASC')
             ->get();
-        $rating = DB::table('ratings')
-            ->select('rating')
-            ->where('question_id', $id)
-            ->avg('rating');
 
         $tests = DB::table('tests')
             ->select('id', 'name')
@@ -256,7 +252,6 @@ class QuestionController extends Controller
         return view('admin.questions_one', [
             'question' => $question,
             'comments' => $comments,
-            'rating' => round($rating, 1),
             'tests' => $tests,
             'myRating' => $myRating,
             'categories' => $categories,
