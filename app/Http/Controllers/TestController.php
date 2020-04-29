@@ -22,6 +22,10 @@ class TestController extends Controller
 
     public function postLoginStudentPage(Request $request)
     {
+        $this->validate($request, [
+            'code' => 'required',
+        ]);
+
         $code = $request->input('code');
         $sid = DB::table('students')->select('id', 'code')->where('code', $code)->first();
 
