@@ -210,39 +210,16 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // |  MessageController / for admins and teachers
     // ------
 
-    Route::group(['prefix' => 'spravy'], function () {
-        Route::get('/', [
-            'uses' => 'MessageController@getMessagesPage',
-            'as' => 'msg.all'
-        ]);
-        Route::get('/poslat', [
-            'uses' => 'MessageController@getSendMessagePage',
-            'as' => 'msg.send'
-        ]);
-        Route::post('/poslat', [
-            'uses' => 'MessageController@postSendMessagePage',
-            'as' => 'msg.send'
-        ]);
+    Route::resource('message', 'MessageController')->except(['edit', 'update']);
 
-        Route::get('/posta/{id}', [
-            'uses' => 'MessageController@getOneMessagePage',
-            'as' => 'msg.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/odpovedat/{id}', [
-            'uses' => 'MessageController@getAnswerPage',
-            'as' => 'msg.answer'
-        ])->where('id', '[0-9]+');
-        Route::post('/odpovedat/{id}', [
-            'uses' => 'MessageController@postAnswerPage',
-            'as' => 'msg.answer'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'MessageController@getDeleteMessagePage',
-            'as' => 'msg.delete'
-        ])->where('id', '[0-9]+');
-    });
+    Route::get('{message}/answer', [
+        'uses' => 'MessageController@answer',
+        'as' => 'message.answer'
+    ])->where('id', '[0-9]+');
+    Route::post('/{message}/answer', [
+        'uses' => 'MessageController@answerSend',
+        'as' => 'message.answer'
+    ])->where('id', '[0-9]+');
 
     // -------
     // |   GroupController / for admins and teachers /

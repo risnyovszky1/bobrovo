@@ -24,7 +24,8 @@
             <div class="form-group">
                 <label for="address">Od</label>
                 <input type="text" name="address" id="address"
-                       value="{{ $msg->first_name . ' ' . $msg->last_name . ' ('. $msg->email . ')' }}" readonly
+                       value="{{ $msg->sender->first_name . ' ' . $msg->sender->last_name . ' ('. $msg->sender->email . ')' }}"
+                       readonly
                        class="form-control">
             </div>
             <div class="form-group">
@@ -38,8 +39,8 @@
                           readonly>{{ $msg->content }}</textarea>
             </div>
             <div class="form-group">
-                <a href="{{ route('msg.answer', ['id' => $msg->id]) }}" class="btn btn-lg btn-primary"><i
-                            class="fas fa-paper-plane"></i> Odpovedať </a>
+                <a href="{{ route('message.answer', $msg) }}" class="btn btn-lg btn-primary"><i
+                        class="fas fa-paper-plane"></i> Odpovedať </a>
             </div>
         </div>
     </div>

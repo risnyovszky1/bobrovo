@@ -1,5 +1,5 @@
 @section('title')
-    Poslať správu | Bobrovo
+    Odpovedať na správu | Bobrovo
 @endsection
 
 @extends('admin.master')
@@ -7,7 +7,7 @@
 @section('admin_content')
     <div class="row">
         <div class="col-lg-8 pt-3 pb-3">
-            <h2>Poslať správu</h2>
+            <h2>Odpovedať na správu</h2>
 
             @if(count($errors) > 0)
                 <div class="row">
@@ -31,25 +31,27 @@
                 </div>
             @endif
 
-            <form action="" method="post">
+            <form action="{{ route('message.answer', $msg) }}" method="post">
                 <div class="form-group">
-                    <label for="addresses[]">Adresáty</label>
-                    <select name="addresses[]" id="addresses" class="form-control" multiple="multiple">
-                        @foreach($addresses as $addr)
-                            <option value="{{ $addr->id }}">{{ $addr->first_name . ' ' . $addr->last_name . ' (' . $addr->email . ')' }}</option>
-                        @endforeach
-                    </select>
+                    <label for="address">Komu</label>
+                    <input type="text" name="address" id="address" class="form-control"
+                           value="{{ $msg->sender->first_name . ' ' . $msg->sender->last_name . ' ('. $msg->sender->email . ')' }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="subject">Predmet </label>
-                    <input type="text" name="subject" id="subject" class="form-control">
+                    <input type="text" name="subject" id="subject" class="form-control" value="RE: {{ $msg->subject}}">
                 </div>
                 <div class="form-group">
                     <label for="content">Správa</label>
-                    <textarea name="content" rows="8" class="form-control" id="msg-text-editor"></textarea>
+                    <textarea name="content" rows="8" class="form-control" id="msg-text-editor">
+Odpoveď sem :
+
+-------------------------
+{{ $msg->content }}
+          </textarea>
                 </div>
                 <div class="form-group">
-                    {{ csrf_field() }}
+                    @csrf
                     <button type="submit" class="btn btn-lg btn-primary"><i class="fas fa-paper-plane"></i> Poslať
                     </button>
                 </div>

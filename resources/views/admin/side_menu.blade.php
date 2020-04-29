@@ -86,12 +86,12 @@
             </h3>
         </div>
         <div id="messeges"
-             class="collapse {{ Request::is('ucitel/spravy/*') || Request::is('ucitel/spravy') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/message/*') || Request::is('ucitel/message') ? 'show': '' }}"
              aria-labelledby="messeges" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('msg.all') }}">Všetky správy</a></li>
-                    <li class="list-group-item"><a href="{{ route('msg.send') }}">Napísať novú</a></li>
+                    <li class="list-group-item"><a href="{{ route('message.index') }}">Všetky správy</a></li>
+                    <li class="list-group-item"><a href="{{ route('message.create') }}">Napísať novú</a></li>
                 </ul>
             </div>
         </div>

@@ -2,36 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Message;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    // ---- MESSAGES ---- 
+    // ---- MESSAGES ----
 
-    public function getMessagesPage()
+    public function index()
     {
-        $messages = DB::table('messages')
-            ->join('users', 'messages.from', 'users.id')
-            ->select('messages.id', 'messages.subject', 'messages.created_at', 'users.email', 'users.first_name', 'users.last_name', 'messages.seen')
+        $messages = Message::query()
+            ->with('sender')
             ->where('to', Auth::user()->id)
-            ->orderBy('messages.created_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
-        return view('admin.msg_all', ['messages' => $messages]);
+        return view('admin.message.list', ['messages' => $messages]);
     }
 
-    public function getSendMessagePage()
+    public function create()
     {
-        $users = DB::table('users')->select('id', 'first_name', 'last_name', 'email')->where('id', '!=', Auth::user()->id)->get();
-        return view('admin.msg_send', ['addresses' => $users]);
+        $users = User::query()
+            ->where('id', '!=', Auth::user()->id)
+            ->orderBy('last_name', 'asc')
+            ->orderBy('first_name', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+        return view('admin.message.create', ['addresses' => $users]);
     }
 
-    public function postSendMessagePage(Request $request)
+    public function store(Request $request)
     {
-        $users = DB::table('users')->select('id', 'first_name', 'last_name', 'email')->where('id', '!=', Auth::user()->id)->get();
-
         $this->validate($request, [
             'addresses' => 'required',
             'subject' => 'required|max:70',
@@ -49,57 +52,47 @@ class MessageController extends Controller
             $msg->save();
         }
 
-        return view('admin.msg_send', ['addresses' => $users, 'success' => "Správa bola odoslaná!"]);
+        $this->flashMsg('Správa bola odoslaná!');
+
+        return redirect()->route('message.index');
     }
 
-    public function getOneMessagePage($id)
+    public function show(Message $message)
     {
-        $msg = DB::table('messages')
-            ->join('users', 'messages.from', 'users.id')
-            ->select('messages.id', 'messages.subject', 'messages.content', 'users.email', 'users.first_name', 'users.last_name')
-            ->where('messages.id', $id)
-            ->get();
+        $message->load('sender');
 
-        DB::table('messages')->where('id', $id)->update(['seen' => true]);
+        $message->update(['seen' => true]);
 
-        return view('admin.msg_one', ['msg' => $msg->first()]);
+        return view('admin.message.show', ['msg' => $message]);
     }
 
-    public function getAnswerPage($id)
+    public function answer(Message $message)
     {
-        $msg = DB::table('messages')
-            ->join('users', 'messages.from', 'users.id')
-            ->select('messages.id', 'messages.subject', 'messages.content', 'users.id as uid', 'users.email', 'users.first_name', 'users.last_name')
-            ->where('messages.id', $id)
-            ->get();
-        return view('admin.msg_answer', ['msg' => $msg->first()]);
+        $message->load('sender', 'recipient');
+        return view('admin.message.answer', ['msg' => $message]);
     }
 
-    public function postAnswerPage(Request $request, $id)
+    public function answerSend(Request $request, Message $message)
     {
-        $msg = DB::table('messages')
-            ->join('users', 'messages.from', 'users.id')
-            ->select('messages.id', 'messages.subject', 'messages.content', 'users.id as uid', 'users.email', 'users.first_name', 'users.last_name')
-            ->where('messages.id', $id)
-            ->get();
+        $message->load('sender');
 
         $newMsg = new Message([
             'from' => Auth::user()->id,
-            'to' => $request->input('address_id'),
+            'to' => $message->sender->id,
             'subject' => $request->input('subject'),
             'content' => $request->input('content'),
         ]);
         $newMsg->save();
-        return view('admin.msg_answer', ['msg' => $msg->first(), 'success' => "Odpoveď bola odoslaná!"]);
+
+        $this->flashMsg("Odpoveď bola odoslaná!");
+
+        return redirect()->route('message.index');
     }
 
-    public function getDeleteMessagePage($id)
+    public function destroy(Message $message)
     {
-        $msg = DB::table('messages')->select('to')->where('id', $id)->first();
-        if ($msg->to != Auth::user()->id)
-            return redirect()->route('badlink');
+        $message->delete();
 
-        DB::table('messages')->where('id', $id)->delete();
-        return redirect()->route('msg.all');
+        return redirect()->route('message.index');
     }
 }
