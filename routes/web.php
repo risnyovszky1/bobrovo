@@ -198,36 +198,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // --------
     // |  NewsController / only for admin
     // --------
-
-    Route::group(['prefix' => 'novinky'], function () {
-        Route::get('/', [
-            'uses' => 'NewsController@getAllNewsPage',
-            'as' => 'news.all'
-        ]);
-
-        Route::get('/pridaj', [
-            'uses' => 'NewsController@getAddNewsPage',
-            'as' => 'news.addnew'
-        ]);
-        Route::post('/pridaj', [
-            'uses' => 'NewsController@postAddNewsPage',
-            'as' => 'news.addnew'
-        ]);
-
-        Route::get('/upravit/{news_id}', [
-            'uses' => 'NewsController@getEditNewsPage',
-            'as' => 'news.edit'
-        ])->where('nesw_id', '[0-9]+');
-        Route::post('/upravit/{news_id}', [
-            'uses' => 'NewsController@postEditNewsPage',
-            'as' => 'news.edit'
-        ])->where('nesw_id', '[0-9]+');
-
-        Route::get('/vymazat/{news_id}', [
-            'uses' => 'NewsController@getDeleteNews',
-            'as' => 'news.delete'
-        ])->where('nesw_id', '[0-9]+');
-    });
+    Route::resource('news', 'NewsController')->except(['show']);
 
 
     // ------------

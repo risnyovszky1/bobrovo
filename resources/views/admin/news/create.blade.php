@@ -32,7 +32,7 @@
                 </div>
             @endif
 
-            <form action="" method="post">
+            <form action="{{ route('news.store') }}" method="post">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Pidať novinku</h2>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 pt-3">
-                        {{ csrf_field() }}
+                        @csrf
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i> Pridaj
                         </button>
                     </div>

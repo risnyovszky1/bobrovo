@@ -5,29 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\News;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
-    // NEWS 
-
-    public function getAllNewsPage()
+    public function index()
     {
-        $newsFeed = DB::table('news')
-            ->join('users', 'users.id', 'news.created_by')
-            ->select('users.first_name', 'users.last_name', 'news.id as news_id', 'news.title', 'news.created_at')
+        $newsFeed = News::query()
+            ->with('user')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('admin.news_all', ['newsFeed' => $newsFeed]);
+        return view('admin.news.list', ['newsFeed' => $newsFeed]);
     }
 
-    public function getAddNewsPage()
+    public function create()
     {
-        return view('admin.news_add');
+        return view('admin.news.create');
     }
 
-    public function postAddNewsPage(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'title' => 'required|min:6',
@@ -43,18 +40,19 @@ class NewsController extends Controller
         ]);
 
         $newNews->save();
-        return view('admin.news_add', ['success' => 'Úspešne ste pridali novinku do a feedu.']);
+
+        $this->flashMsg('Úspešne ste pridali novinku.');
+
+        return redirect()->route('news.edit', $newNews);
     }
 
-    public function getEditNewsPage($news_id)
+    public function edit(News $news)
     {
-        $news = DB::table('news')->where('id', $news_id)->first();
-        return view('admin.news_edit', ['news' => $news]);
+        return view('admin.news.edit', ['news' => $news]);
     }
 
-    public function postEditNewsPage(Request $request, $news_id)
+    public function update(Request $request, News $news)
     {
-        $id = $request->input('news-id');
         $title = $request->input('title');
         $content = $request->input('content');
         $visible = $request->input('is-visible') == 'yes' ? true : false;
@@ -62,7 +60,7 @@ class NewsController extends Controller
         $path = "";
 
         if ($haveImg){
-            $oldImg = DB::table('news')->where('id', $news_id)->pluck('featured_img')->first();
+            $oldImg = DB::table('news')->where('id', $news->id)->pluck('featured_img')->first();
             if ($oldImg){
                 Storage::disk('public_uploads')->delete(ltrim($oldImg, '/'));
             }
@@ -70,7 +68,7 @@ class NewsController extends Controller
             $path = $request->file('featured_img')->store('img', 'public_uploads');
         }
 
-        DB::table('news')->where('id', $id)->update([
+        $news->update([
             'title' => $title,
             'content' => $content,
             'visible' => $visible,
@@ -78,16 +76,17 @@ class NewsController extends Controller
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
-        $news = DB::table('news')->where('id', $news_id)->limit(1)->get();
-        return view('admin.news_edit', ['news' => $news->first()]);
+        $this->flashMsg('Úspešne ste upravili novinku.');
+
+        return redirect()->route('news.edit', $news);
     }
 
-    public function getDeleteNews($news_id)
+    public function destroy(News $news)
     {
-        if (Auth::user()->is_admin != 1)
-            return redirect()->route('badlink');
+        $news->delete();
 
-        DB::table('news')->where('news_id', $news_id)->delete();
-        return redirect()->route('news.all');
+        $this->flashMsg('Úspešne ste vymazali novinku.');
+
+        return redirect()->route('news.index');
     }
 }

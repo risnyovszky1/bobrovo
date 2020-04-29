@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{ route('news.update', $news) }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Upraviť novinku</h2>
@@ -44,7 +44,6 @@
                                 </label>
                                 <input type="text" name="title" id="" value="{{ $news->title }}"
                                        class="form-control form-control-lg">
-                                <input type="hidden" name="news-id" value="{{ $news->id }}">
                             </div>
                         </div>
                     </div>
@@ -84,7 +83,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 pt-3">
-                            {{ csrf_field() }}
+                            @csrf
+                            @method('PATCH')
                             <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť
                                 zmeny
                             </button>

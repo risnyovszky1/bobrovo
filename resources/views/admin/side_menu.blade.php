@@ -39,12 +39,12 @@
                 </h3>
             </div>
             <div id="news"
-                 class="collapse {{ Request::is('ucitel/novinky/*') || Request::is('ucitel/novinky') ? 'show': '' }}"
+                 class="collapse {{ Request::is('ucitel/news/*') || Request::is('ucitel/news') ? 'show': '' }}"
                  aria-labelledby="news" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('news.all') }}">Všetky novinky</a></li>
-                        <li class="list-group-item"><a href="{{ route('news.addnew') }}">Pridaj nový</a></li>
+                        <li class="list-group-item"><a href="{{ route('news.index') }}">Všetky novinky</a></li>
+                        <li class="list-group-item"><a href="{{ route('news.create') }}">Pridaj nový</a></li>
                     </ul>
                 </div>
             </div>

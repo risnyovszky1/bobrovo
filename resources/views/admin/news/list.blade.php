@@ -18,22 +18,19 @@
                                 <th scope="col">Názov</th>
                                 <th scope="col">Vytvoril</th>
                                 <th scope="col">Čas</th>
-                                <th scope="col" class="text-center">Delete</th>
+                                <th scope="col" class="text-right">Vymazať</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($newsFeed as $news)
                                 <tr>
                                     <td scope="row"><a
-                                                href="{{ route('news.edit', ['news_id' => $news->news_id]) }}">{{ $news->title }}</a>
+                                                href="{{ route('news.edit', $news) }}">{{ $news->title }}</a>
                                     </td>
-                                    <td>{{ $news->first_name . ' ' . $news->last_name }}</td>
+                                    <td>{{ $news->user->first_name . ' ' . $news->user->last_name }}</td>
                                     <td>{{ $news->created_at }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ route('news.delete', ['news_id' => $news->news_id]) }}"
-                                           class="btn btn-danger btn-sm" title="Vymazať {{ $news->title }}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                    <td class="text-right">
+                                        @include('admin.partials.delete', ['route' => route('news.destroy', $news)])
                                     </td>
                                 </tr>
                             @endforeach
