@@ -32,10 +32,12 @@
                                 <td>{{$user->email}}</td>
                                 <td class="text-center">{{$user->students->count()}}</td>
                                 <td class="text-center">{!!$user->is_admin ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'!!}</td>
-                                <td class="text-center"><a href="{{ route('users.toggle-admin', ['id' => $user->id]) }}"
-                                                           class="btn btn-sm btn-warning"><i class="fas fa-users-cog"></i></a></td>
-                                <td class="text-center"><a href="{{route('users.delete', ['id' => $user->id]) }}"
-                                                           class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td>
+                                <td class="text-center">
+                                    @include('admin.partials.admin-toggle', ['route' => route('user.toggle', $user)])
+                                </td>
+                                <td class="text-center">
+                                    @include('admin.partials.delete', ['route' => route('user.destroy', $user)])
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -19,11 +19,11 @@
                 </h3>
             </div>
             <div id="users"
-                 class="collapse {{ Request::is('ucitel/pouzivatelia/*') || Request::is('ucitel/pouzivatelia') ? 'show': '' }}"
+                 class="collapse {{ Request::is('ucitel/user/*') || Request::is('ucitel/user') ? 'show': '' }}"
                  aria-labelledby="news" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('users.all') }}">Všetky používateľia</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.index') }}">Všetky používateľia</a></li>
                     </ul>
                 </div>
             </div>

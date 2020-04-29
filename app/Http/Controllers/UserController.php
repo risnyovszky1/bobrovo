@@ -53,38 +53,33 @@ class UserController extends Controller
     }
 
     // ---- USERS ----
-    public function getAllUsersPage()
+    public function index()
     {
         $users = User::with('students')
             ->orderBy('first_name', 'asc')
             ->orderBy('last_name', 'asc')
             ->get();
 
-        return view('admin.users_all', ['users' => $users]);
+        return view('admin.user.list', ['users' => $users]);
     }
 
-    public function getToggleAdminUser($id)
+    public function toggle(User $user)
     {
-
-        if ($id != Auth::user()->id) {
-            $val = DB::table('users')->select('is_admin')->where('id', $id)->first()->is_admin;
-
-            DB::table('users')
-                ->where('id', $id)
-                ->update([
-                    'is_admin' => $val ? 0 : 1
-                ]);
+        if ($user->id != Auth::user()->id) {
+            $user->update([
+                'is_admin' => !$user->is_admin,
+            ]);
         }
 
-        return redirect()->route('users.all');
+        return redirect()->route('user.index');
     }
 
-    public function getDeleteUser($id)
+    public function destroy(User $user)
     {
-        if ($id != Auth::user()->id) {
-            DB::table('users')->where('id', $id)->delete();
+        if ($user->id != Auth::user()->id) {
+            $user->delete();
         }
 
-        return redirect()->route('users.all');
+        return redirect()->route('user.index');
     }
 }

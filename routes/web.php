@@ -177,23 +177,8 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     ]);
 
     // USERS
-    Route::group(['prefix' => 'pouzivatelia'], function () {
-        Route::get('/', [
-            'uses' => 'UserController@getAllUsersPage',
-            'as' => 'users.all'
-        ]);
-
-        Route::get('/toggle-admin/{id}', [
-            'uses' => 'UserController@getToggleAdminUser',
-            'as' => 'users.toggle-admin'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/delete/{id}', [
-            'uses' => 'UserController@getDeleteUser',
-            'as' => 'users.delete'
-        ])->where('id', '[0-9]+');;
-    });
-
+    Route::resource('user', 'UserController')->only(['index', 'destroy']);
+    Route::patch('user/{user}/toggle', 'UserController@toggle')->name('user.toggle');
 
     // --------
     // |  NewsController / only for admin
