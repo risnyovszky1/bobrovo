@@ -32,7 +32,7 @@
                 </div>
             @endif
 
-            <form action="" method="post">
+            <form action="{{ route('faq.update', $faq) }}" method="POST">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Upraviť</h2>
@@ -64,7 +64,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 pt-3">
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PATCH')
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť zmeny
                         </button>
                     </div>

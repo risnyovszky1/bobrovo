@@ -10,62 +10,57 @@ use App\Faq;
 class FaqController extends Controller
 {
     //
-    public function getAllFAQPage()
+    public function index()
     {
-        $faqFeed = DB::table('faqs')->orderBy('question', 'asc')->get();
-        return view('admin.faq_all', ['faq' => $faqFeed]);
+        $faqFeed = Faq::query()->orderBy('question', 'asc')->get();
+        return view('admin.faq.list', ['faq' => $faqFeed]);
     }
 
-    public function getAddFAQPage()
+    public function create()
     {
-        return view('admin.faq_add');
+        return view('admin.faq.create');
     }
 
-    public function postAddFAQPage(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'question' => 'required|min:6',
             'answer' => 'required',
         ]);
 
-        $newFAQ = new Faq([
+        $faq = new Faq([
             'question' => $request->input('question'),
             'answer' => $request->input('answer'),
         ]);
 
-        $newFAQ->save();
-        return view('admin.faq_add', ['success', 'Úspešne ste odpovedali FAQ otázku.']);
+        $faq->save();
+
+        $this->flashMsg('Úspešne ste odpovedali FAQ otázku.');
+
+        return redirect()->route('faq.edit', $faq);
     }
 
-    public function getEditFAQPage($id)
+    public function edit(Faq $faq)
     {
-        $faq = DB::table('faqs')->where('id', $id)->limit(1)->get();
-        return view('admin.faq_edit', ['faq' => $faq->first()]);
+        return view('admin.faq.edit', ['faq' => $faq]);
     }
 
-    public function postEditFAQPage(Request $request, $id)
+    public function update(Request $request, Faq $faq)
     {
-        $cid = $request->input('faq-id');
         $question = $request->input('question');
         $answer = $request->input('answer');
 
-        DB::table('faqs')->where('id', $cid)->update([
+        $faq->update([
             'answer' => $answer,
             'question' => $question,
-            'updated_at' => date('Y-m-d H:i:s')
         ]);
 
-
-        $news = DB::table('faqs')->where('id', $id)->limit(1)->get();
-        return view('admin.faq_edit', ['faq' => $news->first()]);
+        return redirect()->route('faq.edit', $faq);
     }
 
-    public function getDeleteFAQ($id)
+    public function destroy(Faq $faq)
     {
-        if (Auth::user()->is_admin != 1)
-            return redirect()->route('badlink');
-
-        DB::table('faqs')->where('id', $id)->delete();
-        return redirect()->route('faq.all');
+        $faq->delete();
+        return redirect()->route('faq.index');
     }
 }

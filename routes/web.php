@@ -204,37 +204,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // ------------
     // |  FaqController / only for admins
     // ---------
-
-    Route::group(['prefix' => 'faq'], function () {
-        Route::get('/', [
-            'uses' => 'FaqController@getAllFAQPage',
-            'as' => 'faq.all'
-        ]);
-
-        Route::get('/pridaj', [
-            'uses' => 'FaqController@getAddFAQPage',
-            'as' => 'faq.addnew'
-        ]);
-        Route::post('/pridaj', [
-            'uses' => 'FaqController@postAddFAQPage',
-            'as' => 'faq.addnew'
-        ]);
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'FaqController@getEditFAQPage',
-            'as' => 'faq.edit'
-        ])->where('id', '[0-9]+');
-        Route::post('/upravit/{id}', [
-            'uses' => 'FaqController@postEditFAQPage',
-            'as' => 'faq.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'FaqController@getDeleteFAQ',
-            'as' => 'faq.delete'
-        ])->where('id', '[0-9]+');
-    });
-
+    Route::resource('faq', 'FaqController')->except(['show']);
 
     // ------
     // |  MessageController / for admins and teachers

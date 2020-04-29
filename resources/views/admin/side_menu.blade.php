@@ -63,8 +63,8 @@
                  aria-labelledby="faq" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('faq.all') }}">Všetky faq</a></li>
-                        <li class="list-group-item"><a href="{{ route('faq.addnew') }}">Pridaj nový</a></li>
+                        <li class="list-group-item"><a href="{{ route('faq.index') }}">Všetky faq</a></li>
+                        <li class="list-group-item"><a href="{{ route('faq.create') }}">Pridaj nový</a></li>
                     </ul>
                 </div>
             </div>

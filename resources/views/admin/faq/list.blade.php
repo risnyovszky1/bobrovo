@@ -17,21 +17,18 @@
                             <tr class="table-secondary">
                                 <th scope="col">Otázka</th>
                                 <th scope="col">Čas</th>
-                                <th scope="col" class="text-center">Delete</th>
+                                <th scope="col" class="text-right">Delete</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($faq as $f)
                                 <tr>
                                     <td scope="row"><a
-                                                href="{{ route('faq.edit', ['id' => $f->id]) }}">{{ $f->question }}</a>
+                                                href="{{ route('faq.edit', $f) }}">{{ $f->question }}</a>
                                     </td>
                                     <td>{{ $f->created_at }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ route('faq.delete', ['id' => $f->id]) }}" class="btn btn-danger btn-sm"
-                                           title="Vymazať {{ $f->question}}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                    <td class="text-right">
+                                        @include('admin.partials.delete', ['route' => route('faq.destroy', $f)])
                                     </td>
                                 </tr>
                             @endforeach

@@ -32,7 +32,7 @@
                 </div>
             @endif
 
-            <form action="" method="post">
+            <form action="{{ route('faq.store') }}" method="post">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Pidať FAQ</h2>
