@@ -209,6 +209,9 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // -------
     // |   GroupController / for admins and teachers /
     // ------
+
+    Route::resource('group', 'GroupController');
+
     Route::group(['prefix' => 'skupiny'], function () {
         Route::get('/', [
             'uses' => 'GroupController@getGroupsPage',

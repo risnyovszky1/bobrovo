@@ -24,24 +24,22 @@
                         @foreach($groups as $group)
                             <tr>
                                 <td scope="row">
-                                    <a href="{{ route('groups.one', [ 'id' => $group['id'] ]) }}">
-                                        {{ $group['name'] }}
+                                    <a href="{{ route('group.show', $group) }}">
+                                        {{ $group->name }}
                                     </a>
                                 </td>
 
                                 <td class="text-center">
-                    <span class="badge badge-pill {{ $group['total_students'] > 0 ? 'badge-success' : 'badge-secondary'}}">
-                      {{ $group['total_students'] }}
-                    </span>
+                                    <span
+                                        class="badge badge-pill {{ $group->students_count > 0 ? 'badge-success' : 'badge-secondary'}}">
+                                      {{ $group->students_count }}
+                                    </span>
                                 </td>
                                 <td>
                                     {{ $group['created_at']}}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('groups.delete', ['id'=> $group['id']]) }}" class="btn btn-danger btn-sm"
-                                       title="Vymazať {{ $group['name'] }}">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    @include('admin.partials.delete', ['route' => route('group.destroy', $group)])
                                 </td>
                             </tr>
                         @endforeach

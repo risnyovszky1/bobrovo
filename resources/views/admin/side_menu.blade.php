@@ -130,12 +130,12 @@
             </h3>
         </div>
         <div id="classes"
-             class="collapse {{ Request::is('ucitel/skupiny/*') || Request::is('ucitel/skupiny') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/group/*') || Request::is('ucitel/group') ? 'show': '' }}"
              aria-labelledby="classes" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('groups.all') }}">Všetky skupiny</a></li>
-                    <li class="list-group-item"><a href="{{ route('groups.add') }}">Pridaj novú</a></li>
+                    <li class="list-group-item"><a href="{{ route('group.index') }}">Všetky skupiny</a></li>
+                    <li class="list-group-item"><a href="{{ route('group.create') }}">Pridaj novú</a></li>
                 </ul>
             </div>
         </div>

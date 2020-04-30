@@ -1,5 +1,5 @@
 @section('title')
-    Upraviť skupinu | Bobrovo
+    Pridaj skupinu | Bobrovo
 @endsection
 
 @extends('admin.master')
@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Upraviť skupinu</h2>
+                    <h2>Pridať skupinu</h2>
                 </div>
             </div>
 
@@ -41,23 +41,22 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('group.store') }}" method="post">
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <input type="text" name="title" id="title" class="form-control form-control-lg"
-                                   value="{{ $group->name }}">
+                            <input type="text" name="title" id="title" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="desc">Popis</label>
                             <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor"
-                                      id="group-description">{{ $group->description }}</textarea>
+                                      id="group-description"></textarea>
                         </div>
 
                         <div class="form-group">
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť
-                                zmeny
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <i class="fas fa-plus-circle"></i> Pridaj
                             </button>
                         </div>
 

@@ -4,42 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
-use Illuminate\Support\Facades\DB;
-use App\Student;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
     // ---- GROUPS -----
 
-    public function getGroupsPage()
+    public function index()
     {
-        $db = DB::table('groups')
-            ->select('id', 'name', 'created_at')
+        $groups = Group::query()
             ->where('created_by', Auth::user()->id)
+            ->withCount('students')
             ->orderBy('name')
             ->get();
 
-        $groups = array();
-        foreach ($db as $item) {
-            $record = array(
-                'id' => $item->id,
-                'name' => $item->name,
-                'created_at' => $item->created_at,
-                'total_students' => DB::table('student_group')->where('group_id', $item->id)->count()
-            );
-
-            $groups[] = $record;
-        }
-        return view('admin.groups_all', ['groups' => $groups]);
+        return view('admin.group.list', ['groups' => $groups]);
     }
 
-    public function getAddGroupPage()
+    public function create()
     {
-        return view('admin.groups_add');
+        return view('admin.group.create');
     }
 
-    public function postAddGroupPage(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'title' => 'required|min:6',
@@ -54,53 +41,44 @@ class GroupController extends Controller
 
         $group->save();
 
-        return view('admin.groups_add', ['success' => 'Skupina bola úspešne pridaná.']);
+        $this->flashMsg('Skupina bola úspešne pridaná.');
+
+        return redirect()->route('group.show', $group);
     }
 
-    public function getDeleteGroup($id)
+    public function destroy(Group $group)
     {
-        $group = DB::table('groups')->select('created_by')->where('id', $id)->first();
-        if ($group->created_by != Auth::user()->id)
-            return redirect()->route('badlink');
+        $group->delete();
 
-        DB::table('groups')->where('id', $id)->delete();
-        return redirect()->route('groups.all');
+        return redirect()->route('group.index');
     }
 
-    public function getGroupOnePage($id)
+    public function show(Group $group)
     {
-        $group = DB::table('groups')->where('id', $id)->first();
-        $students = DB::table('student_group')
-            ->join('students', 'students.id', 'student_group.student_id')
-            ->select('students.id', 'students.first_name', 'students.last_name')
-            ->where('student_group.group_id', $id)
-            ->get();
+        $group->load('students');
 
-
-        return view('admin.groups_one', ['group' => $group, 'students' => $students]);
+        return view('admin.group.show', ['group' => $group]);
     }
 
-    public function getEditGroupPage($id)
+    public function edit(Group $group)
     {
-        $group = DB::table('groups')->where('id', $id)->first();
-        return view('admin.groups_edit', ['group' => $group]);
+        return view('admin.group.edit', ['group' => $group]);
     }
 
-    public function postEditGroupPage(Request $request, $id)
+    public function update(Request $request, Group $group)
     {
         $this->validate($request, [
             'title' => 'required',
             'desc' => 'required'
         ]);
 
-        DB::table('groups')->where('id', $id)->update([
+        $group->update([
             'name' => $request->input('title'),
             'description' => $request->input('desc'),
-            'updated_at' => date('Y-m-d H:i:s')
         ]);
 
+        $this->flashMsg('Úpravy boli uložené!');
 
-        $group = DB::table('groups')->where('id', $id)->first();
-        return view('admin.groups_edit', ['group' => $group, 'success' => 'Úpravy boli uložené!']);
+        return redirect()->route('group.show', $group);
     }
 }

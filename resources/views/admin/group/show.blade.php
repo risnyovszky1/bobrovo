@@ -57,7 +57,7 @@
                             Počet žiakov
                         </div>
                         <div class="card-body">
-                            <p class="card-text">{{ count($students) }}</p>
+                            <p class="card-text">{{ $group->students->count() }}</p>
                         </div>
                     </div>
                 </div>
@@ -67,15 +67,12 @@
                 <div class="card-header bg-success text-white">
                     Žiaci
                 </div>
-                @if(count($students) > 0)
+                @if($group->students->isNotEmpty())
                     <ul class="list-group list-group-flush">
-                        @foreach($students as $student)
+                        @foreach($group->students as $student)
                             <li class="list-group-item">
-                                <a href="{{ route('students.profil', ['id' => $student->id ]) }}">{{ $student->first_name . ' ' . $student->last_name }}</a>
-                                <a href="{{ route('students.delete.from.group', ['student_id' => $student->id, 'group_id' => $group->id]) }}"
-                                   class="float-right text-danger" title="Vymazať zo skupiny">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <a href="{{ route('student.show', $student) }}">{{ $student->first_name . ' ' . $student->last_name }}</a>
+                                @include('admin.partials.remove', ['route' => route('student.remove-from-group', ['student' => $student, 'group' => $group])])
                             </li>
                         @endforeach
                     </ul>
@@ -87,7 +84,7 @@
             </div>
 
             <div class="form-group mt-4">
-                <a href="{{ route('groups.edit', ['id' => $group->id]) }}" class="btn btn-primary shadow"><i
+                <a href="{{ route('group.edit', $group) }}" class="btn btn-primary shadow"><i
                             class="far fa-edit"></i> Upraviť</a>
                 <a href="{{ route('groups.export', ['id' => $group->id]) }}" class="btn btn-secondary shadow"
                    target="_blank"><i class="fas fa-print"></i> Vytlačiť zoznam žiakov</a>
