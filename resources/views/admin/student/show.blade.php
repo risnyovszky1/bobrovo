@@ -94,15 +94,12 @@
                         <div class="card-header bg-success text-white">
                             Skupiny
                         </div>
-                        @if(count($groups) > 0)
+                        @if($student->groups->count() > 0)
                             <ul class="list-group list-group-flush">
-                                @foreach($groups as $group)
+                                @foreach($student->groups as $group)
                                     <li class="list-group-item">
                                         <a href="{{ route('groups.one', [ 'id' => $group->id ]) }}">{{ $group->name }}</a>
-                                        <a href="{{ route('students.delete.from.group', ['student_id' => $student->id, 'group_id' => $group->id]) }}"
-                                           class="float-right text-danger" title="Vymazať zo skupiny">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        @include('admin.partials.remove', ['route' => route('student.remove-from-group', ['student' => $student->id, 'group' => $group->id])])
                                     </li>
                                 @endforeach
                             </ul>
@@ -120,15 +117,13 @@
         <div class="col-lg-4 pt-3 pb-3">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <a href="{{ route('students.delete', ['id' => $student->id]) }}" class="btn btn-danger btn-sm">
-                        Vymazať žiaka
-                    </a>
+                    @include('admin.partials.delete', ['route' => route('student.destroy', $student), 'text' => 'Vymazať žiaka'])
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('student.update', $student) }}" method="POST">
                         <div class="form-group">
                             <label for="add-to-group">Pridať do skupiny</label>
                             <select name="add-to-group" id="add-to-group" class="form-control">
@@ -140,7 +135,8 @@
                         </div>
 
                         <div class="form-group">
-                            {{ csrf_field() }}
+                            @csrf
+                            @method('PATCH')
                             <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-user-plus"></i>
                                 Pridaj do skupiny
                             </button>

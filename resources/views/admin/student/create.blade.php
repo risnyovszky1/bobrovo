@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('student.store') }}" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="title">Meno</label>
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="form-group">
-                            {{ csrf_field() }}
+                            @csrf
                             <button type="submit" class="btn btn-lg btn-primary">
                                 <i class="fas fa-plus-circle"></i> Pridaj
                             </button>

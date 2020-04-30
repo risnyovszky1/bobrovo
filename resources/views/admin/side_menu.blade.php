@@ -108,13 +108,13 @@
             </h3>
         </div>
         <div id="students"
-             class="collapse {{ Request::is('ucitel/ziaci/*') || Request::is('ucitel/ziaci') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/student/*') || Request::is('ucitel/student') ? 'show': '' }}"
              aria-labelledby="students" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('students.all' ) }}">Všetky študenti</a></li>
-                    <li class="list-group-item"><a href="{{ route('students.add' ) }}">Pridaj nový</a></li>
-                    <li class="list-group-item"><a href="{{ route('students.file' ) }}">Import zo súboru</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.index' ) }}">Všetky študenti</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.create' ) }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.import' ) }}">Import zo súboru</a></li>
                 </ul>
             </div>
         </div>

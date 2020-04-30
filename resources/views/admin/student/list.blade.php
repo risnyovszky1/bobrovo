@@ -5,7 +5,7 @@
 @extends('admin.master')
 
 @section('admin_content')
-    <form action="" method="post">
+    <form action="{{ route('student.index') }}" method="post">
         <div class="row">
             <div class="col-lg-8 pt-3 pb-3">
                 <h2>Všetky študenty</h2>
@@ -28,18 +28,14 @@
                                         <input type="checkbox" value="{{ $student->id }}" name="students[]" id="student-{{$student->id}}">
                                     </td>
                                     <td scope="row">
-                                        <a href="{{ route('students.profil', ['id'=>$student->id]) }}"
+                                        <a href="{{ route('student.show', $student) }}"
                                            title="Profil {{ $student->first_name . ' ' . $student->last_name }}">
                                             {{ $student->first_name . ' ' . $student->last_name }}
                                         </a>
                                     </td>
                                     <td class="text-center">{{ $student->code }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('students.delete', ['id' => $student->id]) }}"
-                                           class="btn btn-danger btn-sm"
-                                           title="Vymazať {{ $student->first_name . ' ' . $student->last_name }}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        @include('admin.partials.delete', ['route' => route('student.destroy', $student)])
                                     </td>
                                 </tr>
                             @endforeach
@@ -67,7 +63,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    {{ csrf_field() }}
+                    @csrf
+                    @method('PATCH')
                     <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-user-plus"></i> Pridaj do
                         skupiny
                     </button>

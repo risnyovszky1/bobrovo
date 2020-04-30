@@ -254,61 +254,29 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // -------
     // |  StudentController / for admins and teachers
     // -----
+    Route::resource('student', 'StudentController')->except(['edit']);
+    Route::patch('student', [
+        'uses' => 'StudentController@addStudentsToGroup',
+        'as' => 'student.index'
+    ]);
+    Route::patch('student/remove/{student}/{group}', [
+        'uses' => 'StudentController@removeFromGroup',
+        'as' => 'student.remove-from-group'
+    ]);
+    Route::get('student/import', [
+        'uses' => 'StudentController@import',
+        'as' => 'student.import'
+    ]);
+    // TODO
+    Route::post('student/import', [
+        'uses' => 'StudentController@importSave',
+        'as' => 'student.import-save'
+    ]);
 
-    Route::group(['prefix' => 'ziaci'], function () {
-        Route::get('/', [
-            'uses' => 'StudentController@getStudentsPage',
-            'as' => 'students.all'
-        ]);
-        Route::post('/', [
-            'uses' => 'StudentController@postStudentsPage',
-            'as' => 'students.all'
-        ]);
-
-        Route::get('/tlacit', [
-            'uses' => 'PdfController@getStudentsPdfExport',
-            'as' => 'students.export'
-        ]);
-
-        Route::get('/pridat', [
-            'uses' => 'StudentController@getAddStudentPage',
-            'as' => 'students.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'StudentController@postAddStudentPage',
-            'as' => 'students.add'
-        ]);
-
-        Route::get('/profil/{id}', [
-            'uses' => 'StudentController@getStudentProfilPage',
-            'as' => 'students.profil'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/profil/{id}', [
-            'uses' => 'StudentController@postAddStudentToGroup',
-            'as' => 'students.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'StudentController@getStudentDeletePage',
-            'as' => 'students.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{student_id}/{group_id}', [
-            'uses' => 'StudentController@getDeleteFromGroup',
-            'as' => 'students.delete.from.group'
-        ])->where('student_id', '[0-9]+')->where('group_id', '[0-9]+');
-
-        Route::get('/pridat-zo-suboru', [
-            'uses' => 'StudentController@getAddStudentFromFilePage',
-            'as' => 'students.file'
-        ]);
-        Route::post('/pridat-zo-suboru', [
-            'uses' => 'StudentController@postAddStudentFromFilePage',
-            'as' => 'students.file'
-        ]);
-    });
-
+    Route::get('student/print', [
+        'uses' => 'PdfController@getStudentsPdfExport',
+        'as' => 'students.export'
+    ]);
 
     // -------
     // |  TestManageController / for edit, add, delete, manage tests
