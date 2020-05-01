@@ -176,7 +176,9 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
         'as' => 'badlink'
     ]);
 
-    // USERS
+    // --------
+    // |  UserController / only for admin
+    // --------
     Route::resource('user', 'UserController')->only(['index', 'destroy']);
     Route::patch('user/{user}/toggle', 'UserController@toggle')->name('user.toggle');
 
@@ -195,15 +197,8 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // |  MessageController / for admins and teachers
     // ------
     Route::resource('message', 'MessageController')->except(['edit', 'update']);
-
-    Route::get('{message}/answer', [
-        'uses' => 'MessageController@answer',
-        'as' => 'message.answer'
-    ])->where('id', '[0-9]+');
-    Route::post('/{message}/answer', [
-        'uses' => 'MessageController@answerSend',
-        'as' => 'message.answer'
-    ])->where('id', '[0-9]+');
+    Route::get('message/{message}/answer', 'MessageController@answer')->name('message.answer');
+    Route::post('message/{message}/answer', 'MessageController@answer')->name('message.answer');
 
     // -------
     // |   GroupController / for admins and teachers /
@@ -214,23 +209,11 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // |  StudentController / for admins and teachers
     // -----
     Route::resource('student', 'StudentController')->except(['edit']);
-    Route::patch('student', [
-        'uses' => 'StudentController@addStudentsToGroup',
-        'as' => 'student.index'
-    ]);
-    Route::patch('student/remove/{student}/{group}', [
-        'uses' => 'StudentController@removeFromGroup',
-        'as' => 'student.remove-from-group'
-    ]);
-    Route::get('student/import', [
-        'uses' => 'StudentController@import',
-        'as' => 'student.import'
-    ]);
+    Route::patch('student', 'StudentController@addStudentsToGroup')->name('student.index');
+    Route::patch('student/remove/{student}/{group}', 'StudentController@removeFromGroup')->name('student.remove-from-group');
     // TODO
-    Route::post('student/import', [
-        'uses' => 'StudentController@importSave',
-        'as' => 'student.import-save'
-    ]);
+    Route::get('student/import', 'StudentController@import')->name('student.import');
+    Route::post('student/import', 'StudentController@importSave')->name('student.import-save');
 
     Route::get('student/print', [
         'uses' => 'PdfController@getStudentsPdfExport',
@@ -240,7 +223,6 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // -------
     // |  TestManageController / for edit, add, delete, manage tests
     // -------
-
     Route::group(['prefix' => 'testy'], function () {
         Route::get('/', [
             'uses' => 'TestManageController@getAllTestsPage',
