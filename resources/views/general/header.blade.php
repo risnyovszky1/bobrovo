@@ -20,7 +20,7 @@
 <body>
 <header id="header-bobrovo">
     <nav class="navbar navbar-expand-sm navbar-dark bg-bobrovo-green">
-        <a class="navbar-brand" href="{{ route('homepage') }}">
+        <a class="navbar-brand" href="{{ route('index') }}">
             <img src="/img/logo-web.png" width="30" height="30" class="d-inline-block align-top mr-1"
                  alt="Bobrovo logo">
             Bobrovo</a>
@@ -32,22 +32,35 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown {{ (Request::is('prihlasenie-ucitel') || Request::is('prihlasenie-student') ? 'active' : '') }}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-sign-in-alt"></i> Prihlásiť
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item {{ (Request::is('prihlasenie-student') ? 'active' : '') }}"
-                           href="{{ route('login_student') }}"><i class="fas fa-user-graduate"></i> Ako študent</a>
-                        <a class="dropdown-item {{ (Request::is('prihlasenie-ucitel') ? 'active' : '') }}"
-                           href="{{ route('login_teacher') }}"><i class="fas fa-user"></i> Ako učiteľ</a>
-                    </div>
-                </li>
-                <li class="nav-item {{ (Request::is('registracia') ? 'active' : '') }}">
-                    <a class="nav-link" href="{{ route('register') }}"><i class="fas fa-user-plus"></i> Registrácia</a>
-                </li>
+                @guest
+                    <li class="nav-item dropdown {{ (Request::is('prihlasenie-ucitel') || Request::is('prihlasenie-student') ? 'active' : '') }}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-sign-in-alt"></i> Prihlásiť
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item {{ (Request::is('prihlasenie-student') ? 'active' : '') }}"
+                               href="{{ route('login_student') }}"><i class="fas fa-user-graduate"></i> Ako študent</a>
+                            <a class="dropdown-item {{ (Request::is('prihlasenie-ucitel') ? 'active' : '') }}"
+                               href="{{ route('login_teacher') }}"><i class="fas fa-user"></i> Ako učiteľ</a>
+                        </div>
+                    </li>
 
+                    <li class="nav-item {{ (Request::is('registracia') ? 'active' : '') }}">
+                        <a class="nav-link" href="{{ route('register') }}"><i class="fas fa-user-plus"></i> Registrácia</a>
+                    </li>
+                @else
+                    @auth('web')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-user-lock"></i> Admin</a>
+                        </li>
+                    @endauth
+                    @auth('bobor')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('student_home') }}"><i class="fas fa-user-lock"></i> Nástenka</a>
+                        </li>
+                    @endauth
+                @endguest
             </ul>
         </div>
     </nav>

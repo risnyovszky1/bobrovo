@@ -177,7 +177,7 @@
                                     <p class="card-text text-muted">{{ $news->created_at }}</p>
                                 </div>
                                 <div class="card-body text-center pt-0">
-                                    <a href="{{ route('newsonepage', ['news_id' => $news->news_id]) }}"
+                                    <a href="{{ route('general.news.show', $news) }}"
                                        class="btn btn-sm btn-success">Pozrieť <i class="far fa-eye"></i></a>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center pt-4">
-                        <a href="{{ route('newspage') }}" class="btn btn-lg btn-success">
+                        <a href="{{ route('general.news.index') }}" class="btn btn-lg btn-success">
                             Všetky novinky
                         </a>
                     </div>
@@ -203,7 +203,7 @@
     </section>
 
     <section class="home-section" id="contact-form">
-        <form action="" method="post">
+        <form action="{{ route('contact-form') }}" method="post">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center mb-3">

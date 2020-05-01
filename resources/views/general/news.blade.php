@@ -21,7 +21,7 @@
                                     <p class="card-text text-muted">{{ $news->created_at }}</p>
                                 </div>
                                 <div class="card-body pt-0">
-                                    <a href="{{ route('newsonepage', ['news_id' => $news->news_id]) }}"
+                                    <a href="{{ route('general.news.show', $news) }}"
                                        class="btn btn-sm btn-success">Pozrieť <i class="far fa-eye"></i></a>
                                 </div>
                             </div>

@@ -16,41 +16,41 @@
 // --------
 
 Route::get('/', [
-    'uses' => 'PagesController@getHomePage',
-    'as' => 'homepage'
+    'uses' => 'PagesController@index',
+    'as' => 'index'
 ]);
 
 Route::post('/', [
-    'uses' => 'PagesController@postHomePage',
-    'as' => 'homepage'
+    'uses' => 'PagesController@sendContactForm',
+    'as' => 'contact-form'
 ]);
 
 Route::get('/registracia', [
-    'uses' => 'PagesController@getRegisterPage',
+    'uses' => 'PagesController@registration',
     'as' => 'register'
 ]);
 
 Route::post('/registracia', [
-    'uses' => 'PagesController@postRegisterPage',
+    'uses' => 'PagesController@sendRegistration',
     'as' => 'register'
 ]);
 
 Route::get('/novinky', [
-    'uses' => 'PagesController@getNewsPage',
-    'as' => 'newspage'
+    'uses' => 'PagesController@news',
+    'as' => 'general.news.index'
 ]);
-Route::get('/novinky/{id}', [
-    'uses' => 'PagesController@getNewsOnePage',
-    'as' => 'newsonepage'
+Route::get('/novinky/{news}', [
+    'uses' => 'PagesController@showNews',
+    'as' => 'general.news.show'
 ])->where('id', '[0-9]+');;
 
 Route::get('/vseobecne-podmienky', [
-    'uses' => 'PagesController@getDefaultConditionPage',
+    'uses' => 'PagesController@defaultConditions',
     'as' => 'default_cond'
 ]);
 
 Route::get('/faq', [
-    'uses' => 'PagesController@getFAQPage',
+    'uses' => 'PagesController@faq',
     'as' => 'faq'
 ]);
 
@@ -194,7 +194,6 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // ------
     // |  MessageController / for admins and teachers
     // ------
-
     Route::resource('message', 'MessageController')->except(['edit', 'update']);
 
     Route::get('{message}/answer', [
@@ -209,50 +208,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
     // -------
     // |   GroupController / for admins and teachers /
     // ------
-
     Route::resource('group', 'GroupController');
-
-    Route::group(['prefix' => 'skupiny'], function () {
-        Route::get('/', [
-            'uses' => 'GroupController@getGroupsPage',
-            'as' => 'groups.all'
-        ]);
-
-        Route::get('/{id}', [
-            'uses' => 'GroupController@getGroupOnePage',
-            'as' => 'groups.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/talcit/{id}', [
-            'uses' => 'PdfController@getStudentsInGroupPdfExport',
-            'as' => 'groups.export'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/pridat', [
-            'uses' => 'GroupController@getAddGroupPage',
-            'as' => 'groups.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'GroupController@postAddGroupPage',
-            'as' => 'groups.add'
-        ]);
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'GroupController@getDeleteGroup',
-            'as' => 'groups.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'GroupController@getEditGroupPage',
-            'as' => 'groups.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/upravit/{id}', [
-            'uses' => 'GroupController@postEditGroupPage',
-            'as' => 'groups.edit'
-        ])->where('id', '[0-9]+');
-    });
-
 
     // -------
     // |  StudentController / for admins and teachers
