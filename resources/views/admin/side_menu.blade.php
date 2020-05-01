@@ -171,17 +171,17 @@
             </h3>
         </div>
         <div id="questions"
-             class="collapse {{ Request::is('ucitel/otazky/*') || Request::is('ucitel/otazky') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/question/*') || Request::is('ucitel/question') ? 'show': '' }}"
              aria-labelledby="questions" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
-                    <li class="list-group-item"><a href="{{ route('questions.my') }}">Moje otázky</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.index') }}">Všetky otázky</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.index.my') }}">Moje otázky</a></li>
                     @if (auth()->user()->is_admin)
-                        <li class="list-group-item"><a href="{{ route('questions.other') }}">Otázky od iných</a></li>
+                        <li class="list-group-item"><a href="{{ route('question.index.other') }}">Otázky od iných</a></li>
                     @endif
-                    <li class="list-group-item"><a href="{{ route('questions.add') }}">Pridaj nový</a></li>
-                    <li class="list-group-item"><a href="{{ route('questions.filter') }}">Filter otázkov</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.create') }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.filter') }}">Filter otázkov</a></li>
                 </ul>
             </div>
         </div>

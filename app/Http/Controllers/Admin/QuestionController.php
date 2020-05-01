@@ -4,45 +4,34 @@ namespace App\Http\Controllers\Admin;
 
 use App\Rating;
 use App\Http\Controllers\Controller;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
-use App\User;
-use App\Test;
 use App\Question;
 use App\Comment;
 use Illuminate\Support\Facades\Auth;
-use \Illuminate\Support\Facades\Input;
-use Faker\Factory as Faker;
+use Mpdf\Tag\Q;
 
 class QuestionController extends Controller
 {
-
-    // ====================================
-    // |                                  |
-    // |          TEACHER PAGES           |
-    // |                                  |
-    // ====================================
-
-
     // ---- QUESTIONS ----
-    public function getAllQuestionsPage(Request $request)
+    public function index(Request $request)
     {
-        $tests = DB::table('tests')
-            ->select('id', 'name')
+        $tests = Test::query()
             ->where('teacher_id', Auth::user()->id)
             ->orderBy('name', 'ASC')
             ->get();
 
         $questions = $this->getFilteredQuestions('all');
 
-        return view('admin.questions_all', [
+        return view('admin.question.list', [
             'tests' => $tests,
             'questions' => $questions,
             'title' => 'Všetky otázky',
             'inputs' => $request->all(),
+            'from' => 'question.index',
         ]);
     }
 
@@ -58,15 +47,16 @@ class QuestionController extends Controller
         $query = Question::query()->with('categories', 'comments', 'tests');
 
 
-        switch ($q){
+        switch ($q) {
             case 'my':
                 $query->where('created_by', Auth::user()->id);
                 break;
             case 'other':
                 $query->where('created_by', '!=', Auth::user()->id);
+                break;
             case 'all':
             default:
-            $query->where('public', true);
+                $query->where('public', true);
         }
 
         if ($type) {
@@ -82,28 +72,28 @@ class QuestionController extends Controller
                 $query->orderBy('title', 'asc');
             }
             if ($order == 2) {
-                $query->withCount(['comments as commentCount' => function ($query){
+                $query->withCount(['comments as commentCount' => function ($query) {
                     $query->select(DB::raw('coalesce(count(*),0)'));
                 }]);
                 $query->orderBy('commentCount', 'desc')
                     ->orderBy('title', 'asc');
             }
             if ($order == 3) {
-                $query->withCount(['ratings as ratingAvg' => function ($query){
+                $query->withCount(['ratings as ratingAvg' => function ($query) {
                     $query->select(DB::raw('coalesce(avg(rating),0)'));
                 }]);
                 $query->orderBy('ratingAvg', 'desc')
                     ->orderBy('title', 'asc');
             }
             if ($order == 4) {
-                $query->withCount(['ratings as ratingCount' => function ($query){
+                $query->withCount(['ratings as ratingCount' => function ($query) {
                     $query->select(DB::raw('coalesce(count(*),0)'));
                 }]);
                 $query->orderBy('ratingCount', 'desc')
                     ->orderBy('title', 'asc');
             }
             if ($order == 5) {
-                $query->withCount(['tests as popularity' => function ($query){
+                $query->withCount(['tests as popularity' => function ($query) {
                     $query->select(DB::raw('coalesce(count(*),0)'));
                 }]);
                 $query->orderBy('popularity', 'desc')
@@ -124,7 +114,7 @@ class QuestionController extends Controller
         return $questions;
     }
 
-    public function postAllQuestionsPage(Request $request)
+    public function addQuestionsToTest(Request $request)
     {
         $this->validate($request, [
             'questions' => 'required',
@@ -132,13 +122,13 @@ class QuestionController extends Controller
         ]);
 
         foreach ($request->input('questions') as $q) {
-            $count = DB::table('question_test')
+            $exists = DB::table('question_test')
                 ->where([
                     ['question_id', $q],
                     ['test_id', $request->input('test-select')]])
-                ->count();
+                ->exists();
 
-            if ($count == 0) {
+            if (! $exists) {
                 DB::table('question_test')->insert([
                     'question_id' => $q,
                     'test_id' => $request->input('test-select')
@@ -146,121 +136,78 @@ class QuestionController extends Controller
             }
         }
 
-        return redirect()->route('questions.all');
+        return redirect()->route($request->input('from', 'question.index'));
     }
 
-    public function getMyQuestionsPage(Request $request)
+    public function myQuestions(Request $request)
     {
-        $tests = DB::table('tests')
-            ->select('id', 'name')
+        $tests = Test::query()
             ->where('teacher_id', Auth::user()->id)
             ->orderBy('name', 'ASC')
             ->get();
 
         $questions = $this->getFilteredQuestions('my');
 
-        return view('admin.questions_all', [
+        return view('admin.question.list', [
             'tests' => $tests,
             'questions' => $questions,
-            'title' => 'Všetky otázky',
+            'title' => 'Moje otázky',
             'inputs' => $request->all(),
+            'from' => 'question.index.my'
         ]);
     }
 
-    public function postMyQuestionsPage(Request $request)
+    public function otherQuestions(Request $request)
     {
-        $this->validate($request, [
-            'questions' => 'required',
-            'test-select' => 'required'
-        ]);
-
-        foreach ($request->input('questions') as $q) {
-            $count = DB::table('question_test')
-                ->where([
-                    ['question_id', $q],
-                    ['test_id', $request->input('test-select')]])
-                ->count();
-
-            if ($count == 0) {
-                DB::table('question_test')->insert([
-                    'question_id' => $q,
-                    'test_id' => $request->input('test-select')
-                ]);
-            }
-        }
-
-        return redirect()->route('questions.my');
-    }
-
-    public function getOtherQuestionsPage(Request $request)
-    {
-        $tests = DB::table('tests')
-            ->select('id', 'name')
+        $tests = Test::query()
             ->where('teacher_id', Auth::user()->id)
             ->orderBy('name', 'ASC')
             ->get();
 
         $questions = $this->getFilteredQuestions('other');
 
-        return view('admin.questions_all', [
+        return view('admin.question.list', [
             'tests' => $tests,
             'questions' => $questions,
             'title' => 'Otázky od iných',
             'inputs' => $request->all(),
+            'from' => 'question.index.other',
         ]);
     }
 
-    public function getQuestionPage($id)
+    public function show(Question $question)
     {
-        $question = Question::with('comments.user', 'ratings')->find($id);
-        $comments = DB::table('comments')
-            ->join('users', 'comments.user_id', 'users.id')
-            ->select('comment', 'comments.created_at', 'first_name', 'last_name')
-            ->where('question_id', $id)
-            ->orderBy('created_at', 'ASC')
-            ->get();
+        $question->load('comments', 'categories', 'ratings');
 
-        $tests = DB::table('tests')
-            ->select('id', 'name')
+        $tests = Test::query()
             ->where('teacher_id', Auth::user()->id)
             ->orderBy('name', 'ASC')
             ->get();
 
-        $myRating = DB::table('ratings')
-            ->select('rating')
-            ->where([
-                ['question_id', $id],
-                ['user_id', Auth::user()->id]
-            ])
+        $myRating = Rating::query()
+            ->where('question_id', $question->id)
+            ->where('user_id', Auth::id())
             ->first();
-
-        $categories = DB::table('question_category')
-            ->join('categories', 'question_category.category_id', 'categories.id')
-            ->select('name')
-            ->where('question_id', $id)
-            ->get();
 
         $avgTime = null;
 
         if (Auth::user()->is_admin) {
             $avgTime = DB::table('measurements')
                 ->select('time_spent')
-                ->where('question_id', $id)
+                ->where('question_id', $question->id)
                 ->avg('time_spent');
         }
 
 
-        return view('admin.questions_one', [
+        return view('admin.question.show', [
             'question' => $question,
-            'comments' => $comments,
             'tests' => $tests,
             'myRating' => $myRating,
-            'categories' => $categories,
             'avgTime' => $avgTime
         ]);
     }
 
-    public function postQuestionPage(Request $request, $id)
+    public function addToTest(Request $request, Question $question)
     {
         $this->validate($request, [
             'test' => 'required'
@@ -268,7 +215,7 @@ class QuestionController extends Controller
 
         $count = DB::table('question_test')
             ->where([
-                ['question_id', $id],
+                ['question_id', $question->id],
                 ['test_id', $request->input('test')],
             ])
             ->count();
@@ -276,51 +223,51 @@ class QuestionController extends Controller
         if ($count == 0) {
             DB::table('question_test')
                 ->insert([
-                    'question_id' => $id,
+                    'question_id' => $question->id,
                     'test_id' => $request->input('test')
                 ]);
         }
 
-        return redirect()->route('questions.one', ['id' => $id]);
+        return redirect()->route('question.show', $question->id);
     }
 
-    public function postAddComment(Request $request, $id)
+    public function comment(Request $request, Question $question)
     {
+        $this->validate($request, [
+            'comment' => 'required|string'
+        ]);
+
         $comment = new Comment([
             'user_id' => Auth::user()->id,
-            'question_id' => $id,
+            'question_id' => $question->id,
             'comment' => $request->input('comment')
         ]);
 
         $comment->save();
 
-        return redirect()->route('questions.one', ['id' => $id]);
+        return redirect()->route('question.show', $question);
     }
 
-    public function getDeleteQuestion($id)
+    public function destroy(Question $question)
     {
-        $question = Question::find($id);
         $question->delete();
-        return redirect()->route('questions.all');
+        return redirect()->route('question.index');
     }
 
-    public function getEditQuestionPage($id)
+    public function edit(Question $question)
     {
-        $question = Question::find($id);
-        $cat = DB::table('question_category')->select('category_id')->where('question_id', $id)->get();
+        $question->load('categories');
 
         $categories = array();
-        foreach ($cat as $c) {
-            $categories[] = $c->category_id;
+        foreach ($question->categories as $c) {
+            $categories[] = $c->id;
         }
 
-        return view('admin.questions_edit', ['question' => $question, 'categories' => $categories]);
+        return view('admin.question.edit', ['question' => $question, 'categories' => $categories]);
     }
 
-    public function postEditQuestionPage(Request $request, $id)
+    public function update(Request $request, Question $question)
     {
-        $question = Question::find($id);
-
         $this->validate($request, [
             'title' => 'required',
             'question' => 'required',
@@ -375,49 +322,33 @@ class QuestionController extends Controller
 
         $question->save();
 
-        DB::table('question_category')->where('question_id', $id)->delete();
-        if ($request->input('category')) {
-            foreach ($request->input('category') as $cat) {
-                DB::table('question_category')->insert([
-                    'question_id' => $id,
-                    'category_id' => $cat
-                ]);
-            }
-        }
+        $question->categories()->sync($request->input('category', []));
 
-        return redirect()->route('questions.one', ['id' => $id]);
+        return redirect()->route('question.show', $question);
     }
 
-    public function getQuestionRating($id, $userRating)
+    public function rating(Request $request, Question $question)
     {
-        $rating = Rating::where([
-            ['question_id', $id],
-            ['user_id', Auth::user()->id]
-        ])->first();
+        $this->validate($request, [
+            'value' => 'required|min:1|max:5'
+        ]);
 
+        Rating::query()->updateOrCreate([
+            'question_id' => $question->id,
+            'user_id' => Auth::user()->id,
+        ], [
+            'rating' => $request->input('value')
+        ]);
 
-        if ($rating) {
-            $rating->update([
-                'rating' => $userRating
-            ]);
-        } else {
-            Rating::create([
-                'question_id' => $id,
-                'user_id' => Auth::user()->id,
-                'rating' => $userRating
-            ]);
-        }
-
-        return redirect()->route('questions.one', ['id' => $id]);
+        return redirect()->route('question.show', $question);
     }
 
-    public function getAddQuestionPage()
+    public function create()
     {
-
-        return view('admin.questions_add');
+        return view('admin.question.create');
     }
 
-    public function postAddQuestionPage(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -429,6 +360,18 @@ class QuestionController extends Controller
 
         $type = intval($request->input('type'));
 
+        $question = new Question([
+            'title' => $request->input('title'),
+            'question' => $request->input('question'),
+            'answer' => $request->input('answer'),
+            'type' => $type,
+            'difficulty' => $request->input('difficulty'),
+            'description' => $request->input('description') ? $request->input('description') : '',
+            'description_teacher' => $request->input('description_teacher') ? $request->input('description_teacher') : '',
+            'public' => $request->input('public') != null ? true : false,
+            'created_by' => Auth::user()->id,
+        ]);
+
         if ($type >= 1 && $type <= 3) {
             // if type is text: in rows, in cols, 2x2
             $this->validate($request, [
@@ -438,23 +381,14 @@ class QuestionController extends Controller
                 'answer-d' => 'required',
             ]);
 
-            $q = new Question([
-                'title' => $request->input('title'),
-                'question' => $request->input('question'),
+            $question->fill([
                 'a' => $request->input('answer-a'),
                 'b' => $request->input('answer-b'),
                 'c' => $request->input('answer-c'),
                 'd' => $request->input('answer-d'),
-                'answer' => $request->input('answer'),
-                'type' => $type,
-                'difficulty' => $request->input('difficulty'),
-                'description' => $request->input('description') ? $request->input('description') : '',
-                'description_teacher' => $request->input('description_teacher') ? $request->input('description_teacher') : '',
-                'public' => $request->input('public') != null ? true : false,
-                'created_by' => Auth::user()->id
             ]);
 
-            $q->save();
+            $question->save();
         } else if ($type == 4) {
             // if type is img
             $this->validate($request, [
@@ -464,57 +398,41 @@ class QuestionController extends Controller
                 'answer-d-img' => 'required',
             ]);
 
-            $q = new Question([
-                'title' => $request->input('title'),
-                'question' => $request->input('question'),
-                'answer' => $request->input('answer'),
-                'type' => $type,
-                'difficulty' => $request->input('difficulty'),
-                'description' => $request->input('description') ? $request->input('description') : '',
-                'description_teacher' => $request->input('description_teacher') ? $request->input('description_teacher') : '',
-                'public' => $request->input('public') != null ? true : false,
-                'created_by' => Auth::user()->id,
+            $question->fill([
                 'a' => 'a',
                 'b' => 'a',
                 'c' => 'a',
                 'd' => 'a',
             ]);
 
-            $q->save();
+            $question->save();
 
-            $path1 = $request->file('answer-a-img')->storeAs('img/answers', $q->id . 'a' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path2 = $request->file('answer-b-img')->storeAs('img/answers', $q->id . 'b' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path3 = $request->file('answer-c-img')->storeAs('img/answers', $q->id . 'c' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
-            $path4 = $request->file('answer-d-img')->storeAs('img/answers', $q->id . 'd' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path1 = $request->file('answer-a-img')->storeAs('img/answers', $question->id . 'a' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path2 = $request->file('answer-b-img')->storeAs('img/answers', $question->id . 'b' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path3 = $request->file('answer-c-img')->storeAs('img/answers', $question->id . 'c' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
+            $path4 = $request->file('answer-d-img')->storeAs('img/answers', $question->id . 'd' . '.' . $request->file('answer-a-img')->getClientOriginalExtension(), 'public_uploads');
 
-            $q->a = '/' . $path1;
-            $q->b = '/' . $path2;
-            $q->c = '/' . $path3;
-            $q->d = '/' . $path4;
+            $question->a = '/' . $path1;
+            $question->b = '/' . $path2;
+            $question->c = '/' . $path3;
+            $question->d = '/' . $path4;
 
-            $q->save();
+            $question->save();
         } else {
-            // if type is interactive
+            // TODO interactive questions
         }
 
-        if ($request->input('category')) {
-            foreach ($request->input('category') as $cat) {
-                DB::table('question_category')->insert([
-                    'question_id' => $q->id,
-                    'category_id' => $cat
-                ]);
-            }
-        }
+        $question->categories()->sync($request->input('category') ?? []);
 
-        return redirect()->route('questions.one', ['id' => $q->id]);
+        return redirect()->route('question.show', $question);
     }
 
-    public function getFilterPage()
+    public function filter()
     {
-        return view('admin.questions_filter');
+        return view('admin.question.filter');
     }
 
-    public function postFilterPage(Request $request)
+    public function saveFilter(Request $request)
     {
         $filter = array(
             'category' => $request->input('category'),
@@ -526,12 +444,12 @@ class QuestionController extends Controller
 
         Session::put('questionFilter', $filter);
 
-        return redirect()->route('questions.all');
+        return redirect()->route('question.index');
     }
 
-    public function getFilterReset()
+    public function resetFilter()
     {
         Session::put('questionFilter', null);
-        return redirect()->route('questions.all');
+        return redirect()->route('question.index');
     }
 }

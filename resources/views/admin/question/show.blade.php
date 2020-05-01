@@ -80,18 +80,18 @@
                         <div class="card-header text-white bg-primary">
                             Kategórie
                         </div>
-                        @if (empty($categories) || count($categories) == 0)
+                        @if ($question->categories->isEmpty())
                             <div class="card-body">
                                 <p class="card-text">Nie je zaradená do žiadnej kategórie</p>
                             </div>
                         @else
-                            @foreach ($categories as $item)
-                                <div class="card-body">
+                            <div class="card-body">
+                                @foreach ($question->categories as $item)
                                     <p class="card-text h5">
                                         {{$item->name}}
                                     </p>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -157,17 +157,21 @@
             @endif
             <div class="form-group mt-4">
                 @if (Auth::user()->is_admin || $question->created_by == Auth::user()->id)
-                    <a href="{{ route('questions.edit', ['id' => $question->id]) }}" class="btn btn-primary shadow">
+                    <a href="{{ route('question.edit', $question) }}" class="btn btn-primary">
                         <i class="far fa-edit"></i> Upraviť
                     </a>
-                    <a href="{{ route('questions.delete', ['id' => $question->id]) }}" class="btn btn-danger shadow">
-                        <i class="fas fa-trash"></i> Vymazať
-                    </a>
+                    <form action="{{ route('question.destroy', $question) }}" class="d-inline-block" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Vymazať
+                        </button>
+                    </form>
                 @endif
-                <button class="btn btn-secondary shadow" data-toggle="modal" data-target="#comment-modal">
+                <button class="btn btn-secondary" data-toggle="modal" data-target="#comment-modal">
                     <i class="fas fa-pen"></i> Napísať komment
                 </button>
-                <button class="btn btn-warning shadow" data-toggle="modal" data-target="#rating-modal">
+                <button class="btn btn-warning" data-toggle="modal" data-target="#rating-modal">
                     <i class="far fa-star"></i> Hodnotiť
                 </button>
 
@@ -176,7 +180,7 @@
 
         <div class="col-lg-4 pt-3 pb-3">
             @if (!empty($tests) && count($tests) > 0)
-                <form action="" method="post">
+                <form action="{{ route('question.show', $question) }}" method="post">
                     <div class="form-group">
                         <label for="test">Test</label>
                         <select name="test" id="test-select" class="form-control">
@@ -223,53 +227,48 @@
 @section('additional_html')
     <div class="modal fade" id="rating-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Hodnotenie</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <form action="{{ route('question.rating', $question) }}" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hodnotenie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- inspired from https://codepen.io/hesguru/pen/BaybqXv -->
+                        <div class="rate">
+                            <input type="radio" id="star5" name="value" value="5"
+                                   @if(!empty($myRating) && $myRating->rating === 5) checked @endif/>
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="value" value="4"
+                                   @if(!empty($myRating) && $myRating->rating === 4) checked @endif />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="value" value="3"
+                                   @if(!empty($myRating) && $myRating->rating === 3) checked @endif />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="value" value="2"
+                                   @if(!empty($myRating) && $myRating->rating === 2) checked @endif />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="value" value="1"
+                                   @if(!empty($myRating) && $myRating->rating === 1) checked @endif />
+                            <label for="star1" title="text">1 star</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @csrf
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvoriť</button>
+                        <button type="submit" class="btn btn-warning">Hodnotiť</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    @if (empty($myRating->rating))
-                        <p>Ešte nehodnotili ste otázku.</p>
-                        <p class="h4">
-                            <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => 1]) }}"
-                               class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                            <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => 2]) }}"
-                               class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                            <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => 3]) }}"
-                               class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                            <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => 4]) }}"
-                               class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                            <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => 5]) }}"
-                               class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                        </p>
-                    @else
-                        <p>Už ste hodnotili otázku. Chcete to zmeniť?</p>
-                        <p class="h4">
-                            @for ($i = 1; $i <= $myRating->rating; $i++)
-                                <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => $i]) }}"
-                                   class="text-warning rating-star" data-original="true"><i class="fas fa-star"></i></a>
-                            @endfor
-                            @for ($i = 0; $i < 5 - $myRating->rating; $i++)
-                                <a href="{{ route('questions.rating', ['id' => $question->id, 'rating' => $myRating->rating + $i + 1]) }}"
-                                   class="text-secondary rating-star" data-original="false"><i class="fas fa-star"></i></a>
-                            @endfor
-                        </p>
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvoriť</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <div class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ route('questions.addcomment', ['id' => $question->id] )}}" method="post">
+                <form action="{{ route('question.comment', $question)}}" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">Napísať koment</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -278,7 +277,7 @@
                     </div>
                     <div class="modal-body">
                         <textarea name="comment" id="" rows="6" class="form-control"></textarea>
-                        {{ csrf_field() }}
+                        @csrf
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Zatvoriť</button>

@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{ route('question.update', $question) }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -296,7 +296,8 @@
                                 <label class="custom-control-label" for="public">Verejný</label>
                             </div>
                         </div>
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PATCH')
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť zmeny
                         </button>
                     </div>

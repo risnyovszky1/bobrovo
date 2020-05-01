@@ -233,93 +233,16 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admi
     // ------
     // |  Questions
     // ------
-
-    Route::group(['prefix' => 'otazky'], function () {
-        Route::get('/', [
-            'uses' => 'QuestionController@getAllQuestionsPage',
-            'as' => 'questions.all'
-        ]);
-        Route::post('/', [
-            'uses' => 'QuestionController@postAllQuestionsPage',
-            'as' => 'questions.all'
-        ]);
-
-        Route::get('/moje', [
-            'uses' => 'QuestionController@getMyQuestionsPage',
-            'as' => 'questions.my'
-        ]);
-        Route::post('/moje', [
-            'uses' => 'QuestionController@postMyQuestionsPage',
-            'as' => 'questions.my'
-        ]);
-
-        Route::get('/ostatne', [
-            'uses' => 'QuestionController@getOtherQuestionsPage',
-            'as' => 'questions.other'
-        ]);
-        Route::post('/ostatne', [
-            'uses' => 'QuestionController@postOtherQuestionsPage',
-            'as' => 'questions.other'
-        ]);
-
-        Route::get('/pridat', [
-            'uses' => 'QuestionController@getAddQuestionPage',
-            'as' => 'questions.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'QuestionController@postAddQuestionPage',
-            'as' => 'questions.add'
-        ]);
-
-        Route::get('/filter', [
-            'uses' => 'QuestionController@getFilterPage',
-            'as' => 'questions.filter'
-        ]);
-        Route::post('/filter', [
-            'uses' => 'QuestionController@postFilterPage',
-            'as' => 'questions.filter'
-        ]);
-        Route::get('/filter/reset', [
-            'uses' => 'QuestionController@getFilterReset',
-            'as' => 'questions.filter.reset'
-        ]);
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'QuestionController@getDeleteQuestion',
-            'as' => 'questions.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'QuestionController@getEditQuestionPage',
-            'as' => 'questions.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/upravit/{id}', [
-            'uses' => 'QuestionController@postEditQuestionPage',
-            'as' => 'questions.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/hodnotit/{id}/{rating}', [
-            'uses' => 'QuestionController@getQuestionRating',
-            'as' => 'questions.rating'
-        ])->where('id', '[0-9]+')
-            ->where('rating', '[1-5]');
-
-        Route::post('/comment/{id}/', [
-            'uses' => 'QuestionController@postAddComment',
-            'as' => 'questions.addcomment'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/{id}', [
-            'uses' => 'QuestionController@getQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
-        Route::post('/{id}', [
-            'uses' => 'QuestionController@postQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
-    });
-
+    Route::get('question/moje', 'QuestionController@myQuestions')->name('question.index.my');
+    Route::get('question/other', 'QuestionController@otherQuestions')->name('question.index.other');
+    Route::get('question/filter', 'QuestionController@filter')->name('question.filter');
+    Route::post('question/filter', 'QuestionController@saveFilter')->name('question.filter');
+    Route::delete('question/reset', 'QuestionController@resetFilter')->name('question.filter.reset');
+    Route::post('question/add-to-test', 'QuestionController@addQuestionsToTest')->name('question.add-to-test');
+    Route::post('question/{question}/comment', 'QuestionController@comment')->name('question.comment');
+    Route::post('question/{question}/rating', 'QuestionController@rating')->name('question.rating');
+    Route::post('question/{question}', 'QuestionController@addToTest')->name('question.test');
+    Route::resource('question', 'QuestionController');
 
     // -------
     // |   ProfileController / for edit user profile

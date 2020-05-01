@@ -22,7 +22,7 @@
                         $order = !empty($filter['order']) ? $filter['order'] : null;
                     @endphp
 
-                    <form action="" method="post">
+                    <form action="{{ route('question.filter') }}" method="post">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-8">
@@ -243,16 +243,22 @@
                         </div>
 
                         <div class="form-group">
-                            {{ csrf_field() }}
+                            @csrf
                             <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Uložiť filter
                             </button>
-                            <a href="{{ route('questions.filter.reset') }}" class="btn btn-danger"><i
-                                        class="fas fa-redo-alt"></i> Zrušiť filter</a>
+                            <button type="button" class="btn btn-danger" onclick="document.getElementById('filter-reset').submit()"><i
+                                    class="fas fa-redo-alt"></i> Zrušiť filter</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+@endsection
 
+@section('additional_html')
+    <form action="{{ route('question.filter.reset') }}" method="POST" class="d-none" id="filter-reset">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection

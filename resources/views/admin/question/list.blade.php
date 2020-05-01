@@ -5,10 +5,10 @@
 @extends('admin.master')
 
 @section('admin_content')
-    <form action="" method="post">
+    <form action="{{ route('question.add-to-test') }}" method="post">
         <div class="row">
             <div class="col-lg-9 pt-3 pb-3">
-                <h2>{{ $title }} <span class="badge badge-secondary badge-pill">{{ $total }}</span></h2>
+                <h2>{{ $title }}</h2>
 
                 @if(count($errors) > 0)
                     @foreach($errors->all() as $err)
@@ -37,15 +37,18 @@
                             <tbody>
                             @foreach ($questions as $item)
                                 <tr>
-                                    <td><input type="checkbox" name="questions[]" id="" value="{{$item->id}}"></td>
                                     <td>
-                                        <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
+                                        <input type="checkbox" name="questions[]" id="question-{{ $item->id }}"
+                                               value="{{$item->id}}">
                                     </td>
                                     <td>
-                                <span class="extra-small">
-                                    @if(count(explode(',', $item->categories)) > 0)
-                                        @foreach( explode(',', $item->categories) as $itemCategory)
-                                            {!! $categories[trim($itemCategory)] . '<br>' !!}
+                                        <a href="{{ route('question.show', $item) }}">{{ $item->title }}</a>
+                                    </td>
+                                    <td>
+                                <span class="small">
+                                    @if(count($item->categories) > 0)
+                                        @foreach( $item->categories as $category)
+                                            {!! $category->name . '<br>' !!}
                                         @endforeach
                                     @else
                                         Bez kategórie
@@ -68,22 +71,25 @@
                                         @endswitch
                                     </td>
                                     <td class="text-center">
-                                        @if($item->rating < 1)
-                                            <span class="badge badge-pill badge-danger">Nehodnotené</span>
-                                        @elseif($item->rating >= 4 )
-                                            <span class="badge badge-pill badge-success">{{round($item->rating, 1)}}</span>
+                                        @php($avg = $item->ratings->avg('rating'))
+                                        @if($avg < 1)
+                                            <span class="badge badge-danger">Nehodnotené</span>
+                                        @elseif($avg >= 4 )
+                                            <span
+                                                class="badge badge-success">{{round($avg, 1)}}</span>
                                         @else
-                                            <span class="badge badge-pill badge-warning">{{round($item->rating, 1)}}</span>
+                                            <span
+                                                class="badge badge-warning">{{round($avg, 1)}}</span>
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        {{ $item->rating_count }}
+                                        {{ $item->ratings->count() }}
                                     </td>
                                     <td class="text-center">
-                                        {{ $item->comments }}
+                                        {{ $item->comments->count() }}
                                     </td>
                                     <td class="text-center">
-                                        {{ $item->popularity }}
+                                        {{ $item->tests->count() }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -92,14 +98,7 @@
                     </div>
 
                     <div id="pagination" class="text-center pt-3 pb-3">
-                        @php
-                            $totalPages = intval(ceil($total / 50));
-                            $actualPage = \Illuminate\Support\Facades\Input::get('page') ? \Illuminate\Support\Facades\Input::get('page') - 1 :  0;
-                        @endphp
-                        @for($i = 0; $i < $totalPages; $i++)
-                            <a href="{{ route('questions.my') . '?page=' . ($i+1) }}"
-                               class="btn {{ $actualPage == $i ? 'btn-dark' : 'btn-secondary' }}">{{ $i+1 }}</a>
-                        @endfor
+                        {!! $questions->appends($inputs)->links() !!}
                     </div>
                 @else
                     <p>Zaťiaľ žiadne otázky sa tu nenachádzajú.</p>
@@ -124,18 +123,26 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        {{ csrf_field() }}
+                        @csrf
+                        <input type="hidden" name="from" value="@if(empty($from)) question.index @else {{ $from }} @endif">
                         <button type="submit" class="btn btn-primary btn-block">Pridaj do testu</button>
                     </div>
 
                     <div class="form-group">
-                        <a href="{{ route('questions.filter.reset') }}" class="btn btn-danger btn-block"><i
-                                    class="fas fa-redo-alt"></i> Zrušiť filter</a>
+                        <button type="button" class="btn btn-danger btn-block" onclick="document.getElementById('filter-reset').submit()"><i
+                                class="fas fa-redo-alt"></i> Zrušiť filter</button>
                     </div>
                 @endif
 
             </div>
         </div>
+    </form>
+@endsection
+
+@section('additional_html')
+    <form action="{{ route('question.filter.reset') }}" method="POST" class="d-none" id="filter-reset">
+        @csrf
+        @method('DELETE')
     </form>
 @endsection
 

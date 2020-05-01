@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{ route('question.store') }}" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -47,7 +47,7 @@
                                 Otázka
                             </label>
                             <textarea name="question" id="" rows="5" class="form-control wyswyg-editor">
-                
+
             </textarea>
                         </div>
                     </div>
@@ -275,7 +275,7 @@
                             </div>
                         @endif
 
-                        {{ csrf_field() }}
+                        @csrf
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť</button>
                     </div>
                 </div>
