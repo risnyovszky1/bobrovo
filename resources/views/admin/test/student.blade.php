@@ -123,7 +123,7 @@
 
         <div class="row">
             <div class="col-lg-8 pb-3">
-                <a href="{{ route('tests.results', ['id' => $test->id]) }}" class="btn btn-primary shadow"><i
+                <a href="{{ route('test.result', ['test' => $test->id]) }}" class="btn btn-primary shadow"><i
                             class="fas fa-arrow-circle-left"></i> Späť na výsledky testu</a>
             </div>
         </div>

@@ -36,9 +36,9 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        <a href="{{ route('groups.one', ['id' => $test->group_id]) }}"
-                           title="Skupina {{ $test->group_name }}">
-                            {{ $test->group_name }}
+                        <a href="{{ route('group.show', $test->group) }}"
+                           title="Skupina {{ $test->group->name }}">
+                            {{ $test->group->name }}
                         </a>
                     </p>
                 </div>
@@ -115,35 +115,29 @@
                 </ul>
             </div>
 
-            @if (!empty($questions) && count($questions) > 0)
+            @if ($test->questions->isNotEmpty())
                 <div class="card mt-4 border-dark shadow">
                     <div class="card-header text-white bg-dark">
                         Otázky na teste
                     </div>
                     <ul class="list-group list-group-flush">
-                        @foreach ($questions as $item)
+                        @foreach ($test->questions as $item)
                             <li class="list-group-item">
                                 <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
-                                <a href="{{ route('tests.delete.question', ['test_id'=> $test->id, 'question_id'=> $item->id]) }}"
-                                   class="float-right text-danger" title="Vymazať z testu">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                @include('admin.partials.remove', ['route' => route('test.remove-question', ['test' => $test, 'question' => $item])])
                             </li>
                         @endforeach
                     </ul>
                 </div>
             @endif
 
-
             <div class="form-group mt-4">
-                <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-primary shadow"><i
-                            class="far fa-edit"></i> Upraviť</a>
-                <a href="{{ route('tests.results', ['id' => $test->id]) }}" class="btn btn-success shadow"><i
-                            class="fas fa-poll"></i> Výsledky</a>
+                <a href="{{ route('test.edit', $test) }}" class="btn btn-primary shadow"><i
+                        class="far fa-edit"></i> Upraviť</a>
+                <a href="{{ route('test.result', $test) }}" class="btn btn-success shadow"><i
+                        class="fas fa-poll"></i> Výsledky</a>
 
             </div>
-
-
         </div>
     </div>
 @endsection

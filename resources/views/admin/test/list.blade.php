@@ -9,7 +9,7 @@
         <div class="col-lg-10 pt-3 pb-3">
             <h2>Všetky testy</h2>
 
-            @if(!empty($tests) && count($tests) > 0)
+            @if($tests->isNotEmpty())
                 <div class="table-responsive">
                     <table class="table mt-2 table-hover table-light">
                         <thead>
@@ -26,13 +26,13 @@
                         @foreach ($tests as $test)
                             <tr>
                                 <td>
-                                    <a href="{{ route('tests.one', ['id' => $test->id]) }}"
+                                    <a href="{{ route('test.show', $test) }}"
                                        title="{{ $test->name }}">{{ $test->name }}</a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('groups.one', ['id' => $test->group_id]) }}"
-                                       title="Skupina {{$test->group_name}}">
-                                        {{ $test->group_name }}
+                                    <a href="{{ route('group.show', $test->group) }}"
+                                       title="Skupina {{$test->group->name}}">
+                                        {{ $test->group->name }}
                                     </a>
                                 </td>
                                 <td class="text-center">
@@ -53,10 +53,7 @@
                                     {{ $test->available_to }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('tests.delete', ['id' => $test->id]) }}" class="btn btn-danger btn-sm"
-                                       title="Vymazať {{ $test->name }}">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    @include('admin.partials.delete', ['route' => route('test.destroy', $test)])
                                 </td>
                             </tr>
                         @endforeach

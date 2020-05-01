@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Rating;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,7 +13,7 @@ use App\User;
 use App\Test;
 use App\Question;
 use App\Comment;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Input;
 use Faker\Factory as Faker;
 

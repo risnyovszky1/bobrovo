@@ -1,5 +1,5 @@
 @section('title')
-    Upraviť test | Bobrovo
+    Pridať test | Bobrovo
 @endsection
 
 @extends('admin.master')
@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Upraviť test</h2>
+                    <h2>Pridať test</h2>
                 </div>
             </div>
 
@@ -41,18 +41,17 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('test.store') }}" method="post">
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <input type="text" name="title" id="title" class="form-control form-control-lg"
-                                   value="{{ $test->name }}">
+                            <input type="text" name="title" id="title" class="form-control form-control-lg" value="">
                         </div>
 
                         <div class="form-group">
                             <label for="group">Skupina</label>
                             <select name="group" id="add-to-group" class="form-control">
                                 @foreach ($groups as $group)
-                                    <option value="{{ $group->id }}" {{ $group->id == $test->group_id ? 'selected' : '' }}>{{ $group->name }}</option>
+                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -60,28 +59,28 @@
                         <div class="form-group">
                             <label for="desc">Popis</label>
                             <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor"
-                                      id="group-description">{{ $test->description }}</textarea>
+                                      id="group-description"></textarea>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-lg-5">
                                 <div class="form-group">
                                     <label for="available_from">Dostupný od</label>
                                     <div class="input-group form-datetime date">
-                                        <input type="text" value="{{ $test->available_from }}" name="available_from"
-                                               id="available_from" class="form-control">
+                                        <input type="text" value="" name="available_from" id="available_from"
+                                               class="form-control">
                                         <div class="input-group-append ">
                                             <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-lg-5">
                                 <div class="form-group">
                                     <label for="available_to">Dostupný do</label>
                                     <div class="input-group form-datetime date">
-                                        <input type="text" value="{{ $test->available_to }}" name="available_to"
-                                               id="available_to" class="form-control">
+                                        <input type="text" value="" name="available_to" id="available_to"
+                                               class="form-control">
                                         <div class="input-group-append ">
                                             <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
                                         </div>
@@ -93,7 +92,7 @@
                                     <label for="time_to_do">Čas</label>
                                     <select name="time_to_do" id="" class="form-control">
                                         @for ($i = 0; $i < 15; $i++)
-                                            <option value="{{ ($i + 1) * 5 }}" {{ ($i + 1) * 5 == $test->time_to_do ? 'selected' : ''}}>{{ ($i + 1) * 5 }}</option>
+                                            <option value="{{ ($i + 1) * 5 }}">{{ ($i + 1) * 5 }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -103,34 +102,33 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="available-desc"
-                                       name="available-desc"
-                                       value="yes" {{ $test->available_description ? 'checked' : '' }}>
+                                       name="available-desc" value="yes">
                                 <label class="custom-control-label" for="available-desc">Dostupný popis</label>
                             </div>
 
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="mix-questions"
-                                       name="mix-questions" value="yes" {{ $test->mix_questions ? 'checked' : '' }}>
+                                       name="mix-questions" value="yes">
                                 <label class="custom-control-label" for="mix-questions">Náhodné poradie otázkov</label>
                             </div>
 
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="available-ans"
-                                       name="available-ans" value="yes" {{ $test->available_answers ? 'checked' : '' }}>
+                                       name="available-ans" value="yes">
                                 <label class="custom-control-label" for="available-ans">Dostupné odpoveďe</label>
                             </div>
 
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="public" name="public"
-                                       value="yes" {{ $test->public ? 'checked' : '' }}>
+                                       value="yes">
                                 <label class="custom-control-label" for="public">Verejný</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť
-                                zmeny
+                            @csrf
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <i class="fas fa-plus-circle"></i> Pridaj
                             </button>
                         </div>
 

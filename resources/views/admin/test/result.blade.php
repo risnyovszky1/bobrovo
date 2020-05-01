@@ -35,7 +35,7 @@
                         @foreach ($students as $item)
                             <tr>
                                 <td>
-                                    <a href="{{ route('students.profil', ['id' => $item->id ])}}">{{ $item->first_name . ' ' . $item->last_name }}</a>
+                                    <a href="{{ route('student.show', $item->id)}}">{{ $item->first_name . ' ' . $item->last_name }}</a>
                                 </td>
                                 <td class="text-center">
                                     @switch($item->state)
@@ -53,14 +53,14 @@
                                 </td>
                                 <td class="text-center">{{ $item->percent}} %</td>
                                 <td class="text-center"><a
-                                            href="{{ route('tests.results.student', ['id' => $test->id, 'sid' => $item->id]) }}"
+                                            href="{{ route('test.student', ['test' => $test->id, 'student' => $item->id]) }}"
                                             class="text-info"><i class="fas fa-eye"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 </div>
-                <a href="{{ route('tests.one', ['id'=>$test->id]) }}" class="btn btn-primary shadow"><i
+                <a href="{{ route('test.show', $test) }}" class="btn btn-primary shadow"><i
                             class="fas fa-arrow-circle-left"></i> Spať na test</a>
             </div>
         </div>

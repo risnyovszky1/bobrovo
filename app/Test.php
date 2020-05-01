@@ -15,4 +15,14 @@ class Test extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'question_test', 'test_id', 'question_id');
+    }
 }

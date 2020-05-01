@@ -225,55 +225,10 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admi
     // -------
     // |  TestManageController / for edit, add, delete, manage tests
     // -------
-    Route::group(['prefix' => 'testy'], function () {
-        Route::get('/', [
-            'uses' => 'TestManageController@getAllTestsPage',
-            'as' => 'tests.all'
-        ]);
-        Route::get('/{id}', [
-            'uses' => 'TestManageController@getTestPage',
-            'as' => 'tests.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'TestManageController@getTestEditPage',
-            'as' => 'tests.edit'
-        ])->where('id', '[0-9]+');
-        Route::post('/upravit/{id}', [
-            'uses' => 'TestManageController@postTestEditPage',
-            'as' => 'tests.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/pridat', [
-            'uses' => 'TestManageController@getAddTestPage',
-            'as' => 'tests.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'TestManageController@postAddTestPage',
-            'as' => 'tests.add'
-        ]);
-
-        Route::get('/vymzat/{id}', [
-            'uses' => 'TestManageController@getDeleteTest',
-            'as' => 'tests.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat-otazku/{test_id}/{question_id}', [
-            'uses' => 'TestManageController@getDeleteQuestionFromTest',
-            'as' => 'tests.delete.question'
-        ])->where('test_id', '[0-9]+')
-            ->where('question_id', '[0-9]+');;
-
-        Route::get('/vysledky/{id}', [
-            'uses' => 'TestManageController@getResultsOfTestPage',
-            'as' => 'tests.results'
-        ])->where('id', '[0-9]+');
-        Route::get('/vysledky/{id}/{sid}', [
-            'uses' => 'TestManageController@getResultOfStudentForPage',
-            'as' => 'tests.results.student'
-        ])->where('id', '[0-9]+')->where('sid', '[0-9]+');
-    });
-
+    Route::resource('test', 'TestManageController');
+    Route::patch('test/{test}/remove-question/{question}', 'TestManageController@removeQuestion')->name('test.remove-question');
+    Route::get('/test/{test}/result', 'TestManageController@result')->name('test.result');
+    Route::get('/test/{test}/result/{student}', 'TestManageController@student')->name('test.student');
 
     // ------
     // |  Questions

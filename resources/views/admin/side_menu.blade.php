@@ -150,12 +150,12 @@
                 </button>
             </h3>
         </div>
-        <div id="tests" class="collapse {{ Request::is('ucitel/testy/*') || Request::is('ucitel/testy') ? 'show': '' }}"
+        <div id="tests" class="collapse {{ Request::is('ucitel/test/*') || Request::is('ucitel/test') ? 'show': '' }}"
              aria-labelledby="tests" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('tests.all')}}">Všetky testy</a></li>
-                    <li class="list-group-item"><a href="{{ route('tests.add') }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('test.index')}}">Všetky testy</a></li>
+                    <li class="list-group-item"><a href="{{ route('test.create') }}">Pridaj nový</a></li>
                 </ul>
             </div>
         </div>
