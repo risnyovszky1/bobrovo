@@ -201,8 +201,7 @@
              aria-labelledby="profile" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('admin.profil') }}">Upraviť profil</a></li>
-                    <li class="list-group-item"><a href="{{ route('admin.profil.delete') }}">Vymazať profil</a></li>
+                    <li class="list-group-item"><a href="{{ route('profil.edit') }}">Upraviť profil</a></li>
                 </ul>
             </div>
         </div>

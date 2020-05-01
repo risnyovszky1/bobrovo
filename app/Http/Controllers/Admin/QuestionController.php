@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 use App\Question;
 use App\Comment;
 use Illuminate\Support\Facades\Auth;
-use Mpdf\Tag\Q;
 
 class QuestionController extends Controller
 {

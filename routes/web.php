@@ -11,64 +11,81 @@
 |
 */
 
-// --------
-// | PagesController / General pages
-// --------
 
-Route::get('/', [
-    'uses' => 'PagesController@index',
-    'as' => 'index'
-]);
+Route::group(['namespace' => 'General'], function () {
+    // --------
+    // | PagesController / General pages
+    // --------
+    Route::get('/', [
+        'uses' => 'PagesController@index',
+        'as' => 'index'
+    ]);
 
-Route::post('/', [
-    'uses' => 'PagesController@sendContactForm',
-    'as' => 'contact-form'
-]);
+    Route::post('/', [
+        'uses' => 'PagesController@sendContactForm',
+        'as' => 'contact-form'
+    ]);
 
-Route::get('/registracia', [
-    'uses' => 'PagesController@registration',
-    'as' => 'register'
-]);
+    Route::get('/novinky', [
+        'uses' => 'PagesController@news',
+        'as' => 'general.news.index'
+    ]);
+    Route::get('/novinky/{news}', [
+        'uses' => 'PagesController@showNews',
+        'as' => 'general.news.show'
+    ])->where('id', '[0-9]+');;
 
-Route::post('/registracia', [
-    'uses' => 'PagesController@sendRegistration',
-    'as' => 'register'
-]);
+    Route::get('/vseobecne-podmienky', [
+        'uses' => 'PagesController@defaultConditions',
+        'as' => 'default_cond'
+    ]);
 
-Route::get('/novinky', [
-    'uses' => 'PagesController@news',
-    'as' => 'general.news.index'
-]);
-Route::get('/novinky/{news}', [
-    'uses' => 'PagesController@showNews',
-    'as' => 'general.news.show'
-])->where('id', '[0-9]+');;
+    Route::get('/faq', [
+        'uses' => 'PagesController@faq',
+        'as' => 'faq'
+    ]);
 
-Route::get('/vseobecne-podmienky', [
-    'uses' => 'PagesController@defaultConditions',
-    'as' => 'default_cond'
-]);
+    // --------
+    // | LoginController / teachers and students
+    // --------
+    Route::get('/prihlasenie-ucitel', [
+        'uses' => 'LoginController@getLoginTeacherPage',
+        'as' => 'login_teacher',
+        'middleware' => 'guest',
+    ]);
 
-Route::get('/faq', [
-    'uses' => 'PagesController@faq',
-    'as' => 'faq'
-]);
+    Route::post('/prihlasenie-ucitel', [
+        'uses' => 'LoginController@postLoginTeacherPage',
+        'as' => 'login_teacher',
+        'middleware' => 'guest',
+    ]);
 
+    Route::get('/prihlasenie-ziak', [
+        'uses' => 'LoginController@getLoginStudentPage',
+        'as' => 'login_student',
+    ]);
+    Route::post('/prihlasenie-ziak', [
+        'uses' => 'LoginController@postLoginStudentPage',
+        'as' => 'login_student',
+    ]);
+
+    // --------
+    // | RegistrationController / teachers , admins
+    // --------
+    Route::get('/registracia', [
+        'uses' => 'RegisterController@registration',
+        'as' => 'register'
+    ]);
+
+    Route::post('/registracia', [
+        'uses' => 'RegisterController@sendRegistration',
+        'as' => 'register'
+    ]);
+});
 
 // --------
 // | TestController / Pages for students
 // --------
-
-Route::get('/prihlasenie-ziak', [
-    'uses' => 'TestController@getLoginStudentPage',
-    'as' => 'login_student',
-]);
-Route::post('/prihlasenie-ziak', [
-    'uses' => 'TestController@postLoginStudentPage',
-    'as' => 'login_student',
-]);
-
-
 Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
     Route::get('/', [
         'uses' => 'TestController@getStudentHomePage',
@@ -139,50 +156,26 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
 });
 
 
-// --------
-// | QuestionController / admin pages
-// --------
-
-Route::get('/prihlasenie-ucitel', [
-    'uses' => 'UserController@getLoginTeacherPage',
-    'as' => 'login_teacher',
-    'middleware' => 'guest',
-    'namespace' => 'Admin'
-]);
-
-Route::post('/prihlasenie-ucitel', [
-    'uses' => 'UserController@postLoginTeacherPage',
-    'as' => 'login_teacher',
-    'middleware' => 'guest',
-    'namespace' => 'Admin'
-]);
-
 Route::post('/upload-img', [
     'uses' => 'UploadRequestController@postUploadQuestionImage',
     'as' => 'upload.req',
 ]);
 
-
-Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => 'ucitel', 'middleware' => 'auth:web', 'namespace' => 'Admin'], function () {
     Route::get('/', [
-        'uses' => 'UserController@getUcitelAdminPage',
+        'uses' => 'AdminController@index',
         'as' => 'admin'
     ]);
-    Route::get('/odhlasit', [
-        'uses' => 'UserController@getLogout',
+    Route::get('/logout', [
+        'uses' => 'AdminController@logout',
         'as' => 'logout'
-    ]);
-
-    Route::get('/nespravny-link', [
-        'uses' => 'UserController@getBadLinkPage',
-        'as' => 'badlink'
     ]);
 
     // --------
     // |  UserController / only for admin
     // --------
-    Route::resource('user', 'UserController')->only(['index', 'destroy']);
     Route::patch('user/{user}/toggle', 'UserController@toggle')->name('user.toggle');
+    Route::resource('user', 'UserController')->only(['index', 'destroy']);
 
     // --------
     // |  NewsController / only for admin
@@ -198,9 +191,9 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admi
     // ------
     // |  MessageController / for admins and teachers
     // ------
-    Route::resource('message', 'MessageController')->except(['edit', 'update']);
     Route::get('message/{message}/answer', 'MessageController@answer')->name('message.answer');
     Route::post('message/{message}/answer', 'MessageController@answer')->name('message.answer');
+    Route::resource('message', 'MessageController')->except(['edit', 'update']);
 
     // -------
     // |   GroupController / for admins and teachers /
@@ -210,13 +203,13 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admi
     // -------
     // |  StudentController / for admins and teachers
     // -----
-    Route::resource('student', 'StudentController')->except(['edit']);
-    Route::patch('student', 'StudentController@addStudentsToGroup')->name('student.index');
-    Route::patch('student/remove/{student}/{group}', 'StudentController@removeFromGroup')->name('student.remove-from-group');
-    // TODO
     Route::get('student/import', 'StudentController@import')->name('student.import');
     Route::post('student/import', 'StudentController@importSave')->name('student.import-save');
+    Route::patch('student', 'StudentController@addStudentsToGroup')->name('student.index');
+    Route::patch('student/remove/{student}/{group}', 'StudentController@removeFromGroup')->name('student.remove-from-group');
+    Route::resource('student', 'StudentController')->except(['edit']);
 
+    // TODO
     Route::get('student/print', [
         'uses' => 'PdfController@getStudentsPdfExport',
         'as' => 'students.export'
@@ -247,24 +240,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admi
     // -------
     // |   ProfileController / for edit user profile
     // -------
-
-    Route::group(['prefix' => 'profil'], function () {
-        Route::get('/', [
-            'uses' => 'ProfileController@getProfilPage',
-            'as' => 'admin.profil'
-        ]);
-        Route::post('/', [
-            'uses' => 'ProfileController@postProfilPage',
-            'as' => 'admin.profil'
-        ]);
-
-        Route::get('/delete', [
-            'uses' => 'ProfileController@getProfilDeletePage',
-            'as' => 'admin.profil.delete'
-        ]);
-        Route::post('/delete', [
-            'uses' => 'ProfileController@postProfilDeletePage',
-            'as' => 'admin.profil.delete'
-        ]);
-    });
+    Route::get('profil', 'ProfileController@edit')->name('profil.edit');
+    Route::patch('profil', 'ProfileController@update')->name('profil.update');
+    Route::delete('profil', 'ProfileController@destroy')->name('profil.destroy');
 });

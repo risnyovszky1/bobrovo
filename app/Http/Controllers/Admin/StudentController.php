@@ -11,7 +11,6 @@ use App\Student;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Auth;
 
-
 class StudentController extends Controller
 {
     // ---- STUDENTS ----

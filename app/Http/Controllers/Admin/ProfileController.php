@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
     //
     // ----- PROFILE ----
-    public function getProfilPage()
+    public function edit()
     {
-        return view('admin.profil');
+        return view('admin.profil.edit');
     }
 
-    public function postProfilPage(Request $request)
+    public function update(Request $request)
     {
         $user = Auth::user();
 
@@ -40,20 +40,17 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.profil');
+        return redirect()->route('profil.edit');
     }
 
-    public function getProfilDeletePage()
+    public function destroy()
     {
-        return view('admin.profil_delete');
-    }
+        $user = Auth::user();
 
-    public function postProfilDeletePage()
-    {
-        $user = User::find(Auth::user()->id);
+        Auth::logout();
 
         $user->delete();
 
-        return redirect()->route('homepage');
+        return redirect()->route('index');
     }
 }

@@ -19,7 +19,7 @@
                     @endforeach
                 @endif
 
-                <form action="" method="post">
+                <form action="{{ route('profil.update') }}" method="post">
                     <div class="form-group row">
                         <label for="first-name" class="col-sm-3 col-form-label">Meno:</label>
                         <div class="col-sm-9">
@@ -74,17 +74,47 @@
                     </div>
 
                     <div class="form-group">
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PATCH')
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Uložiť
                         </button>
-                    </div>
 
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#delete-modal" type="button">
+                            <i class="fas fa-trash"></i> Vymazať profil
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-
-
     </div>
 
+@endsection
+
+@section('additional_html')
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ route('profil.destroy')}}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Vymazať profil</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            Keď vymažete svoj profil, tak všetky dáta sa stratia a nebudete mať možnosť ich vrátiť.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Zatvoriť</button>
+                        <button type="submit" class="btn btn-danger">Vymazať</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

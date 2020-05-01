@@ -5,53 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // LOGIN ADMIN / TEACHER
-    public function getLogout()
-    {
-        Auth::logout();
-        return redirect()->route('homepage');
-    }
-
-    public function getLoginTeacherPage()
-    {
-        return view('general.login_teacher');
-    }
-
-    public function getBadLinkPage()
-    {
-        return view('admin.badlink');
-    }
-
-    public function postLoginTeacherPage(Request $request)
-    {
-        $this->validate($request, [
-                'email' => 'email|required',
-                'password' => 'required'
-            ]
-        );
-
-        $userData = array(
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-        );
-
-        if (Auth::attempt($userData)) {
-            return redirect()->route('admin');
-        }
-
-        return view('general.login_teacher');;
-    }
-
-    public function getUcitelAdminPage()
-    {
-        return view('admin.admin');
-    }
-
     // ---- USERS ----
     public function index()
     {

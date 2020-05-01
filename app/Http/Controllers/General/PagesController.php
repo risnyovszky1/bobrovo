@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\General;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\User;
+use App\Http\Controllers\Controller;
 use App\News;
 use App\FAQ;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class PagesController extends Controller
@@ -49,37 +47,6 @@ class PagesController extends Controller
         });
 
         return redirect()->route('index')->with(['success' => "Email bol odoslaný!"]);
-    }
-
-    // REGISTER
-    public function register()
-    {
-        return view('general.register');
-    }
-
-    public function sendRegistration(Request $request)
-    {
-        $this->validate($request, [
-            'first-name' => 'required',
-            'last-name' => 'required',
-            'email' => 'email|required|unique:users',
-            'password' => 'required|min:6|required_with:password-rpt|same:password-rpt',
-            'password-rpt' => 'required|min:6',
-            'default-conditions' => 'required',
-        ]);
-
-
-        $newUser = new User([
-            'email' => $request->input('email'),
-            'first_name' => $request->input('first-name'),
-            'last_name' => $request->input('last-name'),
-            'password' => bcrypt($request->input('password')),
-            'is_admin' => false,
-        ]);
-
-        $newUser->save();
-
-        return redirect()->route('register')->with(['message' => 'Úspešná registrácia!']);
     }
 
     public function news()
