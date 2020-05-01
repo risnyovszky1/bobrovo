@@ -9,18 +9,6 @@
         <div class="col-lg-8 pt-3 pb-3">
             <h2>Správa</h2>
 
-            @if(count($errors) > 0)
-                <div class="row">
-                    <div class="col-md-12">
-                        @foreach($errors->all() as $err)
-                            <div class="alert alert-danger mb-2">
-                                {{ $err }}
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             <div class="form-group">
                 <label for="address">Od</label>
                 <input type="text" name="address" id="address"

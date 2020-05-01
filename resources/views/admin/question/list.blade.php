@@ -10,14 +10,6 @@
             <div class="col-lg-9 pt-3 pb-3">
                 <h2>{{ $title }}</h2>
 
-                @if(count($errors) > 0)
-                    @foreach($errors->all() as $err)
-                        <div class="alert alert-danger mb-2">
-                            {{ $err }}
-                        </div>
-                    @endforeach
-                @endif
-
                 @if(!empty($questions) && count($questions) > 0)
                     <div class="table-responsive">
                         <table class="table table-hover mt-2 table-light">

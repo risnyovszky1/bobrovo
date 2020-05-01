@@ -15,18 +15,6 @@
                 </div>
             </div>
 
-            @if(count($errors) > 0)
-                <div class="row">
-                    <div class="col-md-12">
-                        @foreach($errors->all() as $err)
-                            <div class="alert alert-danger mb-2">
-                                {{ $err }}
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             @if(!empty($success))
                 <div class="row">
                     <div class="col-md-12">
