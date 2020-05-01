@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,9 +60,8 @@ class NewsController extends Controller
         $path = "";
 
         if ($haveImg){
-            $oldImg = DB::table('news')->where('id', $news->id)->pluck('featured_img')->first();
-            if ($oldImg){
-                Storage::disk('public_uploads')->delete(ltrim($oldImg, '/'));
+            if ($news->featured_img){
+                Storage::disk('public_uploads')->delete(ltrim($news->featured_img, '/'));
             }
 
             $path = $request->file('featured_img')->store('img', 'public_uploads');

@@ -146,13 +146,15 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
 Route::get('/prihlasenie-ucitel', [
     'uses' => 'UserController@getLoginTeacherPage',
     'as' => 'login_teacher',
-    'middleware' => 'guest'
+    'middleware' => 'guest',
+    'namespace' => 'Admin'
 ]);
 
 Route::post('/prihlasenie-ucitel', [
     'uses' => 'UserController@postLoginTeacherPage',
     'as' => 'login_teacher',
-    'middleware' => 'guest'
+    'middleware' => 'guest',
+    'namespace' => 'Admin'
 ]);
 
 Route::post('/upload-img', [
@@ -161,7 +163,7 @@ Route::post('/upload-img', [
 ]);
 
 
-Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'ucitel', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
     Route::get('/', [
         'uses' => 'UserController@getUcitelAdminPage',
         'as' => 'admin'
