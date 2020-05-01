@@ -26,6 +26,7 @@ class UserController extends Controller
             $user->update([
                 'is_admin' => !$user->is_admin,
             ]);
+            $this->flashMsg('Úspešne ste upravili používateľa!');
         }
 
         return redirect()->route('user.index');
@@ -35,6 +36,7 @@ class UserController extends Controller
     {
         if ($user->id != Auth::user()->id) {
             $user->delete();
+            $this->flashMsg('Úspešne ste vymazali používateľa!');
         }
 
         return redirect()->route('user.index');

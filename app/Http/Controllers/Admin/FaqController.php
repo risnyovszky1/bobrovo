@@ -34,7 +34,7 @@ class FaqController extends Controller
 
         $faq->save();
 
-        $this->flashMsg('Úspešne ste odpovedali FAQ otázku.');
+        $this->flashMsg('Úspešne ste pridali FAQ otázku "'. $faq->question . '".');
 
         return redirect()->route('faq.edit', $faq);
     }
@@ -54,11 +54,15 @@ class FaqController extends Controller
             'question' => $question,
         ]);
 
+        $this->flashMsg('Úspešne ste upravili FAQ otázku "'. $faq->question . '".');
+
         return redirect()->route('faq.edit', $faq);
     }
 
     public function destroy(Faq $faq)
     {
+        $this->flashMsg('Úspešne ste vymazali FAQ otázku "'. $faq->question . '".');
+
         $faq->delete();
         return redirect()->route('faq.index');
     }

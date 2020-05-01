@@ -63,6 +63,8 @@ class TestManageController extends Controller
             'time_to_do' => $request->input('time_to_do')
         ]);
 
+        $this->flashMsg('Úspešne ste upravili test!');
+
         return redirect()->route('test.show', $test);
     }
 
@@ -98,18 +100,25 @@ class TestManageController extends Controller
         ]);
         $test->save();
 
+        $this->flashMsg('Úspešne ste pridali test!');
+
         return redirect()->route('test.index');
     }
 
     public function destroy(Test $test)
     {
         $test->delete();
+
+        $this->flashMsg('Úspešne ste vymazali test!');
+
         return redirect()->route('test.index');
     }
 
     public function removeQuestion(Test $test, Question $question)
     {
         $test->questions()->detach($question->id);
+
+        $this->flashMsg('Úspešne ste odobrali otázku z testu!');
 
         return redirect()->route('test.show', $test);
     }

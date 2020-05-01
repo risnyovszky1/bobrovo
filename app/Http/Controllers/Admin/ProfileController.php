@@ -40,6 +40,8 @@ class ProfileController extends Controller
 
         $user->save();
 
+        $this->flashMsg('Úspešne ste upravili svoj profil');
+
         return redirect()->route('profil.edit');
     }
 

@@ -42,13 +42,15 @@ class GroupController extends Controller
 
         $group->save();
 
-        $this->flashMsg('Skupina bola úspešne pridaná.');
+        $this->flashMsg('Skupina "' . $group->name . '" bola úspešne pridaná.');
 
         return redirect()->route('group.show', $group);
     }
 
     public function destroy(Group $group)
     {
+        $this->flashMsg('Skupina "' . $group->name . '" bola úspešne vymazaná.');
+
         $group->delete();
 
         return redirect()->route('group.index');
@@ -78,7 +80,7 @@ class GroupController extends Controller
             'description' => $request->input('desc'),
         ]);
 
-        $this->flashMsg('Úpravy boli uložené!');
+        $this->flashMsg('Skupina "' . $group->name . '" bola úspešne upravená.');
 
         return redirect()->route('group.show', $group);
     }

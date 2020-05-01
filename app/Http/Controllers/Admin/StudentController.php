@@ -44,6 +44,8 @@ class StudentController extends Controller
             }
         }
 
+        $this->flashMsg('Študenti boli pridaný k skupine.');
+
         return redirect()->route('student.index');
     }
 
@@ -117,6 +119,8 @@ class StudentController extends Controller
             $student->groups()->attach($request->input('add-to-group'));
         }
 
+        $this->flashMsg('Úspešne ste pridali žiaka do skupiny!');
+
         return redirect()->route('student.show', $student);
     }
 
@@ -124,12 +128,16 @@ class StudentController extends Controller
     {
         $student->delete();
 
+        $this->flashMsg('Úspešne ste vymazali žiaka!');
+
         return redirect()->route('student.index');
     }
 
     public function removeFromGroup(Student $student, Group $group)
     {
         $student->groups()->detach($group->id);
+
+        $this->flashMsg('Úspešne ste odobrali žiaka zo skupiny!');
 
         return redirect()->back();
     }
@@ -184,10 +192,12 @@ class StudentController extends Controller
             ->orderBy('name', 'ASC')
             ->get();
 
+        $this->flashMsg('Úspešne ste importovili žiakov!');
+
         return view('admin.students_file', [
             'success' => 'Úsprešne ste pridali ' . $count . ' žiakov!',
             'file' => $tmp,
             'groups' => $groups
-        ]);;
+        ]);
     }
 }

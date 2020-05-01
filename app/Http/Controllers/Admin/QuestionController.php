@@ -135,6 +135,8 @@ class QuestionController extends Controller
             }
         }
 
+        $this->flashMsg('Otázky boli pridané k testu.');
+
         return redirect()->route($request->input('from', 'question.index'));
     }
 
@@ -227,6 +229,8 @@ class QuestionController extends Controller
                 ]);
         }
 
+        $this->flashMsg('Otázka bola pridaná k testu.');
+
         return redirect()->route('question.show', $question->id);
     }
 
@@ -244,11 +248,15 @@ class QuestionController extends Controller
 
         $comment->save();
 
+        $this->flashMsg('Koment bol pridaný.');
+
         return redirect()->route('question.show', $question);
     }
 
     public function destroy(Question $question)
     {
+        $this->flashMsg('Otázka bola vymazaná');
+
         $question->delete();
         return redirect()->route('question.index');
     }
@@ -323,6 +331,8 @@ class QuestionController extends Controller
 
         $question->categories()->sync($request->input('category', []));
 
+        $this->flashMsg('Otázka bola upravená.');
+
         return redirect()->route('question.show', $question);
     }
 
@@ -338,6 +348,8 @@ class QuestionController extends Controller
         ], [
             'rating' => $request->input('value')
         ]);
+
+        $this->flashMsg('Hodnotenie bolo zaznamenané.');
 
         return redirect()->route('question.show', $question);
     }
@@ -423,6 +435,8 @@ class QuestionController extends Controller
 
         $question->categories()->sync($request->input('category') ?? []);
 
+        $this->flashMsg('Otázka bola vytvorená.');
+
         return redirect()->route('question.show', $question);
     }
 
@@ -443,12 +457,17 @@ class QuestionController extends Controller
 
         Session::put('questionFilter', $filter);
 
+        $this->flashMsg('Filter bol pridaný.');
+
         return redirect()->route('question.index');
     }
 
     public function resetFilter()
     {
         Session::put('questionFilter', null);
+
+        $this->flashMsg('Filter bol zrušený.');
+
         return redirect()->route('question.index');
     }
 }
