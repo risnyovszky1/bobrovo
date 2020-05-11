@@ -13,9 +13,7 @@ class CreateQuestionCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('question_category');
-        
-        Schema::create('question_category', function (Blueprint $table) {            
+        Schema::create('question_category', function (Blueprint $table) {
             $table->integer('question_id')->unsigned();
             $table->integer('category_id')->unsigned();
 

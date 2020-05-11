@@ -2,7 +2,7 @@
     <div class="col-md-12 pt-3 pb-3 pl-4 pr-4">
         <button id="toggle-admin-menu"
                 class="btn btn-success btn-block justify-content-between d-flex align-self-center"><span>Menu </span> <i
-                    class="fas fa-caret-down"></i></button>
+                class="fas fa-caret-down"></i></button>
     </div>
 </div>
 
@@ -19,11 +19,11 @@
                 </h3>
             </div>
             <div id="users"
-                 class="collapse {{ Request::is('ucitel/pouzivatelia/*') || Request::is('ucitel/pouzivatelia') ? 'show': '' }}"
+                 class="collapse {{ Request::is('ucitel/user/*') || Request::is('ucitel/user') ? 'show': '' }}"
                  aria-labelledby="news" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('users.all') }}">Všetky používateľia</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.index') }}">Všetky používateľia</a></li>
                     </ul>
                 </div>
             </div>
@@ -39,12 +39,12 @@
                 </h3>
             </div>
             <div id="news"
-                 class="collapse {{ Request::is('ucitel/novinky/*') || Request::is('ucitel/novinky') ? 'show': '' }}"
+                 class="collapse {{ Request::is('ucitel/news/*') || Request::is('ucitel/news') ? 'show': '' }}"
                  aria-labelledby="news" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('news.all') }}">Všetky novinky</a></li>
-                        <li class="list-group-item"><a href="{{ route('news.addnew') }}">Pridaj nový</a></li>
+                        <li class="list-group-item"><a href="{{ route('news.index') }}">Všetky novinky</a></li>
+                        <li class="list-group-item"><a href="{{ route('news.create') }}">Pridaj nový</a></li>
                     </ul>
                 </div>
             </div>
@@ -63,8 +63,8 @@
                  aria-labelledby="faq" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('faq.all') }}">Všetky faq</a></li>
-                        <li class="list-group-item"><a href="{{ route('faq.addnew') }}">Pridaj nový</a></li>
+                        <li class="list-group-item"><a href="{{ route('faq.index') }}">Všetky faq</a></li>
+                        <li class="list-group-item"><a href="{{ route('faq.create') }}">Pridaj nový</a></li>
                     </ul>
                 </div>
             </div>
@@ -78,17 +78,20 @@
                 <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#messeges"
                         aria-expanded="true" aria-controls="collapseSeven">
                     <i class="far fa-comment"></i>
-                    Správy {!! newMessagesCount() > 0 ? '<span class="badge badge-pill badge-warning">'.newMessagesCount().'</span>': '' !!}
+                    @php
+                        $newMessagesCount = newMessagesCount();
+                    @endphp
+                    Správy @if ($newMessagesCount) <span class="badge badge-warning">{{ $newMessagesCount }}</span>@endif
                 </button>
             </h3>
         </div>
         <div id="messeges"
-             class="collapse {{ Request::is('ucitel/spravy/*') || Request::is('ucitel/spravy') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/message/*') || Request::is('ucitel/message') ? 'show': '' }}"
              aria-labelledby="messeges" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('msg.all') }}">Všetky správy</a></li>
-                    <li class="list-group-item"><a href="{{ route('msg.send') }}">Napísať novú</a></li>
+                    <li class="list-group-item"><a href="{{ route('message.index') }}">Všetky správy</a></li>
+                    <li class="list-group-item"><a href="{{ route('message.create') }}">Napísať novú</a></li>
                 </ul>
             </div>
         </div>
@@ -105,13 +108,13 @@
             </h3>
         </div>
         <div id="students"
-             class="collapse {{ Request::is('ucitel/ziaci/*') || Request::is('ucitel/ziaci') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/student/*') || Request::is('ucitel/student') ? 'show': '' }}"
              aria-labelledby="students" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('students.all' ) }}">Všetky študenti</a></li>
-                    <li class="list-group-item"><a href="{{ route('students.add' ) }}">Pridaj nový</a></li>
-                    <li class="list-group-item"><a href="{{ route('students.file' ) }}">Import zo súboru</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.index' ) }}">Všetky študenti</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.create' ) }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('student.import' ) }}">Import zo súboru</a></li>
                 </ul>
             </div>
         </div>
@@ -127,12 +130,12 @@
             </h3>
         </div>
         <div id="classes"
-             class="collapse {{ Request::is('ucitel/skupiny/*') || Request::is('ucitel/skupiny') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/group/*') || Request::is('ucitel/group') ? 'show': '' }}"
              aria-labelledby="classes" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('groups.all') }}">Všetky skupiny</a></li>
-                    <li class="list-group-item"><a href="{{ route('groups.add') }}">Pridaj novú</a></li>
+                    <li class="list-group-item"><a href="{{ route('group.index') }}">Všetky skupiny</a></li>
+                    <li class="list-group-item"><a href="{{ route('group.create') }}">Pridaj novú</a></li>
                 </ul>
             </div>
         </div>
@@ -147,12 +150,12 @@
                 </button>
             </h3>
         </div>
-        <div id="tests" class="collapse {{ Request::is('ucitel/testy/*') || Request::is('ucitel/testy') ? 'show': '' }}"
+        <div id="tests" class="collapse {{ Request::is('ucitel/test/*') || Request::is('ucitel/test') ? 'show': '' }}"
              aria-labelledby="tests" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('tests.all')}}">Všetky testy</a></li>
-                    <li class="list-group-item"><a href="{{ route('tests.add') }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('test.index')}}">Všetky testy</a></li>
+                    <li class="list-group-item"><a href="{{ route('test.create') }}">Pridaj nový</a></li>
                 </ul>
             </div>
         </div>
@@ -168,14 +171,17 @@
             </h3>
         </div>
         <div id="questions"
-             class="collapse {{ Request::is('ucitel/otazky/*') || Request::is('ucitel/otazky') ? 'show': '' }}"
+             class="collapse {{ Request::is('ucitel/question/*') || Request::is('ucitel/question') ? 'show': '' }}"
              aria-labelledby="questions" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('questions.all') }}">Všetky otázky</a></li>
-                    <li class="list-group-item"><a href="{{ route('questions.my') }}">Moje otázky</a></li>
-                    <li class="list-group-item"><a href="{{ route('questions.add') }}">Pridaj nový</a></li>
-                    <li class="list-group-item"><a href="{{ route('questions.filter') }}">Filter otázkov</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.index') }}">Všetky otázky</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.index.my') }}">Moje otázky</a></li>
+                    @if (auth()->user()->is_admin)
+                        <li class="list-group-item"><a href="{{ route('question.index.other') }}">Otázky od iných</a></li>
+                    @endif
+                    <li class="list-group-item"><a href="{{ route('question.create') }}">Pridaj nový</a></li>
+                    <li class="list-group-item"><a href="{{ route('question.filter') }}">Filter otázkov</a></li>
                 </ul>
             </div>
         </div>
@@ -195,8 +201,7 @@
              aria-labelledby="profile" data-parent="#admin-menu">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ route('admin.profil') }}">Upraviť profil</a></li>
-                    <li class="list-group-item"><a href="{{ route('admin.profil.delete') }}">Vymazať profil</a></li>
+                    <li class="list-group-item"><a href="{{ route('profil.edit') }}">Upraviť profil</a></li>
                 </ul>
             </div>
         </div>

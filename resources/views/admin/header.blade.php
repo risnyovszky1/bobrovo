@@ -11,38 +11,14 @@
 
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,400i,700&amp;subset=latin-ext"
           rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/app.css">
 
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
 
-    <!-- Include Editor style. -->
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_editor.min.css' rel='stylesheet'
-          type='text/css'/>
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_style.min.css' rel='stylesheet'
-          type='text/css'/>
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/plugins/code_view.min.css' rel='stylesheet'
-          type='text/css'/>
+    <link href="https://cdn.quilljs.com/1.2.6/quill.snow.css" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
-
-    <!-- Include JS file. -->
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/froala_editor.min.js'></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/font_size.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/paragraph_format.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/image.min.js'></script>
-    <script type='text/javascript'
-            src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/plugins/code_view.min.js'></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 </head>
@@ -63,7 +39,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto mt-2 mt-sm-0">
                 <li class="nav-item">
-                    <a class="btn btn-danger btn-sm nav-link" href="{{ route('logout') }}"><i
+                    <a class="btn btn-danger btn-sm" href="{{ route('logout') }}"><i
                                 class="fas fa-sign-out-alt"></i> Odhlásiť</a>
                 </li>
             </ul>

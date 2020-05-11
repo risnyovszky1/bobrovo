@@ -11,64 +11,81 @@
 |
 */
 
-// --------
-// | PagesController / General pages
-// --------
 
-Route::get('/', [
-    'uses' => 'PagesController@getHomePage',
-    'as' => 'homepage'
-]);
+Route::group(['namespace' => 'General'], function () {
+    // --------
+    // | PagesController / General pages
+    // --------
+    Route::get('/', [
+        'uses' => 'PagesController@index',
+        'as' => 'index'
+    ]);
 
-Route::post('/', [
-    'uses' => 'PagesController@postHomePage',
-    'as' => 'homepage'
-]);
+    Route::post('/', [
+        'uses' => 'PagesController@sendContactForm',
+        'as' => 'contact-form'
+    ]);
 
-Route::get('/registracia', [
-    'uses' => 'PagesController@getRegisterPage',
-    'as' => 'register'
-]);
+    Route::get('/novinky', [
+        'uses' => 'PagesController@news',
+        'as' => 'general.news.index'
+    ]);
+    Route::get('/novinky/{news}', [
+        'uses' => 'PagesController@showNews',
+        'as' => 'general.news.show'
+    ])->where('id', '[0-9]+');;
 
-Route::post('/registracia', [
-    'uses' => 'PagesController@postRegisterPage',
-    'as' => 'register'
-]);
+    Route::get('/vseobecne-podmienky', [
+        'uses' => 'PagesController@defaultConditions',
+        'as' => 'default_cond'
+    ]);
 
-Route::get('/novinky', [
-    'uses' => 'PagesController@getNewsPage',
-    'as' => 'newspage'
-]);
-Route::get('/novinky/{id}', [
-    'uses' => 'PagesController@getNewsOnePage',
-    'as' => 'newsonepage'
-])->where('id', '[0-9]+');;
+    Route::get('/faq', [
+        'uses' => 'PagesController@faq',
+        'as' => 'faq'
+    ]);
 
-Route::get('/vseobecne-podmienky', [
-    'uses' => 'PagesController@getDefaultConditionPage',
-    'as' => 'default_cond'
-]);
+    // --------
+    // | LoginController / teachers and students
+    // --------
+    Route::get('/prihlasenie-ucitel', [
+        'uses' => 'LoginController@getLoginTeacherPage',
+        'as' => 'login_teacher',
+        'middleware' => 'guest',
+    ]);
 
-Route::get('/faq', [
-    'uses' => 'PagesController@getFAQPage',
-    'as' => 'faq'
-]);
+    Route::post('/prihlasenie-ucitel', [
+        'uses' => 'LoginController@postLoginTeacherPage',
+        'as' => 'login_teacher',
+        'middleware' => 'guest',
+    ]);
 
+    Route::get('/prihlasenie-ziak', [
+        'uses' => 'LoginController@getLoginStudentPage',
+        'as' => 'login_student',
+    ]);
+    Route::post('/prihlasenie-ziak', [
+        'uses' => 'LoginController@postLoginStudentPage',
+        'as' => 'login_student',
+    ]);
+
+    // --------
+    // | RegistrationController / teachers , admins
+    // --------
+    Route::get('/registracia', [
+        'uses' => 'RegisterController@registration',
+        'as' => 'register'
+    ]);
+
+    Route::post('/registracia', [
+        'uses' => 'RegisterController@sendRegistration',
+        'as' => 'register'
+    ]);
+});
 
 // --------
 // | TestController / Pages for students
 // --------
-
-Route::get('/prihlasenie-ziak', [
-    'uses' => 'TestController@getLoginStudentPage',
-    'as' => 'login_student',
-]);
-Route::post('/prihlasenie-ziak', [
-    'uses' => 'TestController@postLoginStudentPage',
-    'as' => 'login_student',
-]);
-
-
 Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
     Route::get('/', [
         'uses' => 'TestController@getStudentHomePage',
@@ -139,431 +156,91 @@ Route::group(['prefix' => 'ziak', 'middleware' => 'auth:bobor'], function () {
 });
 
 
-// --------
-// | QuestionController / admin pages
-// --------
-
-Route::get('/prihlasenie-ucitel', [
-    'uses' => 'UserController@getLoginTeacherPage',
-    'as' => 'login_teacher',
-    'middleware' => 'guest'
-]);
-
-Route::post('/prihlasenie-ucitel', [
-    'uses' => 'UserController@postLoginTeacherPage',
-    'as' => 'login_teacher',
-    'middleware' => 'guest'
-]);
-
 Route::post('/upload-img', [
     'uses' => 'UploadRequestController@postUploadQuestionImage',
     'as' => 'upload.req',
 ]);
 
-
-Route::group(['prefix' => 'ucitel', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'ucitel', 'middleware' => 'auth:web', 'namespace' => 'Admin'], function () {
     Route::get('/', [
-        'uses' => 'UserController@getUcitelAdminPage',
+        'uses' => 'AdminController@index',
         'as' => 'admin'
     ]);
-    Route::get('/odhlasit', [
-        'uses' => 'UserController@getLogut',
+    Route::get('/logout', [
+        'uses' => 'AdminController@logout',
         'as' => 'logout'
     ]);
 
-    Route::get('/nespravny-link', [
-        'uses' => 'UserController@getBadLinkPage',
-        'as' => 'badlink'
-    ]);
-
-    // USERS
-    Route::group(['prefix' => 'pouzivatelia'], function () {
-        Route::get('/', [
-            'uses' => 'UserController@getAllUsersPage',
-            'as' => 'users.all'
-        ]);
-
-        Route::get('/toggle-admin/{id}', [
-            'uses' => 'UserController@getToggleAdminUser',
-            'as' => 'users.toggle-admin'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/delete/{id}', [
-            'uses' => 'UserController@getDeleteUser',
-            'as' => 'users.delete'
-        ])->where('id', '[0-9]+');;
-    });
-
+    // --------
+    // |  UserController / only for admin
+    // --------
+    Route::patch('user/{user}/toggle', 'UserController@toggle')->name('user.toggle');
+    Route::resource('user', 'UserController')->only(['index', 'destroy']);
 
     // --------
     // |  NewsController / only for admin
     // --------
-
-    Route::group(['prefix' => 'novinky'], function () {
-        Route::get('/', [
-            'uses' => 'NewsController@getAllNewsPage',
-            'as' => 'news.all'
-        ]);
-
-        Route::get('/pridaj', [
-            'uses' => 'NewsController@getAddNewsPage',
-            'as' => 'news.addnew'
-        ]);
-        Route::post('/pridaj', [
-            'uses' => 'NewsController@postAddNewsPage',
-            'as' => 'news.addnew'
-        ]);
-
-        Route::get('/upravit/{news_id}', [
-            'uses' => 'NewsController@getEditNewsPage',
-            'as' => 'news.edit'
-        ])->where('nesw_id', '[0-9]+');
-        Route::post('/upravit/{news_id}', [
-            'uses' => 'NewsController@postEditNewsPage',
-            'as' => 'news.edit'
-        ])->where('nesw_id', '[0-9]+');
-
-        Route::get('/vymazat/{news_id}', [
-            'uses' => 'NewsController@getDeleteNews',
-            'as' => 'news.delete'
-        ])->where('nesw_id', '[0-9]+');
-    });
+    Route::resource('news', 'NewsController')->except(['show']);
 
 
     // ------------
     // |  FaqController / only for admins
     // ---------
-
-    Route::group(['prefix' => 'faq'], function () {
-        Route::get('/', [
-            'uses' => 'FaqController@getAllFAQPage',
-            'as' => 'faq.all'
-        ]);
-
-        Route::get('/pridaj', [
-            'uses' => 'FaqController@getAddFAQPage',
-            'as' => 'faq.addnew'
-        ]);
-        Route::post('/pridaj', [
-            'uses' => 'FaqController@postAddFAQPage',
-            'as' => 'faq.addnew'
-        ]);
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'FaqController@getEditFAQPage',
-            'as' => 'faq.edit'
-        ])->where('id', '[0-9]+');
-        Route::post('/upravit/{id}', [
-            'uses' => 'FaqController@postEditFAQPage',
-            'as' => 'faq.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'FaqController@getDeleteFAQ',
-            'as' => 'faq.delete'
-        ])->where('id', '[0-9]+');
-    });
-
+    Route::resource('faq', 'FaqController')->except(['show']);
 
     // ------
     // |  MessageController / for admins and teachers
     // ------
-
-    Route::group(['prefix' => 'spravy'], function () {
-        Route::get('/', [
-            'uses' => 'MessageController@getMessagesPage',
-            'as' => 'msg.all'
-        ]);
-        Route::get('/poslat', [
-            'uses' => 'MessageController@getSendMessagePage',
-            'as' => 'msg.send'
-        ]);
-        Route::post('/poslat', [
-            'uses' => 'MessageController@postSendMessagePage',
-            'as' => 'msg.send'
-        ]);
-
-        Route::get('/posta/{id}', [
-            'uses' => 'MessageController@getOneMessagePage',
-            'as' => 'msg.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/odpovedat/{id}', [
-            'uses' => 'MessageController@getAnswerPage',
-            'as' => 'msg.answer'
-        ])->where('id', '[0-9]+');
-        Route::post('/odpovedat/{id}', [
-            'uses' => 'MessageController@postAnswerPage',
-            'as' => 'msg.answer'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'MessageController@getDeleteMessagePage',
-            'as' => 'msg.delete'
-        ])->where('id', '[0-9]+');
-    });
+    Route::get('message/{message}/answer', 'MessageController@answer')->name('message.answer');
+    Route::post('message/{message}/answer', 'MessageController@answer')->name('message.answer');
+    Route::resource('message', 'MessageController')->except(['edit', 'update']);
 
     // -------
     // |   GroupController / for admins and teachers /
     // ------
-    Route::group(['prefix' => 'skupiny'], function () {
-        Route::get('/', [
-            'uses' => 'GroupController@getGroupsPage',
-            'as' => 'groups.all'
-        ]);
-
-        Route::get('/{id}', [
-            'uses' => 'GroupController@getGroupOnePage',
-            'as' => 'groups.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/talcit/{id}', [
-            'uses' => 'PdfController@getStudentsInGroupPdfExport',
-            'as' => 'groups.export'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/pridat', [
-            'uses' => 'GroupController@getAddGroupPage',
-            'as' => 'groups.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'GroupController@postAddGroupPage',
-            'as' => 'groups.add'
-        ]);
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'GroupController@getDeleteGroup',
-            'as' => 'groups.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'GroupController@getEditGroupPage',
-            'as' => 'groups.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/upravit/{id}', [
-            'uses' => 'GroupController@postEditGroupPage',
-            'as' => 'groups.edit'
-        ])->where('id', '[0-9]+');
-    });
-
+    Route::resource('group', 'GroupController');
 
     // -------
     // |  StudentController / for admins and teachers
     // -----
+    Route::get('student/import', 'StudentController@import')->name('student.import');
+    Route::post('student/import', 'StudentController@importSave')->name('student.import-save');
+    Route::patch('student', 'StudentController@addStudentsToGroup')->name('student.index');
+    Route::patch('student/remove/{student}/{group}', 'StudentController@removeFromGroup')->name('student.remove-from-group');
+    Route::resource('student', 'StudentController')->except(['edit']);
 
-    Route::group(['prefix' => 'ziaci'], function () {
-        Route::get('/', [
-            'uses' => 'StudentController@getStudentsPage',
-            'as' => 'students.all'
-        ]);
-        Route::post('/', [
-            'uses' => 'StudentController@postStudentsPage',
-            'as' => 'students.all'
-        ]);
-
-        Route::get('/tlacit', [
-            'uses' => 'PdfController@getStudentsPdfExport',
-            'as' => 'students.export'
-        ]);
-
-        Route::get('/pridat', [
-            'uses' => 'StudentController@getAddStudentPage',
-            'as' => 'students.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'StudentController@postAddStudentPage',
-            'as' => 'students.add'
-        ]);
-
-        Route::get('/profil/{id}', [
-            'uses' => 'StudentController@getStudentProfilPage',
-            'as' => 'students.profil'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/profil/{id}', [
-            'uses' => 'StudentController@postAddStudentToGroup',
-            'as' => 'students.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'StudentController@getStudentDeletePage',
-            'as' => 'students.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat/{student_id}/{group_id}', [
-            'uses' => 'StudentController@getDeleteFromGroup',
-            'as' => 'students.delete.from.group'
-        ])->where('student_id', '[0-9]+')->where('group_id', '[0-9]+');
-
-        Route::get('/pridat-zo-suboru', [
-            'uses' => 'StudentController@getAddStudentFromFilePage',
-            'as' => 'students.file'
-        ]);
-        Route::post('/pridat-zo-suboru', [
-            'uses' => 'StudentController@postAddStudentFromFilePage',
-            'as' => 'students.file'
-        ]);
-    });
-
+    // TODO
+    Route::get('student/print', [
+        'uses' => 'PdfController@getStudentsPdfExport',
+        'as' => 'students.export'
+    ]);
 
     // -------
     // |  TestManageController / for edit, add, delete, manage tests
     // -------
-
-    Route::group(['prefix' => 'testy'], function () {
-        Route::get('/', [
-            'uses' => 'TestManageController@getAllTestsPage',
-            'as' => 'tests.all'
-        ]);
-        Route::get('/{id}', [
-            'uses' => 'TestManageController@getTestPage',
-            'as' => 'tests.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'TestManageController@getTestEditPage',
-            'as' => 'tests.edit'
-        ])->where('id', '[0-9]+');
-        Route::post('/upravit/{id}', [
-            'uses' => 'TestManageController@postTestEditPage',
-            'as' => 'tests.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/pridat', [
-            'uses' => 'TestManageController@getAddTestPage',
-            'as' => 'tests.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'TestManageController@postAddTestPage',
-            'as' => 'tests.add'
-        ]);
-
-        Route::get('/vymzat/{id}', [
-            'uses' => 'TestManageController@getDeleteTest',
-            'as' => 'tests.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/vymazat-otazku/{test_id}/{question_id}', [
-            'uses' => 'TestManageController@getDeleteQuestionFromTest',
-            'as' => 'tests.delete.question'
-        ])->where('test_id', '[0-9]+')
-            ->where('question_id', '[0-9]+');;
-
-        Route::get('/vysledky/{id}', [
-            'uses' => 'TestManageController@getResultsOfTestPage',
-            'as' => 'tests.results'
-        ])->where('id', '[0-9]+');
-        Route::get('/vysledky/{id}/{sid}', [
-            'uses' => 'TestManageController@getResultOfStudentForPage',
-            'as' => 'tests.results.student'
-        ])->where('id', '[0-9]+')->where('sid', '[0-9]+');
-    });
-
+    Route::resource('test', 'TestManageController');
+    Route::patch('test/{test}/remove-question/{question}', 'TestManageController@removeQuestion')->name('test.remove-question');
+    Route::get('/test/{test}/result', 'TestManageController@result')->name('test.result');
+    Route::get('/test/{test}/result/{student}', 'TestManageController@student')->name('test.student');
 
     // ------
     // |  Questions
     // ------
-
-    Route::group(['prefix' => 'otazky'], function () {
-        Route::get('/', [
-            'uses' => 'QuestionController@getAllQuestionsPage',
-            'as' => 'questions.all'
-        ]);
-        Route::post('/', [
-            'uses' => 'QuestionController@postAllQuestionsPage',
-            'as' => 'questions.all'
-        ]);
-
-        Route::get('/moje', [
-            'uses' => 'QuestionController@getMyQuestionsPage',
-            'as' => 'questions.my'
-        ]);
-        Route::post('/moje', [
-            'uses' => 'QuestionController@postMyQuestionsPage',
-            'as' => 'questions.my'
-        ]);
-
-        Route::get('/{id}', [
-            'uses' => 'QuestionController@getQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
-        Route::post('/{id}', [
-            'uses' => 'QuestionController@postQuestionPage',
-            'as' => 'questions.one'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/pridat', [
-            'uses' => 'QuestionController@getAddQuestionPage',
-            'as' => 'questions.add'
-        ]);
-        Route::post('/pridat', [
-            'uses' => 'QuestionController@postAddQuestionPage',
-            'as' => 'questions.add'
-        ]);
-
-        Route::get('/filter', [
-            'uses' => 'QuestionController@getFilterPage',
-            'as' => 'questions.filter'
-        ]);
-        Route::post('/filter', [
-            'uses' => 'QuestionController@postFilterPage',
-            'as' => 'questions.filter'
-        ]);
-        Route::get('/filter/reset', [
-            'uses' => 'QuestionController@getFilterReset',
-            'as' => 'questions.filter.reset'
-        ]);
-
-        Route::get('/vymazat/{id}', [
-            'uses' => 'QuestionController@getDeleteQuestion',
-            'as' => 'questions.delete'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/upravit/{id}', [
-            'uses' => 'QuestionController@getEditQuestionPage',
-            'as' => 'questions.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::post('/upravit/{id}', [
-            'uses' => 'QuestionController@postEditQuestionPage',
-            'as' => 'questions.edit'
-        ])->where('id', '[0-9]+');
-
-        Route::get('/hodnotit/{id}/{rating}', [
-            'uses' => 'QuestionController@getQuestionRating',
-            'as' => 'questions.rating'
-        ])->where('id', '[0-9]+')
-            ->where('rating', '[1-5]');
-
-        Route::post('/comment/{id}/', [
-            'uses' => 'QuestionController@postAddComment',
-            'as' => 'questions.addcomment'
-        ])->where('id', '[0-9]+');
-    });
-
+    Route::get('question/moje', 'QuestionController@myQuestions')->name('question.index.my');
+    Route::get('question/other', 'QuestionController@otherQuestions')->name('question.index.other');
+    Route::get('question/filter', 'QuestionController@filter')->name('question.filter');
+    Route::post('question/filter', 'QuestionController@saveFilter')->name('question.filter');
+    Route::delete('question/reset', 'QuestionController@resetFilter')->name('question.filter.reset');
+    Route::post('question/add-to-test', 'QuestionController@addQuestionsToTest')->name('question.add-to-test');
+    Route::post('question/{question}/comment', 'QuestionController@comment')->name('question.comment');
+    Route::post('question/{question}/rating', 'QuestionController@rating')->name('question.rating');
+    Route::post('question/{question}', 'QuestionController@addToTest')->name('question.test');
+    Route::resource('question', 'QuestionController');
 
     // -------
     // |   ProfileController / for edit user profile
     // -------
-
-    Route::group(['prefix' => 'profil'], function () {
-        Route::get('/', [
-            'uses' => 'ProfileController@getProfilPage',
-            'as' => 'admin.profil'
-        ]);
-        Route::post('/', [
-            'uses' => 'ProfileController@postProfilPage',
-            'as' => 'admin.profil'
-        ]);
-
-        Route::get('/delete', [
-            'uses' => 'ProfileController@getProfilDeletePage',
-            'as' => 'admin.profil.delete'
-        ]);
-        Route::post('/delete', [
-            'uses' => 'ProfileController@postProfilDeletePage',
-            'as' => 'admin.profil.delete'
-        ]);
-    });
+    Route::get('profil', 'ProfileController@edit')->name('profil.edit');
+    Route::patch('profil', 'ProfileController@update')->name('profil.update');
+    Route::delete('profil', 'ProfileController@destroy')->name('profil.destroy');
 });

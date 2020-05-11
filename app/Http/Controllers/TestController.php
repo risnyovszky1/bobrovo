@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -11,33 +11,8 @@ class TestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest:bobor');
+        $this->middleware('auth:bobor');
     }
-
-    // LOGIN STUDENTS - APP
-    public function getLoginStudentPage()
-    {
-        return view('general.login_student');
-    }
-
-    public function postLoginStudentPage(Request $request)
-    {
-        $code = $request->input('code');
-        $sid = DB::table('students')->select('id', 'code')->where('code', $code)->first();
-
-
-        if ($sid) {
-            if (Auth::guard('bobor')->loginUsingId($sid->id)) {
-                return redirect()->route('student_home');
-            }
-            //return view('general.login_student', ['success' => 'lgging in failed']);
-        } else {
-            die("student with code not found: " . $code);
-        }
-
-        return view('general.login_student', ['success' => 'No id found']);
-    }
-
 
     public function getLogoutStudent()
     {

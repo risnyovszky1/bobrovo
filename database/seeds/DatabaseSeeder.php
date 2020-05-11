@@ -19,13 +19,8 @@ class DatabaseSeeder extends Seeder
             GroupsSeeder::class,
             StudentSeeder::class,
             StudentGroupSeeder::class,
-            //TestsSeeder::class,
-            //QuestionSeeder::class,
             CategorySeeder::class,
-            //QuestionCategorySeeder::class,
-            //QuestionTestSeeder::class,
-            //QuestionRatingSeed::class,
-            //CommentSeeder::class,
+            QuestionSeeder::class,
         ]);
     }
 }

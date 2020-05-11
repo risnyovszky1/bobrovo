@@ -40,7 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
+        // todo: AUTH IN HEADER
         'bobor' => [
             'driver' => 'session',
             'provider' => 'students',

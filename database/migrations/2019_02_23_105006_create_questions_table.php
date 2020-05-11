@@ -16,23 +16,24 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 255);
-            
+
             $table->text('question');
             $table->string('a', 255);
             $table->string('b', 255);
             $table->string('c', 255);
             $table->string('d', 255);
             $table->string('answer', 10);
-            
-            $table->integer('type');
-            $table->integer('difficulty');
-            
-            $table->text('description');
-            $table->text('description_teacher');
-            
+
+            $table->string('year', 50)->nullable();
+            $table->integer('type')->nullable();
+            $table->integer('difficulty')->nullable();
+
+            $table->text('description')->nullable();
+            $table->text('description_teacher')->nullable();
+
             $table->integer('created_by')->unsigned()->nullable();
-            $table->boolean('public');
-            
+            $table->boolean('public')->default(true);
+
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');

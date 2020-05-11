@@ -13,11 +13,11 @@ class CreateNewsTable extends Migration
      */
     public function up()
     {
-        //Schema::dropIfExists('news');
         Schema::create('news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
             $table->text('content');
+            $table->string('featured_img')->nullable();
             $table->boolean('visible');
             $table->integer('created_by')->unsigned()->nullable();
             $table->foreign('created_by')->references('id')->on('users');

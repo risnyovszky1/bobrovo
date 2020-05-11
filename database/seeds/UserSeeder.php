@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
+    {
         $user = new User([
             'email' => 'risnyo96@gmail.com',
             'first_name' => 'András',
