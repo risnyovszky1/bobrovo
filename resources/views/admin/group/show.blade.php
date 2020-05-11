@@ -74,7 +74,7 @@
             <div class="form-group mt-4">
                 <a href="{{ route('group.edit', $group) }}" class="btn btn-primary shadow"><i
                             class="far fa-edit"></i> Upraviť</a>
-                <a href="{{ route('groups.export', ['id' => $group->id]) }}" class="btn btn-secondary shadow"
+                <a href="{{ route('students.export') }}" class="btn btn-secondary shadow"
                    target="_blank"><i class="fas fa-print"></i> Vytlačiť zoznam žiakov</a>
             </div>
         </div>
