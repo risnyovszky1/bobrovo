@@ -73,7 +73,7 @@ Route::group(['namespace' => 'General'], function () {
     // | RegistrationController / teachers , admins
     // --------
     Route::get('/registracia', [
-        'uses' => 'RegisterController@registration',
+        'uses' => 'RegisterController@register',
         'as' => 'register'
     ]);
 
