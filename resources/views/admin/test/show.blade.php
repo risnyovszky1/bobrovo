@@ -111,7 +111,7 @@
                     <ul class="list-group list-group-flush">
                         @foreach ($test->questions as $item)
                             <li class="list-group-item">
-                                <a href="{{ route('questions.one', ['id' => $item->id ]) }}">{{ $item->title }}</a>
+                                <a href="{{ route('question.show', $item->id) }}">{{ $item->title }}</a>
                                 @include('admin.partials.remove', ['route' => route('test.remove-question', ['test' => $test, 'question' => $item])])
                             </li>
                         @endforeach
