@@ -23,6 +23,15 @@ class UserSeeder extends Seeder
         ]);
         $user->save();
 
+        $user = new User([
+            'email' => 'admin@fmfi.sk',
+            'first_name' => 'Admin',
+            'last_name' => 'Bobor',
+            'password' => bcrypt('secret'),
+            'is_admin' => true,
+        ]);
+        $user->save();
+
         $faker = Faker::create();
         for($i = 0; $i < 3; $i++){
             $user = new User([
