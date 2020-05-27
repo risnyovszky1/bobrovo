@@ -30,11 +30,11 @@
                 </div>
                 <div class="form-group">
                     <label for="subject">Predmet </label>
-                    <input type="text" name="subject" id="subject" class="form-control">
+                    <input type="text" name="subject" id="subject" class="form-control" value="{{old('subject')}}">
                 </div>
                 <div class="form-group">
                     <label for="content">Správa</label>
-                    <textarea name="content" rows="8" class="form-control" id="msg-text-editor"></textarea>
+                    <textarea name="content" rows="8" class="form-control" id="msg-text-editor">{{old('content')}}</textarea>
                 </div>
                 <div class="form-group">
                     @csrf

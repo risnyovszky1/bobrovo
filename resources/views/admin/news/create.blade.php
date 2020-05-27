@@ -28,7 +28,7 @@
                             <label for="title">
                                 Názov
                             </label>
-                            <input type="text" name="title" id="" class="form-control form-control-lg">
+                            <input type="text" name="content" id="" class="form-control form-control-lg" value="{{old('content')}}">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="content">Text</label>
-                            <textarea name="content" rows="8" class="form-control" id="news-text-editor"></textarea>
+                            <textarea name="content" rows="8" class="form-control" id="news-text-editor">{{old('content')}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -44,12 +44,12 @@
                     <div class="col-md-12">
                         <div class="custom-control custom-radio">
                             <input type="radio" id="customRadio1" name="is-visible" value="yes"
-                                   class="custom-control-input">
+                                   class="custom-control-input" @if(old('is-visible') == 'yes') checked @endif>
                             <label class="custom-control-label" for="customRadio1">Visible</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input type="radio" id="customRadio2" name="is-visible" value="no"
-                                   class="custom-control-input">
+                                   class="custom-control-input" @if(old('is-visible') == 'noe') checked @endif>
                             <label class="custom-control-label" for="customRadio2">Not visible</label>
                         </div>
                     </div>

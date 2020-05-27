@@ -32,13 +32,13 @@
                     <form action="{{ route('group.store') }}" method="post">
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <input type="text" name="title" id="title" class="form-control">
+                            <input type="text" name="title" id="title" class="form-control" value="{{old('title')}}">
                         </div>
 
                         <div class="form-group">
                             <label for="desc">Popis</label>
                             <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor"
-                                      id="group-description"></textarea>
+                                      id="group-description">{{old('desc')}}</textarea>
                         </div>
 
                         <div class="form-group">

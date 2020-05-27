@@ -28,7 +28,7 @@
                             <label for="answer">
                                 Otázka
                             </label>
-                            <input type="text" name="question" id="" class="form-control form-control-lg">
+                            <input type="text" name="question" id="" class="form-control form-control-lg" value="{{old('question')}}">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="answer">Odpoveď</label>
-                            <textarea name="answer" rows="8" class="form-control" id="faq-content-input"></textarea>
+                            <textarea name="answer" rows="8" class="form-control" id="faq-content-input">{{old('answer')}}</textarea>
                         </div>
                     </div>
                 </div>
