@@ -18,6 +18,7 @@
                                 <th class="text-center">#</th>
                                 <th scope="col">Meno a priezvisko</th>
                                 <th scope="col" class="text-center">Kód</th>
+                                <th scope="col" class="text-center">Skupiny</th>
                                 <th scope="col" class="text-center">Vymazať</th>
                             </tr>
                             </thead>
@@ -34,6 +35,9 @@
                                         </a>
                                     </td>
                                     <td class="text-center">{{ $student->code }}</td>
+                                    <td class="text-center small">
+                                        {!! $student->groups->pluck('name')->implode(', <br>') !!}
+                                    </td>
                                     <td class="text-center">
                                         @include('admin.partials.delete', ['route' => route('student.destroy', $student)])
                                     </td>

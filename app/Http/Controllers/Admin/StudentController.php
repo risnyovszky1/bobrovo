@@ -21,11 +21,13 @@ class StudentController extends Controller
             ->where('teacher_id', Auth::user()->id)
             ->orderBy('last_name', 'ASC')
             ->orderBy('first_name', 'ASC')
+            ->with('groups')
             ->get();
         $groups = Group::query()
             ->where('created_by', Auth::user()->id)
             ->orderBy('name')
             ->get();
+
         return view('admin.student.list', ['students' => $students, 'groups' => $groups]);
     }
 
