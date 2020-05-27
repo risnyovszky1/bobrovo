@@ -69,6 +69,7 @@
 
                         <div class="form-group">
                             @csrf
+                            <a href="{{ route('student.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                             <button type="submit" class="btn btn-lg btn-primary">
                                 <i class="fas fa-plus-circle"></i> Pridaj
                             </button>

@@ -52,6 +52,7 @@
                     <div class="col-md-12 pt-3">
                         @csrf
                         @method('PATCH')
+                        <a href="{{ route('faq.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť zmeny
                         </button>
                     </div>

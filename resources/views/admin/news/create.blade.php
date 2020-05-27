@@ -57,6 +57,7 @@
                 <div class="row">
                     <div class="col-md-12 pt-3">
                         @csrf
+                        <a href="{{ route('news.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i> Pridaj
                         </button>
                     </div>

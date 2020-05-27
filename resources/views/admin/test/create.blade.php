@@ -32,7 +32,7 @@
                     <form action="{{ route('test.store') }}" method="post">
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <input type="text" name="title" id="title" class="form-control form-control-lg" value={{ old('title') }}">
+                            <input type="text" name="title" id="title" class="form-control form-control-lg" value="{{ old('title') }}">
                         </div>
 
                         <div class="form-group">
@@ -116,6 +116,7 @@
 
                         <div class="form-group">
                             @csrf
+                            <a href="{{ route('test.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                             <button type="submit" class="btn btn-lg btn-primary">
                                 <i class="fas fa-plus-circle"></i> Pridaj
                             </button>

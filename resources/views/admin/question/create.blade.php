@@ -30,7 +30,8 @@
                             <label for="title">
                                 Názov
                             </label>
-                            <input type="text" name="title" id="" class="form-control form-control-lg" value="{{ old('title') }}">
+                            <input type="text" name="title" id="" class="form-control form-control-lg"
+                                   value="{{ old('title') }}">
                         </div>
                         <div class="form-group">
                             <label for="question">
@@ -46,16 +47,20 @@
                     <div class="col-lg-8">
                         <div class="form-group question-possibilities show" id="text-ans">
                             <label for="answer-a" class="mb-0">Odpoveď A</label>
-                            <input type="text" name="answer-a" id="" class="form-control mb-2" value="{{ old('answer-a') }}">
+                            <input type="text" name="answer-a" id="" class="form-control mb-2"
+                                   value="{{ old('answer-a') }}">
 
                             <label for="answer-b" class="mb-0">Odpoveď B</label>
-                            <input type="text" name="answer-b" id="" class="form-control mb-2" value="{{ old('answer-b') }}">
+                            <input type="text" name="answer-b" id="" class="form-control mb-2"
+                                   value="{{ old('answer-b') }}">
 
                             <label for="answer-c" class="mb-0">Odpoveď C</label>
-                            <input type="text" name="answer-c" id="" class="form-control mb-2" value="{{ old('answer-c') }}">
+                            <input type="text" name="answer-c" id="" class="form-control mb-2"
+                                   value="{{ old('answer-c') }}">
 
                             <label for="answer-d" class="mb-0">Odpoveď D</label>
-                            <input type="text" name="answer-d" id="" class="form-control mb-2" value="{{ old('answer-d') }}">
+                            <input type="text" name="answer-d" id="" class="form-control mb-2"
+                                   value="{{ old('answer-d') }}">
                         </div>
 
                         <div class="form-group question-possibilities hidden" id="picture-ans">
@@ -103,7 +108,8 @@
                             <label for="difficulty" class="mb-0">Náročnosť</label>
                             <select name="difficulty" id="" class="form-control">
                                 @for ($i = 1; $i < 8; $i++)
-                                    <option value="{{$i}}" {{ old('difficulty') == $i ? 'selected' : '' }}>{{$i}}</option>
+                                    <option
+                                        value="{{$i}}" {{ old('difficulty') == $i ? 'selected' : '' }}>{{$i}}</option>
                                 @endfor
                             </select>
                         </div>
@@ -139,42 +145,48 @@
                             <div class="pl-5 mt-1">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-6"
-                                           name="category[]" value="6" {{ in_array('6', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="6" {{ in_array('6', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-6">kódovanie, šifrovanie,
                                         komprimácia informácie</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-7"
-                                           name="category[]" value="7" {{ in_array('7', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="7" {{ in_array('7', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-7">číselné sústavy,
                                         prevody</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-8"
-                                           name="category[]" value="8" {{ in_array('8', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="8" {{ in_array('8', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-8">reprezentácia údajov v počítači
                                         - diagramy, čísla, znaky a vzťahy medzi nimi</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-9"
-                                           name="category[]" value="9" {{ in_array('9', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="9" {{ in_array('9', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-9">vyhľadávanie opakujúcich sa
                                         vzorov</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-10"
-                                           name="category[]" value="10" {{ in_array('10', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="10" {{ in_array('10', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-10">informácie zobrazené pomocou
                                         údajových štruktúr - strom, graf, zásobník</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-11"
-                                           name="category[]" value="11" {{ in_array('11', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="11" {{ in_array('11', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-11">výroková logika a jej
                                         využívanie pri práci s informáciami, kombinatorika</label>
                                 </div>
@@ -183,42 +195,48 @@
                             <div class="pl-4 mt-2 mb-1">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-12"
-                                           name="category[]" value="12" {{ in_array('12', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="12" {{ in_array('12', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-12">textová informácia -
                                         kompetencie potrebné na prácu v textovom editore</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-13"
-                                           name="category[]" value="13" {{ in_array('13', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="13" {{ in_array('13', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-13">grafická informácia -
                                         kompetencie potrebné na prácu v grafickom editore</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-14"
-                                           name="category[]" value="14" {{ in_array('14', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="14" {{ in_array('14', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-14">číselná informácia -
                                         kompetencie potrebné na prácu v tabuľkovom editore</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-15"
-                                           name="category[]" value="15" {{ in_array('15', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="15" {{ in_array('15', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-15">zvuková informácia -
                                         kompetencie potrebné na prácu v zvukovom editore</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-16"
-                                           name="category[]" value="16" {{ in_array('16', old('category', [])) ? 'checked' : '' }}>
+                                           name="category[]"
+                                           value="16" {{ in_array('16', old('category', [])) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="category-16">prezentácia informácií -
                                         kompetencie potrebné na tvorbu prezentácií</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="category-17"
-                                           name="category[]" value="17" {{ in_array('1', old('category', []))  ? 'checked' : ''}}>
+                                           name="category[]"
+                                           value="17" {{ in_array('1', old('category', []))  ? 'checked' : ''}}>
                                     <label class="custom-control-label" for="category-17">prezentácia informácií na webe
                                         - kompetencie potrebné na tvorbu webových stránok</label>
                                 </div>
@@ -264,8 +282,8 @@
                                 </div>
                             </div>
                         @endif
-
                         @csrf
+                        <a href="{{ route('question.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť</button>
                     </div>
                 </div>

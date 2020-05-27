@@ -120,6 +120,7 @@
             @endif
 
             <div class="form-group mt-4">
+                <a href="{{ route('test.index') }}" class="btn btn-link">Spať</a>
                 <a href="{{ route('test.edit', $test) }}" class="btn btn-primary shadow"><i
                         class="far fa-edit"></i> Upraviť</a>
                 <a href="{{ route('test.result', $test) }}" class="btn btn-success shadow"><i

@@ -76,6 +76,8 @@
                     <div class="form-group">
                         @csrf
                         @method('PATCH')
+                        <a href="{{ route('admin') }}" class="btn btn-link">Zrušiť</a>
+
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Uložiť
                         </button>

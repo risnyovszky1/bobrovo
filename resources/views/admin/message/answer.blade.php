@@ -40,6 +40,7 @@ Odpoveď sem :
                 </div>
                 <div class="form-group">
                     @csrf
+                    <a href="{{ route('message.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                     <button type="submit" class="btn btn-lg btn-primary"><i class="fas fa-paper-plane"></i> Poslať
                     </button>
                 </div>

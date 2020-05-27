@@ -72,6 +72,7 @@
             </div>
 
             <div class="form-group mt-4">
+                <a href="{{ route('group.index') }}" class="btn btn-link">Spať</a>
                 <a href="{{ route('group.edit', $group) }}" class="btn btn-primary shadow"><i
                             class="far fa-edit"></i> Upraviť</a>
                 <a href="{{ route('students.export') }}" class="btn btn-secondary shadow"

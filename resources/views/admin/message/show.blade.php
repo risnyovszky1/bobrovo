@@ -27,6 +27,7 @@
                           readonly>{{ $msg->content }}</textarea>
             </div>
             <div class="form-group">
+                <a href="{{ route('message.index') }}" class="btn btn-lg btn-link">Zrušiť</a>
                 <a href="{{ route('message.answer', $msg) }}" class="btn btn-lg btn-primary"><i
                         class="fas fa-paper-plane"></i> Odpovedať </a>
             </div>

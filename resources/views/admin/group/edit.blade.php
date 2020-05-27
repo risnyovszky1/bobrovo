@@ -43,6 +43,7 @@
                         <div class="form-group">
                             @csrf
                             @method('PATCH')
+                            <a href="{{ route('group.show', $group) }}" class="btn btn-lg btn-link">Zrušiť</a>
                             <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Uložiť
                                 zmeny
                             </button>

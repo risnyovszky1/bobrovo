@@ -156,6 +156,7 @@
                 </div>
             @endif
             <div class="form-group mt-4">
+                <a href="{{ route('question.index') }}" class="btn btn-link">Spať</a>
                 @if (Auth::user()->is_admin || $question->created_by == Auth::user()->id)
                     <a href="{{ route('question.edit', $question) }}" class="btn btn-primary">
                         <i class="far fa-edit"></i> Upraviť
