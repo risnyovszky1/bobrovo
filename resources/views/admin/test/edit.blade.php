@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label for="title">Názov</label>
                             <input type="text" name="title" id="title" class="form-control form-control-lg"
-                                   value="{{ $test->name }}">
+                                   value="{{ old('title', $test->name) }}">
                         </div>
 
                         <div class="form-group">
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label for="desc">Popis</label>
                             <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor"
-                                      id="group-description">{{ $test->description }}</textarea>
+                                      id="group-description">{{ old('desc', $test->description) }}</textarea>
                         </div>
 
                         <div class="row">
@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="available_from">Dostupný od</label>
                                     <div class="input-group form-datetime date">
-                                        <input type="text" value="{{ $test->available_from }}" name="available_from"
+                                        <input type="text" value="{{ old('available_from', $test->available_from) }}" name="available_from"
                                                id="available_from" class="form-control">
                                         <div class="input-group-append ">
                                             <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
@@ -68,7 +68,7 @@
                                 <div class="form-group">
                                     <label for="available_to">Dostupný do</label>
                                     <div class="input-group form-datetime date">
-                                        <input type="text" value="{{ $test->available_to }}" name="available_to"
+                                        <input type="text" value="{{ old('available_to', $test->available_to) }}" name="available_to"
                                                id="available_to" class="form-control">
                                         <div class="input-group-append ">
                                             <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>

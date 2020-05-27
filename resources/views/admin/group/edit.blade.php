@@ -31,13 +31,13 @@
                         <div class="form-group">
                             <label for="title">Názov</label>
                             <input type="text" name="title" id="title" class="form-control form-control-lg"
-                                   value="{{ $group->name }}">
+                                   value="{{ old('name', $group->name) }}">
                         </div>
 
                         <div class="form-group">
                             <label for="desc">Popis</label>
                             <textarea name="desc" id="" rows="8" class="form-control wyswyg-editor"
-                                      id="group-description">{{ $group->description }}</textarea>
+                                      id="group-description">{{ old('desc', $group->description) }}</textarea>
                         </div>
 
                         <div class="form-group">

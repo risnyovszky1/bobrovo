@@ -30,14 +30,14 @@
                                 Názov
                             </label>
                             <input type="text" name="title" id="" class="form-control form-control-lg"
-                                   value="{{$question->title}}">
+                                   value="{{old('title', $question->title)}}">
                         </div>
                         <div class="form-group">
                             <label for="question">
                                 Otázka
                             </label>
                             <textarea name="question" id="" rows="5" class="form-control wyswyg-editor">
-                {{$question->question}}
+                {{old('question', $question->question)}}
             </textarea>
                         </div>
                     </div>
@@ -47,16 +47,16 @@
                         <div class="form-group question-possibilities {{ $question->type <= 3 ? 'show' : 'hidden' }}"
                              id="text-ans">
                             <label for="answer-a" class="mb-0">Odpoveď A</label>
-                            <input type="text" name="answer-a" id="" class="form-control mb-2" value="{{$question->a}}">
+                            <input type="text" name="answer-a" id="" class="form-control mb-2" value="{{old('answer-a', $question->a)}}">
 
                             <label for="answer-b" class="mb-0">Odpoveď B</label>
-                            <input type="text" name="answer-b" id="" class="form-control mb-2" value="{{$question->b}}">
+                            <input type="text" name="answer-b" id="" class="form-control mb-2" value="{{old('answer-b', $question->b)}}">
 
                             <label for="answer-c" class="mb-0">Odpoveď C</label>
-                            <input type="text" name="answer-c" id="" class="form-control mb-2" value="{{$question->c}}">
+                            <input type="text" name="answer-c" id="" class="form-control mb-2" value="{{old('answer-c', $question->c)}}">
 
                             <label for="answer-d" class="mb-0">Odpoveď D</label>
-                            <input type="text" name="answer-d" id="" class="form-control mb-2" value="{{$question->d}}">
+                            <input type="text" name="answer-d" id="" class="form-control mb-2" value="{{old('answer-d', $question->d)}}">
                         </div>
 
                         <div class="form-group question-possibilities show {{ $question->type == 4 ? 'show' : 'hidden' }}"
@@ -131,13 +131,13 @@
                         <div class="form-group">
                             <label for="description">Vysvetlenie</label>
                             <textarea name="description" id="description" rows="5"
-                                      class="form-control wyswyg-editor">{{$question->description}}</textarea>
+                                      class="form-control wyswyg-editor">{{old('description', $question->description)}}</textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="description_teacher">Vysvetlenie pre učiteľa</label>
                             <textarea name="description_teacher" id="description_teacher" rows="5"
-                                      class="form-control wyswyg-editor">{{$question->description_teacher}}</textarea>
+                                      class="form-control wyswyg-editor">{{old('description_teacher', $question->description_teacher)}}</textarea>
                         </div>
                     </div>
                 </div>

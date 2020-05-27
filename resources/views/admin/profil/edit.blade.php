@@ -24,7 +24,7 @@
                         <label for="first-name" class="col-sm-3 col-form-label">Meno:</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="first-name" name="first-name"
-                                   value="{{Auth::user()->first_name}}">
+                                   value="{{old('first-name', Auth::user()->first_name)}}">
                         </div>
                     </div>
 
@@ -32,7 +32,7 @@
                         <label for="last-name" class="col-sm-3 col-form-label">Priezvisko:</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="last-name" name="last-name"
-                                   value="{{Auth::user()->last_name}}">
+                                   value="{{old('last_name', Auth::user()->last_name)}}">
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
                         <label for="email" class="col-sm-3 col-form-label">E-mail:</label>
                         <div class="col-sm-9">
                             <input type="email" class="form-control" id="email" name="email"
-                                   value="{{Auth::user()->email}}">
+                                   value="{{old('email', Auth::user()->email)}}">
                         </div>
                     </div>
 

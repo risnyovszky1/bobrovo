@@ -29,7 +29,7 @@
                                 Otázka
                             </label>
                             <input type="text" name="question" class="form-control form-control-lg"
-                                   value="{{ $faq->question }}">
+                                   value="{{ old('question', $faq->question) }}">
                             <input type="hidden" name="faq-id" class="form-control form-control-lg"
                                    value="{{ $faq->id }}">
                         </div>
@@ -42,10 +42,8 @@
                             <tinymce
                                 id="answer"
                                 name="answer"
-                                :content="`{{ $faq->answer }}`"
+                                :content="`{{ old('answer', $faq->answer) }}`"
                             ></tinymce>
-
-
 
                         </div>
                     </div>

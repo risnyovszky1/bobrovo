@@ -30,7 +30,7 @@
                                 <label for="title">
                                     Názov
                                 </label>
-                                <input type="text" name="title" id="" value="{{ $news->title }}"
+                                <input type="text" name="title" id="" value="{{ old('title', $news->title) }}"
                                        class="form-control form-control-lg">
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <label for="content">Text</label>
                                 <textarea name="content" rows="8" class="form-control"
-                                          id="news-text-editor">{{ $news->content }}</textarea>
+                                          id="news-text-editor">{{ old('content', $news->content) }}</textarea>
                             </div>
                         </div>
                     </div>
