@@ -64,7 +64,8 @@ class StudentController extends Controller
     {
         $this->validate($request, [
             'first-name' => 'required|min:3',
-            'last-name' => 'required|min:3'
+            'last-name' => 'required|min:3',
+            'groups' => 'nullable|exists:groups,id'
         ]);
 
         $code = '';
@@ -80,7 +81,7 @@ class StudentController extends Controller
 
         } else {
             $this->validate($request, [
-                'code' => 'min:6|max:15|unique:students,code'
+                'code' => 'min:4|max:15|unique:students,code'
             ]);
             $code = $request->input('code');
         }
@@ -93,6 +94,11 @@ class StudentController extends Controller
         ]);
 
         $student->save();
+
+        $groups = $request->input('groups');
+        if ($groups) {
+            $student->groups()->sync($groups);
+        }
 
         $this->flashMsg('Úspešne ste pridali žiaka!');
 
