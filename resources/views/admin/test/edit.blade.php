@@ -80,7 +80,8 @@
                                 <div class="form-group">
                                     <label for="time_to_do">Čas</label>
                                     <select name="time_to_do" id="" class="form-control">
-                                        @for ($i = 0; $i < 15; $i++)
+                                        <option value="">-</option>
+                                        @for ($i = 0; $i < 24; $i++)
                                             <option value="{{ ($i + 1) * 5 }}" {{ ($i + 1) * 5 == $test->time_to_do ? 'selected' : ''}}>{{ ($i + 1) * 5 }}</option>
                                         @endfor
                                     </select>

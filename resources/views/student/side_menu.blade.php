@@ -1,34 +1,36 @@
-<div class="count-down-container text-right">
-    <div id="getting-started"></div>
-</div>
+@if(!empty($test->time_to_do))
+    <div class="count-down-container text-right">
+        <div id="getting-started"></div>
+    </div>
 
 
-<script type="text/javascript">
-    $('#getting-started').countdown('{{ $finish }}', function (event) {
-        var hours = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white mr-1"> %H </div>');
-        var mins = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white mr-1 ml-1"> %M </div>');
-        var seconds = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white ml-1"> %S </div>');
+    <script type="text/javascript">
+        $('#getting-started').countdown('{{ $finish }}', function (event) {
+            var hours = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white mr-1"> %H </div>');
+            var mins = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white mr-1 ml-1"> %M </div>');
+            var seconds = event.strftime('<div class="count-down-col border rounded pt-2 pb-2 pl-2 pr-2 border-primary bg-white ml-1"> %S </div>');
 
-        $(this).html(hours + ":" + mins + ":" + seconds);
-    }).on('finish.countdown', function (event) {
-        window.location.href = '{{ route('finish_student_timer', ['id' => Session::get('testSettings')->id]) }}';
-    });
-
-
-</script>
+            $(this).html(hours + ":" + mins + ":" + seconds);
+        }).on('finish.countdown', function (event) {
+            window.location.href = '{{ route('finish_student_timer', ['id' => Session::get('testSettings')->id]) }}';
+        });
 
 
-<style>
-    .count-down-container {
-        font-size: 2em
-    }
+    </script>
 
-    .count-down-container .count-down-col {
-        display: inline-block;
-    }
-</style>
 
-<hr>
+    <style>
+        .count-down-container {
+            font-size: 2em
+        }
+
+        .count-down-container .count-down-col {
+            display: inline-block;
+        }
+    </style>
+
+    <hr>
+@endif
 
 <h4 class="mb-3">{{ __('student.menu') }}</h4>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Test;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -129,19 +130,25 @@ class TestController extends Controller
                 ['question_id', Session::get('testQuestions')->get($ord - 1)->id]
             ])->first();
 
-        $started = DB::table('test_student_state')
-            ->where([
-                ['student_id', Auth::user()->id],
-                ['test_id', Session::get('testSettings')->id]
-            ])
-            ->value('started_at');
+        $test = Test::query()->find($id);
 
-        $minutes_to_add = Session::get('testSettings')->time_to_do;
+        if ($test->time_to_do) {
+            $started = DB::table('test_student_state')
+                ->where([
+                    ['student_id', Auth::user()->id],
+                    ['test_id', Session::get('testSettings')->id]
+                ])
+                ->value('started_at');
 
-        $time = new \DateTime($started);
-        $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+            $minutes_to_add = Session::get('testSettings')->time_to_do;
 
-        $stamp = $time->format('Y/m/d H:i');
+            $time = new \DateTime($started);
+            $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+
+            $stamp = $time->format('Y/m/d H:i');
+        } else {
+            $stamp = '';
+        }
 
         return view('student.question', ['question' => $question, 'curr' => $ord, 'answer' => $ans, 'finish' => $stamp]);
     }
@@ -190,19 +197,25 @@ class TestController extends Controller
 
     public function getFinishPage($id)
     {
-        $started = DB::table('test_student_state')
-            ->where([
-                ['student_id', Auth::user()->id],
-                ['test_id', Session::get('testSettings')->id]
-            ])
-            ->value('started_at');
+        $test = Test::query()->find($id);
 
-        $minutes_to_add = Session::get('testSettings')->time_to_do;
+        if ($test->time_to_do) {
+            $started = DB::table('test_student_state')
+                ->where([
+                    ['student_id', Auth::user()->id],
+                    ['test_id', Session::get('testSettings')->id]
+                ])
+                ->value('started_at');
 
-        $time = new \DateTime($started);
-        $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+            $minutes_to_add = Session::get('testSettings')->time_to_do;
 
-        $stamp = $time->format('Y/m/d H:i');
+            $time = new \DateTime($started);
+            $time->add(new \DateInterval('PT' . $minutes_to_add . 'M'));
+
+            $stamp = $time->format('Y/m/d H:i');
+        } else {
+            $stamp = '';
+        }
 
         return view('student.finish', ['qid' => $id, 'finish' => $stamp]);
     }

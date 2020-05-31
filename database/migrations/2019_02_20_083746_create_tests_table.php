@@ -17,14 +17,14 @@ class CreateTestsTable extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->text('description');
-            
+
             $table->integer('group_id')->unsigned();
             $table->integer('teacher_id')->unsigned();
-            
-            $table->timestamp('available_from')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('available_to')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->integer('time_to_do');
-            $table->boolean('available_description');
+
+            $table->timestamp('available_from')->nullable();
+            $table->timestamp('available_to')->nullable();
+            $table->integer('time_to_do')->nullable();
+            $table->boolean('available_description')->nullable();
             $table->boolean('mix_questions');
             $table->boolean('available_answers');
             $table->boolean('public');

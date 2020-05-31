@@ -30,8 +30,8 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|min:6',
-            'desc' => 'required|min:10'
+            'title' => 'required',
+            'desc' => 'required'
         ]);
 
         $group = new Group([

@@ -33,27 +33,31 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card mt-3 border-info">
-                            <div class="card-header bg-info text-white">
-                                {{ __('student.available_from') }}
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">{{ $test->available_from }}</p>
+                    @if(!empty($test->available_from))
+                        <div class="col-sm-6">
+                            <div class="card mt-3 border-info">
+                                <div class="card-header bg-info text-white">
+                                    {{ __('student.available_from') }}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ $test->available_from }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
-                    <div class="col-sm-6">
-                        <div class="card mt-3 border-info">
-                            <div class="card-header bg-info text-white">
-                                {{ __('student.available_to') }}
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">{{ $test->available_to }}</p>
+                    @if(!empty($test->available_to))
+                        <div class="col-sm-6">
+                            <div class="card mt-3 border-info">
+                                <div class="card-header bg-info text-white">
+                                    {{ __('student.available_to') }}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ $test->available_to }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -86,7 +90,7 @@
                 @php
                     $currTime = strtotime(date('Y-m-d H:i:s'));
                 @endphp
-                @if ((empty($state) || $state->state != 3) && strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime)
+                @if ((empty($state) || $state->state != 3) && (strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime) || $test->available_to == null)
                     <a href="{{ route('solving_student', ['id' => $test->id]) }}" class="btn btn-primary">
                         <i class="fas fa-pencil-alt"></i> {{ __('student.start_solve') }}
                     </a>

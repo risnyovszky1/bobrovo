@@ -44,9 +44,9 @@ class TestManageController extends Controller
             'title' => 'required',
             'desc' => 'required',
             'group' => 'required',
-            'available_from' => 'required',
-            'available_to' => 'required',
-            'time_to_do' => 'required'
+            'available_from' => 'nullable',
+            'available_to' => 'nullable',
+            'time_to_do' => 'nullable'
         ]);
 
         $test->update([
@@ -80,9 +80,9 @@ class TestManageController extends Controller
             'title' => 'required',
             'desc' => 'required',
             'group' => 'required',
-            'available_from' => 'required',
-            'available_to' => 'required',
-            'time_to_do' => 'required'
+            'available_from' => 'nullable',
+            'available_to' => 'nullable',
+            'time_to_do' => 'nullable'
         ]);
 
         $test = new Test([

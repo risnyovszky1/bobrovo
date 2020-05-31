@@ -26,11 +26,11 @@
                                         <a href="{{ route('testone_student', ['id' => $test->id]) }}">
                                             @php
                                                 $currTime = strtotime(date('Y-m-d H:i:s'));
-                                                if (strtotime($test->available_to) < $currTime){
+                                                if (strtotime($test->available_to) < $currTime && ($test->available_to != null)){
                                                     // test is not available
                                                     echo '<i class="fas fa-times text-danger"></i>';
                                                 }
-                                                else if (strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime){
+                                                else if ((strtotime($test->available_from) < $currTime && strtotime($test->available_to) > $currTime) || $test->available_to == null){
                                                     // test is going
                                                     echo '<i class="fas fa-play text-warning"></i>';
                                                 }
