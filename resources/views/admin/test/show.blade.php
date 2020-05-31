@@ -123,6 +123,8 @@
                 <a href="{{ route('test.index') }}" class="btn btn-link">Spať</a>
                 <a href="{{ route('test.edit', $test) }}" class="btn btn-primary shadow"><i
                         class="far fa-edit"></i> Upraviť</a>
+                <a href="{{ route('test.preview', $test) }}" class="btn btn-secondary shadow"><i
+                        class="fas fa-poll"></i> Náhľad</a>
                 <a href="{{ route('test.result', $test) }}" class="btn btn-success shadow"><i
                         class="fas fa-poll"></i> Výsledky</a>
 

@@ -218,4 +218,11 @@ class TestManageController extends Controller
             'stats' => $stats
         ]);
     }
+
+    public function preview(Test $test)
+    {
+        $test->load('questions');
+
+        return view('admin.test.preview', ['test' => $test]);
+    }
 }

@@ -222,6 +222,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth:web', 'namespace' => '
     Route::patch('test/{test}/remove-question/{question}', 'TestManageController@removeQuestion')->name('test.remove-question');
     Route::get('/test/{test}/result', 'TestManageController@result')->name('test.result');
     Route::get('/test/{test}/result/{student}', 'TestManageController@student')->name('test.student');
+    Route::get('/test/{test}/preview', 'TestManageController@preview')->name('test.preview');
 
     // ------
     // |  Questions
