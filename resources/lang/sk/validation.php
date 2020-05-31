@@ -5,6 +5,7 @@ return [
     'required_with' => 'Pole :attribute je povinný s polom :values.',
     'same' => 'Pole :attribute a :other musí byť rovnaký.',
     'unique' => 'Pole :attribute s hodnotou čo ste zadali už je použitá.',
+    'exists' => 'Zadaný :attribute je nesprávny.',
     'min' => [
         'string' => 'Pole :attribute musí mať aspoň :size znakov.'
     ],

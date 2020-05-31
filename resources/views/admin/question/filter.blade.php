@@ -20,6 +20,7 @@
                         $diffFrom = !empty($filter['difficulty_from']) ? $filter['difficulty_from'] : null;
                         $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
                         $order = !empty($filter['order']) ? $filter['order'] : null;
+
                     @endphp
 
                     <form action="{{ route('question.filter') }}" method="post">
@@ -194,7 +195,7 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-4">
                                     <label for="difficulty_from">Náročnosť od:</label>
                                     <select name="difficulty_from" id="difficulty_from" class="form-control">
                                         <option value="1" {{ $diffFrom == 1 ? 'selected' : ''}}>1</option>
@@ -207,7 +208,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-sm-6">
+                                <div class="col-md-4">
                                     <label for="difficulty_to">Náročnosť do:</label>
                                     <select name="difficulty_to" id="difficulty_to" class="form-control">
                                         <option value="1" {{ $diffTo == 1 ? 'selected' : ''}}>1</option>
@@ -231,14 +232,19 @@
                                 <label class="custom-control-label" for="no-interactive">bez interaktívnych</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="with-interactive" name="type" class="custom-control-input"
-                                       value="with-interactive" {{ $type && $type == 'with-interactive' ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="with-interactive">aj interaktívne</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" id="just-interactive" name="type" class="custom-control-input"
                                        value="just-interactive" {{ $type && $type == 'just-interactive' ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="just-interactive">iba interaktívne</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="just-text" name="type" class="custom-control-input"
+                                       value="just-text" {{ $type && $type == 'just-text' ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="just-text">iba textové</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="just-image" name="type" class="custom-control-input"
+                                       value="just-image" {{ $type && $type == 'just-image' ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="just-image">iba obrázkové</label>
                             </div>
                         </div>
 

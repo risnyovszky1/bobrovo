@@ -96,7 +96,7 @@ class StudentController extends Controller
 
         $this->flashMsg('Úspešne ste pridali žiaka!');
 
-        return view('admin.student.show', $student);
+        return redirect()->route('student.show', $student);
     }
 
     public function show(Student $student)

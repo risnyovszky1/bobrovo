@@ -43,7 +43,7 @@ class QuestionController extends Controller
         $diffTo = !empty($filter['difficulty_to']) ? $filter['difficulty_to'] : null;
         $order = !empty($filter['order']) ? $filter['order'] : null;
 
-        $query = Question::query()->with('categories', 'comments', 'tests');
+        $query = Question::query()->with('categories', 'comments', 'tests', 'ratings');
 
 
         switch ($q) {
@@ -60,7 +60,9 @@ class QuestionController extends Controller
 
         if ($type) {
             if ($type == 'just-interactive') $query->where('type', '=', 5);
-            if ($type == 'no-interactive') $query->where('type', '<', 5);
+            if ($type == 'no-interactive') $query->where('type', '!=', 5);
+            if ($type == 'just-image') $query->where('type', '=', 4);
+            if ($type == 'just-text') $query->where('type', '<', 4);
         }
         if ($diffFrom && $diffTo) {
             $query->whereBetween('difficulty', [$diffFrom, $diffTo]);
@@ -108,7 +110,7 @@ class QuestionController extends Controller
             });
         }
 
-        $questions = $query->paginate(25);
+        $questions = $query->paginate(20);
 
         return $questions;
     }
@@ -127,7 +129,7 @@ class QuestionController extends Controller
                     ['test_id', $request->input('test-select')]])
                 ->exists();
 
-            if (! $exists) {
+            if (!$exists) {
                 DB::table('question_test')->insert([
                     'question_id' => $q,
                     'test_id' => $request->input('test-select')
@@ -452,7 +454,7 @@ class QuestionController extends Controller
             'difficulty_from' => $request->input('difficulty_from'),
             'difficulty_to' => $request->input('difficulty_to'),
             'type' => $request->input('type'),
-            'order' => $request->input('order')
+            'order' => $request->input('order'),
         );
 
         Session::put('questionFilter', $filter);

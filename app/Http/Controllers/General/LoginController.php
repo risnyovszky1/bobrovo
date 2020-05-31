@@ -31,7 +31,11 @@ class LoginController extends Controller
             return redirect()->route('admin');
         }
 
-        return view('general.login_teacher');
+
+        $errors = collect(['Zadali ste nesprávne údaje.']);
+
+
+        return view('general.login_teacher')->with(compact('errors'));
     }
 
     // LOGIN STUDENTS - APP
