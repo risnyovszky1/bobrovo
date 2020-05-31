@@ -203,17 +203,15 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth:web', 'namespace' => '
     // -------
     // |  StudentController / for admins and teachers
     // -----
+    Route::get('student/print', [
+        'uses' => 'PdfController@getStudentsPdfExport',
+        'as' => 'students.export'
+    ]);
     Route::get('student/import', 'StudentController@import')->name('student.import');
     Route::post('student/import', 'StudentController@importSave')->name('student.import-save');
     Route::patch('student', 'StudentController@addStudentsToGroup')->name('student.index');
     Route::patch('student/remove/{student}/{group}', 'StudentController@removeFromGroup')->name('student.remove-from-group');
     Route::resource('student', 'StudentController')->except(['edit']);
-
-    // TODO
-    Route::get('student/print', [
-        'uses' => 'PdfController@getStudentsPdfExport',
-        'as' => 'students.export'
-    ]);
 
     // -------
     // |  TestManageController / for edit, add, delete, manage tests
