@@ -1,5 +1,8 @@
-@extends('admin.master')
+@section('title')
+    Náhľad testu | Bobrovo
+@endsection
 
+@extends('admin.master')
 
 @section('admin_content')
     <div class="admin-panel pt-2 pb-2">

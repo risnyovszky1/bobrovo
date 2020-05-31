@@ -23,7 +23,8 @@
                  aria-labelledby="news" data-parent="#admin-menu">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="{{ route('user.index') }}">Všetky používateľia</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.index') }}">Všetky používatelia</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.create') }}">Pridať používateľa</a></li>
                     </ul>
                 </div>
             </div>

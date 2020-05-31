@@ -175,7 +175,7 @@ Route::group(['prefix' => 'ucitel', 'middleware' => 'auth:web', 'namespace' => '
     // |  UserController / only for admin
     // --------
     Route::patch('user/{user}/toggle', 'UserController@toggle')->name('user.toggle');
-    Route::resource('user', 'UserController')->only(['index', 'destroy']);
+    Route::resource('user', 'UserController')->only(['index', 'destroy', 'create', 'store']);
 
     // --------
     // |  NewsController / only for admin

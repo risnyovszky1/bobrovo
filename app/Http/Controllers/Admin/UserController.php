@@ -41,4 +41,34 @@ class UserController extends Controller
 
         return redirect()->route('user.index');
     }
+
+
+    public function create()
+    {
+        return view('admin.user.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'email|required|unique:users',
+            'password' => 'required|min:6|required_with:password-rpt|same:password-rpt',
+            'password-rpt' => 'required|min:6',
+            'is_admin' => 'nullable|in:yes,no',
+        ]);
+
+        $user = new User([
+            'email' => $request->input('email'),
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'password' => bcrypt($request->input('password')),
+            'is_admin' => $request->input('is_admin', 'no') == 'yes',
+        ]);
+
+        $user->save();
+
+        return redirect()->route('user.index');
+    }
 }
