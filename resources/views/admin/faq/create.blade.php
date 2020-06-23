@@ -25,7 +25,7 @@
                     <div class="col-md-12">
                         <h2>Pidať FAQ</h2>
                         <div class="form-group">
-                            <label for="answer">
+                            <label for="question">
                                 Otázka
                             </label>
                             <input type="text" name="question" id="" class="form-control form-control-lg" value="{{old('question')}}">
@@ -36,7 +36,11 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="answer">Odpoveď</label>
-                            <textarea name="answer" rows="8" class="form-control" id="faq-content-input">{{old('answer')}}</textarea>
+                            <tinymce
+                                id="answer"
+                                name="answer"
+                                :content="`{{ old('answer') }}`"
+                            ></tinymce>
                         </div>
                     </div>
                 </div>

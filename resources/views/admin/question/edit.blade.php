@@ -36,9 +36,11 @@
                             <label for="question">
                                 Otázka
                             </label>
-                            <textarea name="question" id="" rows="5" class="form-control wyswyg-editor">
-                {{old('question', $question->question)}}
-            </textarea>
+                            <tinymce
+                                id="question"
+                                name="question"
+                                :content="`{{ old('question', $question->question) }}`"
+                            ></tinymce>
                         </div>
                     </div>
                 </div>
@@ -130,14 +132,20 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="description">Vysvetlenie</label>
-                            <textarea name="description" id="description" rows="5"
-                                      class="form-control wyswyg-editor">{{old('description', $question->description)}}</textarea>
+                            <tinymce
+                                id="description"
+                                name="description"
+                                :content="`{{ old('description', $question->description) }}`"
+                            ></tinymce>
                         </div>
 
                         <div class="form-group">
                             <label for="description_teacher">Vysvetlenie pre učiteľa</label>
-                            <textarea name="description_teacher" id="description_teacher" rows="5"
-                                      class="form-control wyswyg-editor">{{old('description_teacher', $question->description_teacher)}}</textarea>
+                            <tinymce
+                                id="description_teacher"
+                                name="description_teacher"
+                                :content="`{{ old('description_teacher', $question->description_teacher) }}`"
+                            ></tinymce>
                         </div>
                     </div>
                 </div>

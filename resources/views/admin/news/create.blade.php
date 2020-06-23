@@ -36,7 +36,11 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="content">Text</label>
-                            <textarea name="content" rows="8" class="form-control" id="news-text-editor">{{old('content')}}</textarea>
+                            <tinymce
+                                id="content"
+                                name="content"
+                                :content="`{{ old('content') }}`"
+                            ></tinymce>
                         </div>
                     </div>
                 </div>

@@ -25,7 +25,7 @@
                     <div class="col-md-12">
                         <h2>Upraviť</h2>
                         <div class="form-group">
-                            <label for="answer">
+                            <label for="question">
                                 Otázka
                             </label>
                             <input type="text" name="question" class="form-control form-control-lg"
